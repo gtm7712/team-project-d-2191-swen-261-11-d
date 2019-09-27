@@ -7,9 +7,9 @@ a web micro-framework.
 ## Team
 
 - Brandon Chen
-- MEMBER2
-- MEMBER3
-- MEMBER4
+- Giovanni Melchionne
+- Kyle Collins
+- Johnny Puskar
 
 
 ## Prerequisites
