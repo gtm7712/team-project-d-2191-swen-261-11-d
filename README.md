@@ -10,8 +10,7 @@ a web micro-framework.
 - Giovanni Melchionne
 - Kyle Collins
 - Johnny Puskar
-- Kris Schnupp
-
+- Kristopher Schnupp
 
 ## Prerequisites
 
