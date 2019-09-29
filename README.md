@@ -8,9 +8,9 @@ a web micro-framework.
 
 - Brandon Chen
 - Giovanni Melchionne
-- Kyle Collins
 - Johnny Puskar
 - Kristopher Schnupp
+- Kyle Collins
 
 ## Prerequisites
 
