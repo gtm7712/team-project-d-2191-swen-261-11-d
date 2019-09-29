@@ -7,8 +7,8 @@ a web micro-framework.
 ## Team
 
 - Brandon Chen
-- Giovanni Melchionne
 - Johnny Puskar
+- Giovanni Melchionne
 - Kristopher Schnupp
 - Kyle Collins
 
