@@ -5,6 +5,10 @@
       <a href="#" onclick="event.preventDefault(); signout.submit();">sign out [${currentUser.name}]</a>
     </form>
   <#else>
-    <a href="/signin">sign in</a>
+    <form action = "./signin" method = "post">
+        Username:
+        <input type = "text" name = "username"/>
+        <input type = "submit" value = "sign in"/>
+    </form>
   </#if>
  </div>
