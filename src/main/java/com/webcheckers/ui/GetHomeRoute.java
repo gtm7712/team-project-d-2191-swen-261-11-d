@@ -69,7 +69,11 @@ public class GetHomeRoute implements Route {
     vm.put("allUsers",lobby.getUsernames());
 
     // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
+    String plural = " is ";
+    if(lobby.countPlayers() != 1) {
+      plural = "s are ";
+    }
+    vm.put("message", Message.info(WELCOME_MSG.getText() + "\n" + lobby.countPlayers() + " player" + plural + "currently online!"));
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

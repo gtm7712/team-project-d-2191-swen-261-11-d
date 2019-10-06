@@ -19,7 +19,9 @@
     <!-- Provide a message to the user, if supplied. -->
       <#if currentUser??>
           <#list allUsers?keys as name>
-              ${name}
+              <#if name != currentUser>
+                  ${name}</br>
+              </#if>
           </#list>
       <#else>
           <#include "message.ftl" />
