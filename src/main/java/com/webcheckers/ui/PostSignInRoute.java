@@ -66,8 +66,8 @@ public class PostSignInRoute implements Route{
         vm.put("message", WELCOME_MSG);
 
         request.session().attribute("Player", currentPlayer );
-//        response.redirect("/");
+        response.redirect("/");
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
     }
 }
