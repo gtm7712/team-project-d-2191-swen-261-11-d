@@ -47,12 +47,16 @@ public class PlayerLobby {
      * @return if username is added or not, and why if it is not added
      */
     public String addUsername(String username) {
-        if (checkUsername(username) == USERNAME_GOOD) {
+        if (checkUsername(username).equals( USERNAME_GOOD)) {
             loggedIn.put(username, new Player(username));
             return USERNAME_GOOD;
         } else {
             return checkUsername(username);
         }
+    }
+
+    public int countPlayers(){
+        return loggedIn.size();
     }
 
 }
