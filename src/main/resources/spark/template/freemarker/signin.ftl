@@ -11,11 +11,12 @@
 
   <h1>Web Checkers | ${title}</h1>
 
-  <!-- Provide a navigation bar -->
-  <#include "nav-bar.ftl" />
-
   <div class="body">
-
+    <#if logIN??>
+        <p>
+            ${logIN}
+        </p>
+    </#if>
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 

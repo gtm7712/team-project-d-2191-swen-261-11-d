@@ -12,9 +12,7 @@ import java.util.HashMap;
 public class PlayerLobby {
     private HashMap<String, Player> loggedIn = new HashMap<>(); // logged in people
 
-    private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric.";
-    private final String USERNAME_IN_USE = "Pick another username, this one is already in use.";
-    private final String USERNAME_GOOD = "Logged in";
+
 
     /**
      * Checks if a username is valid
@@ -23,20 +21,20 @@ public class PlayerLobby {
      * @return String that says if your username is good or not and why if it is not
      *         good
      */
-    public String checkUsername(String username) {
+    public int checkUsername(String username) {
         if (username == null || username.isEmpty()) {
-            return INVALID_USERNAME;
+            return 0;
         }
 
         for (int i = 0; i < username.length(); i++) {
             if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == ' ')) {
-                return INVALID_USERNAME;
+                return 0;
             }
         }
         if (loggedIn.containsKey(username)) {
-            return USERNAME_IN_USE;
+            return 1;
         } else {
-            return USERNAME_GOOD;
+            return 2;
         }
     }
 
@@ -46,13 +44,8 @@ public class PlayerLobby {
      * @param username to be logged in
      * @return if username is added or not, and why if it is not added
      */
-    public String addUsername(String username) {
-        if (checkUsername(username).equals( USERNAME_GOOD)) {
-            loggedIn.put(username, new Player(username));
-            return USERNAME_GOOD;
-        } else {
-            return checkUsername(username);
-        }
+    public void addUsername(String username) {
+        loggedIn.put(username, new Player(username));
     }
 
     public int countPlayers(){
