@@ -9,7 +9,6 @@
 
 <body>
 <div class="page">
-
   <h1>Web Checkers | ${title}</h1>
 
   <!-- Provide a navigation bar -->

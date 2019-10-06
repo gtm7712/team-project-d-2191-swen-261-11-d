@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -53,11 +54,18 @@ public class GetHomeRoute implements Route {
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
+
+    Player currentPlayer = request.session().attribute("Player");
+
+    if(currentPlayer != null){
+      vm.put("currentUser", currentPlayer);
+    }
+
     vm.put("title", "Welcome!");
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
-
+    System.out.println(vm.get("currentUser"));
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

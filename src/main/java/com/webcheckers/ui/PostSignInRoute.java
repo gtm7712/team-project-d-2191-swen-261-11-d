@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -51,19 +52,21 @@ public class PostSignInRoute implements Route{
     public Object handle(Request request, Response response) {
         LOG.finer("PostSignIn is invoked.");
         //
+
         final String username = request.queryParams(USERNAME);
         
         // TODO: Add username checks
 
         Map<String, Object> vm = new HashMap<>();
-        Map<String, Object> currentUser = new HashMap<>();
-        currentUser.put("name", username);
-        vm.put("currentUser", currentUser);
+
+        Player currentPlayer = new Player(username);
 
         vm.put("title", "Welcome!");
 
         vm.put("message", WELCOME_MSG);
 
+        request.session().attribute("Player", currentPlayer );
+//        response.redirect("/");
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
