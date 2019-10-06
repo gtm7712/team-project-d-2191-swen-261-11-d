@@ -55,6 +55,10 @@ public class PlayerLobby {
         }
     }
 
+    /**
+     *
+     * @return how many players are logged in
+     */
     public int countPlayers(){
         return loggedIn.size();
     }
