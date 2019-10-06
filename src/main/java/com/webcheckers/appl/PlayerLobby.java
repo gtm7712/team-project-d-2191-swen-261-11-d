@@ -55,4 +55,8 @@ public class PlayerLobby {
         }
     }
 
+    public int countPlayers(){
+        return loggedIn.size();
+    }
+
 }
