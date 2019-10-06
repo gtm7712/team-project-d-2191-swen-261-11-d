@@ -20,7 +20,7 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <form action = "/" method = "post">
+    <form name="userForm" action = "/" method = "post" onsubmit = "return validateUsername()">
         Username:
         <input type = "text" name = "username"/>
         <input type = "submit" value = "Sign in"/>
@@ -30,5 +30,21 @@
 
 </div>
 </body>
+
+<script>
+
+  function validateUsername() {
+    var uname = document.forms["userForm"]["username"].value;
+    if (uname == "" || uname == " ") {
+      alert("Username cannot be empty");
+      return false;      
+    }
+    if (!uname.match(/^[\w\-\s]+$/)) {
+      alert ("Username must contain only alphanumeric characters.");
+      return false;
+    }
+  }
+
+</script>
 
 </html>
