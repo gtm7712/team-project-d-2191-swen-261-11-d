@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
@@ -72,13 +73,15 @@ public class PostSignInRoute implements Route{
         vm.put("title", "Welcome!");
 
         vm.put("message", WELCOME_MSG);
+
+        // TODO: Make this garbo into a switch statement
         if (lobby.checkUsername(username) == 0) {
             vm.put("logIN", INVALID_USERNAME);
         }
-        if (lobby.checkUsername(username) == 1) {
+        else if (lobby.checkUsername(username) == 1) {
             vm.put("logIN", USERNAME_IN_USE);
         }
-        if (lobby.checkUsername(username) == 2) {
+        else if (lobby.checkUsername(username) == 2) {
             vm.put("logIN", USERNAME_GOOD);
             lobby.addUsername(username);
             request.session().attribute("Player", currentPlayer );
