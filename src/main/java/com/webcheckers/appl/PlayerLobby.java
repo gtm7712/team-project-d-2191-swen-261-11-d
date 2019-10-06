@@ -27,15 +27,24 @@ public class PlayerLobby {
         if (username == null || username.isEmpty()) {
             return INVALID_USERNAME;
         }
-
+        boolean containsAlphanumeric = false;
         for (int i = 0; i < username.length(); i++) {
-            if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == ' ')) {
-                return INVALID_USERNAME;
+            if(Character.isLetterOrDigit(username.charAt(i)) && !containsAlphanumeric) {
+                containsAlphanumeric = true;
             }
+            else {
+                if(!Character.isLetterOrDigit(username.charAt(i)) && username.charAt(i) != ' ') {
+                    return INVALID_USERNAME;
+                }
+            }
+        }
+        if(!containsAlphanumeric) {
+            return INVALID_USERNAME;
         }
         if (loggedIn.containsKey(username)) {
             return USERNAME_IN_USE;
-        } else {
+        }
+        else {
             return USERNAME_GOOD;
         }
     }
