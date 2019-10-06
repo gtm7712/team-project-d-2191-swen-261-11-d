@@ -3,8 +3,10 @@ package com.webcheckers.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
@@ -23,6 +25,11 @@ public class PostSignInRoute implements Route{
 
     private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
+    private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric.";
+    private final String USERNAME_IN_USE = "Pick another username, this one is already in use.";
+    private final String USERNAME_GOOD = "Logged in";
+
+    private final PlayerLobby lobby;
     private final TemplateEngine templateEngine;
 
     /**
@@ -31,9 +38,11 @@ public class PostSignInRoute implements Route{
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public PostSignInRoute(final TemplateEngine templateEngine) {
+    public PostSignInRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+        this.lobby = lobby;
         //
+
         LOG.config("PostSignInRoute is initialized.");
     }
 
@@ -65,8 +74,19 @@ public class PostSignInRoute implements Route{
 
         vm.put("message", WELCOME_MSG);
 
-        request.session().attribute("Player", currentPlayer );
-        response.redirect("/");
+        // TODO: Make this garbo into a switch statement
+        if (lobby.checkUsername(username) == 0) {
+            vm.put("logIN", INVALID_USERNAME);
+        }
+        else if (lobby.checkUsername(username) == 1) {
+            vm.put("logIN", USERNAME_IN_USE);
+        }
+        else if (lobby.checkUsername(username) == 2) {
+            vm.put("logIN", USERNAME_GOOD);
+            lobby.addUsername(username);
+            request.session().attribute("Player", currentPlayer );
+            response.redirect("/");
+        }
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
     }

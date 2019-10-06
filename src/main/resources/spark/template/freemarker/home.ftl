@@ -17,7 +17,15 @@
   <div class="body">
 
     <!-- Provide a message to the user, if supplied. -->
-    <#include "message.ftl" />
+      <#if currentUser??>
+          <#list allUsers?keys as name>
+              <#if name != currentUser>
+                  ${name}</br>
+              </#if>
+          </#list>
+      <#else>
+          <#include "message.ftl" />
+      </#if>
 
     <!-- TODO: future content on the Home:
             to start games,
