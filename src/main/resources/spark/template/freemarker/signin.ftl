@@ -20,7 +20,7 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <form name="userForm" action = "/" method = "post" onsubmit = "return validateUsername()">
+    <form name="userForm" action = "/signin" method = "post" onsubmit = "return validateUsername()">
         Username:
         <input type = "text" name = "username"/>
         <input type = "submit" value = "Sign in"/>

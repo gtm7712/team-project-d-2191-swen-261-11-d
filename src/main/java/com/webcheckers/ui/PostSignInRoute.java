@@ -63,8 +63,7 @@ public class PostSignInRoute implements Route{
         //
 
         final String username = request.queryParams(USERNAME);
-        
-        // TODO: Add username checks
+
 
         Map<String, Object> vm = new HashMap<>();
 
@@ -74,7 +73,6 @@ public class PostSignInRoute implements Route{
 
         vm.put("message", WELCOME_MSG);
 
-        // TODO: Make this garbo into a switch statement
         switch(lobby.checkUsername(username)){
             case 0:
                 vm.put("logIN", INVALID_USERNAME);

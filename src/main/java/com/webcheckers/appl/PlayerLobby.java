@@ -64,6 +64,10 @@ public class PlayerLobby {
         return loggedIn.size();
     }
 
+    /**
+     *
+     * @return The hashmap of all the logged in users
+     */
     public HashMap<String, Player> getUsernames() {
         return loggedIn;
     }
