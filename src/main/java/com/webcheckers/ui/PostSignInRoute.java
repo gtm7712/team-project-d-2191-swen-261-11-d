@@ -22,6 +22,7 @@ public class PostSignInRoute implements Route{
 
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
+    private static final Message SELECT = Message.info("Please select a username.");
     private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
     private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric and must contain atleast 1 letter.";
@@ -70,9 +71,9 @@ public class PostSignInRoute implements Route{
 
         Player currentPlayer = new Player(username);
 
-        vm.put("title", "Welcome!");
+        vm.put("title", "Sign In!");
 
-        vm.put("message", WELCOME_MSG);
+        vm.put("message", SELECT);
 
         switch(lobby.checkUsername(username)){
             case 0:
