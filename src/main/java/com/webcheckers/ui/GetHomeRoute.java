@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -23,6 +25,7 @@ public class GetHomeRoute implements Route {
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
+  private final PlayerLobby lobby;
   private final TemplateEngine templateEngine;
 
   /**
@@ -31,10 +34,11 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
+    this.lobby = lobby;
   }
 
   /**
@@ -46,18 +50,29 @@ public class GetHomeRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   the rendered HTML for the Home page24t
    */
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
+
+    Player currentPlayer = request.session().attribute("Player");
+
+    if(currentPlayer != null){
+      vm.put("currentUser", currentPlayer);
+    }
+
     vm.put("title", "Welcome!");
+    vm.put("allUsers",lobby.getUsernames());
 
     // display a user message in the Home page
-    vm.put("message", WELCOME_MSG);
-
+    String plural = " is ";
+    if(lobby.countPlayers() != 1) {
+      plural = "s are ";
+    }
+    vm.put("message", Message.info(WELCOME_MSG.getText() + "\n" + lobby.countPlayers() + " player" + plural + "currently online!"));
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

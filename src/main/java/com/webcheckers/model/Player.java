@@ -1,7 +1,8 @@
 package com.webcheckers.model;
 
 public class Player {
-    private String username;
+
+    public final String name;
     private boolean inGame;  //if a user is in a game or not
 
     //todo
@@ -11,7 +12,7 @@ public class Player {
      * @param username of logged in player
      */
     public Player(String username) {
-        this.username = username;
+        this.name = username;
         this.inGame = false;
     }
 
@@ -20,7 +21,7 @@ public class Player {
      * @return Players username
      */
     public String getUsername() {
-        return username;
+        return name;
     }
 
     /**
@@ -31,4 +32,25 @@ public class Player {
         return inGame;
     }
 
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this){
+            return true;
+        }
+        if (!(obj instanceof Player)){
+            return false;
+        }
+        final Player temp = (Player) obj;
+        return temp.name.equals(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
