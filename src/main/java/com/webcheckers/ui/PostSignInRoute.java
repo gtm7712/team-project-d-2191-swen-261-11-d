@@ -3,7 +3,6 @@ package com.webcheckers.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
@@ -23,9 +22,10 @@ public class PostSignInRoute implements Route{
 
     private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
 
+    private static final Message SELECT = Message.info("Please select a username.");
     private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
-    private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric.";
+    private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric and must contain atleast 1 letter.";
     private final String USERNAME_IN_USE = "Pick another username, this one is already in use.";
     private final String USERNAME_GOOD = "Logged in";
 
@@ -66,26 +66,28 @@ public class PostSignInRoute implements Route{
         
         // TODO: Add username checks
 
+
         Map<String, Object> vm = new HashMap<>();
 
         Player currentPlayer = new Player(username);
 
-        vm.put("title", "Welcome!");
+        vm.put("title", "Sign In!");
 
-        vm.put("message", WELCOME_MSG);
+        vm.put("message", SELECT);
 
-        // TODO: Make this garbo into a switch statement
-        if (lobby.checkUsername(username) == 0) {
-            vm.put("logIN", INVALID_USERNAME);
-        }
-        else if (lobby.checkUsername(username) == 1) {
-            vm.put("logIN", USERNAME_IN_USE);
-        }
-        else if (lobby.checkUsername(username) == 2) {
-            vm.put("logIN", USERNAME_GOOD);
-            lobby.addUsername(username);
-            request.session().attribute("Player", currentPlayer );
-            response.redirect("/");
+        switch(lobby.checkUsername(username)){
+            case 0:
+                vm.put("logIN", INVALID_USERNAME);
+                break;
+            case 1:
+                vm.put("logIN", USERNAME_IN_USE);
+                break;
+            case 2:
+                vm.put("logIN", USERNAME_GOOD);
+                lobby.addUsername(username);
+                request.session().attribute("Player", currentPlayer );
+                response.redirect("/");
+                break;
         }
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));

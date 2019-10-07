@@ -33,6 +33,23 @@ public class Player {
     }
 
     @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this){
+            return true;
+        }
+        if (!(obj instanceof Player)){
+            return false;
+        }
+        final Player temp = (Player) obj;
+        return temp.name.equals(this.name);
+    }
+
+    @Override
     public String toString() {
         return name;
     }

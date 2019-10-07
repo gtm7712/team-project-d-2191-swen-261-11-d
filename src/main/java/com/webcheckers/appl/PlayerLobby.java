@@ -1,10 +1,7 @@
 package com.webcheckers.appl;
-
 import com.webcheckers.model.Player;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Application tier, controls and holds who is logged in, and if names are valid
@@ -27,11 +24,17 @@ public class PlayerLobby {
         if (username == null || username.isEmpty()) {
             return 0;
         }
-
+        int numChars = 0;
         for (int i = 0; i < username.length(); i++) {
             if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == ' ')) {
                 return 0;
             }
+            if(Character.isLetter(username.charAt(i))){
+                numChars++;
+            }
+        }
+        if(numChars == 0){
+            return 0;
         }
         if (loggedIn.containsKey(username)) {
             return 1;
@@ -50,10 +53,18 @@ public class PlayerLobby {
         loggedIn.put(username, new Player(username));
     }
 
+    /**
+     *
+     * @return how many players are logged in
+     */
     public int countPlayers(){
         return loggedIn.size();
     }
 
+    /**
+     *
+     * @return The hashmap of all the logged in users
+     */
     public HashMap<String, Player> getUsernames() {
         return loggedIn;
     }
