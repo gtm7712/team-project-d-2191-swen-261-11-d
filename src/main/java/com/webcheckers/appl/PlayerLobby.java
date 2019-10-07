@@ -27,11 +27,17 @@ public class PlayerLobby {
         if (username == null || username.isEmpty()) {
             return 0;
         }
-
+        int numChars = 0;
         for (int i = 0; i < username.length(); i++) {
             if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == ' ')) {
                 return 0;
             }
+            if(Character.isLetter(username.charAt(i))){
+                numChars++;
+            }
+        }
+        if(numChars == 0){
+            return 0;
         }
         if (loggedIn.containsKey(username)) {
             return 1;
