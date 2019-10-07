@@ -140,9 +140,8 @@ public class WebServer {
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
 
-
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine));
+    get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
 

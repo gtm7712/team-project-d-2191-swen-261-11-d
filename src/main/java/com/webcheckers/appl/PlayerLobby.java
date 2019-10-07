@@ -3,6 +3,8 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Player;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Application tier, controls and holds who is logged in, and if names are valid
@@ -50,6 +52,10 @@ public class PlayerLobby {
 
     public int countPlayers(){
         return loggedIn.size();
+    }
+
+    public HashMap<String, Player> getUsernames() {
+        return loggedIn;
     }
 
 }
