@@ -19,7 +19,7 @@
     <!-- Provide a message to the user, if supplied. -->
       <#if currentUser??>
           <#list allUsers?keys as name>
-              <#if name != currentUser>
+              <#if name != currentUser && !allUsers[name].isInGame()>
                   ${name}</br>
               </#if>
           </#list>

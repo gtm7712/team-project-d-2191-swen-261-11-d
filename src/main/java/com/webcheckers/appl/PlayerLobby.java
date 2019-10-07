@@ -50,6 +50,10 @@ public class PlayerLobby {
         loggedIn.put(username, new Player(username));
     }
 
+    /**
+     *
+     * @return how many players are logged in
+     */
     public int countPlayers(){
         return loggedIn.size();
     }
