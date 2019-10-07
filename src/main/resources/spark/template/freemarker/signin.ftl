@@ -33,12 +33,18 @@
 
 <script>
 
+  /*
+  * Performs a client-side check to see if the username is valid.
+  * (Additional checks are performed server-side)
+  */
   function validateUsername() {
     var uname = document.forms["userForm"]["username"].value;
+    // Check for empty name
     if (uname == "" || uname == " ") {
       alert("Username cannot be empty");
       return false;      
     }
+    // Check for non-alphanumeric characters
     if (!uname.match(/^[\w\-\s]+$/)) {
       alert ("Username must contain only alphanumeric characters.");
       return false;
