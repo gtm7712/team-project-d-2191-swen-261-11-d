@@ -48,7 +48,12 @@ public class Game {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 if(board[i][j].isValid()) {
                     if(board[i][j].hasPiece()) {
-
+                        if(board[i][j].isPieceRed()) {
+                            toReturn += "[R]";
+                        }
+                        else {
+                            toReturn += "[W]";
+                        }
                     }
                     else {
                         toReturn += "[ ]";

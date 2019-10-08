@@ -26,6 +26,10 @@ public class Space {
         return piece == null;
     }
 
+    public boolean isPieceRed() {
+        return hasPiece() && piece.isRed();
+    }
+
     public boolean isValid() {
         return isValid;
     }
