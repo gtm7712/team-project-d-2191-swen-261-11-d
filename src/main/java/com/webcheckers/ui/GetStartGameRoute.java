@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
@@ -26,7 +28,7 @@ public class GetStartGameRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
     private final TemplateEngine templateEngine;
-
+    private final PlayerLobby lobby;
     private final Game game;
 
     /**
@@ -35,8 +37,9 @@ public class GetStartGameRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetStartGameRoute(final TemplateEngine templateEngine) {
+    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+      this.lobby = lobby;
       game = new Game();
       //
       LOG.config("GetStartGameRoute is initialized.");
@@ -60,12 +63,16 @@ public class GetStartGameRoute implements Route {
       Map<String, Object> vm = new HashMap<>();
 
       Player currentPlayer = request.session().attribute("Player");
-        System.out.println(currentPlayer);
+      String otherPlayer = request.queryParams("otherPlayer");
+      Player opponent = lobby.getPlayer(otherPlayer);
       // Inject game information into template
       vm.put("title", " ");
       vm.put("board", game.getBoardRed());
       vm.put("viewMode", view.PLAY_MODE);
       vm.put("currentUser", currentPlayer);
+      vm.put("redPlayer", currentPlayer);
+      vm.put("whitePlayer", opponent);
+      vm.put("activeColor", Piece.Color.RED);
       // render the View
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
