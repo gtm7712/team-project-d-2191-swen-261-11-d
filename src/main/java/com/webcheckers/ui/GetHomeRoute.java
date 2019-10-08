@@ -50,7 +50,7 @@ public class GetHomeRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page24t
+   *   the rendered HTML for the Home page
    */
   @Override
   public Object handle(Request request, Response response) {
