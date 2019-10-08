@@ -3,7 +3,7 @@ package com.webcheckers.model;
 public class Piece {
 
     public static enum Color {
-        RED, BLACK
+        RED, WHITE
     }
 
     private Color color;
