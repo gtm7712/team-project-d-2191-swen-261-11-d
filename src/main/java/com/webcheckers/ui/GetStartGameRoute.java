@@ -22,6 +22,8 @@ import com.webcheckers.util.Message;
  */
 public class GetStartGameRoute implements Route {
 
+    private enum view { PLAY_MODE, SPECTATOR_MODE, REPLAY_MODE;}
+
     private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
     private final TemplateEngine templateEngine;
 
@@ -57,11 +59,15 @@ public class GetStartGameRoute implements Route {
       //
       Map<String, Object> vm = new HashMap<>();
 
+      System.out.println(request.session());
 
       // Inject game information into template
       vm.put("title", " ");
       vm.put("board", game.getBoardRed());
+      vm.put("viewMode", view.PLAY_MODE);
+
       // render the View
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
   }
+
