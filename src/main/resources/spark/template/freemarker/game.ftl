@@ -7,7 +7,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
   <script>
-
+  window.gameData = {
+    "gameID" : ${gameID!'null'},
+    "currentUser" : "${currentUser.name}",
+    "viewMode" : "${viewMode}",
+    "modeOptions" : ${modeOptionsAsJSON!'{}'},
+    "redPlayer" : "${redPlayer.name}",
+    "whitePlayer" : "${whitePlayer.name}",
+    "activeColor" : "${activeColor}"
+  };
 
   </script>
 
