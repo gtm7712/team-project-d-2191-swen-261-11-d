@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
     private final static int BOARD_SIZE = 8;
     private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
@@ -35,12 +38,26 @@ public class Game {
 
     public Space[][] getBoardWhite() {
         Space[][] flipped = new Space[BOARD_SIZE][BOARD_SIZE];
-        for(int i = 0; i < BOARD_SIZE; i++) {
-            for(int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = flipped[BOARD_SIZE - i][BOARD_SIZE - j];
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                flipped[BOARD_SIZE - 1 - i][BOARD_SIZE - 1 - j] = board[i][j];
             }
         }
         return flipped;
+    }
+
+    public List<Space> getBoardRedIter() {
+        List<Space> iter = new ArrayList<Space>();
+        for(int i = 0; i < BOARD_SIZE; i++) {
+            for(int j = 0; j < BOARD_SIZE; j++) {
+                iter.add(board[i][j]);
+            }
+        }
+        return iter;
+    }
+
+    public List<Space> getBoardWhiteIter() {
+        return null;
     }
 
     public String toString() {
@@ -74,6 +91,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
+        // Stuff for testing
         Game game = new Game();
 
         System.out.println(game);
