@@ -47,4 +47,10 @@ public class Piece {
         return this.color;
     }
 
+    /**
+     *
+     * @return  if the color of the piece is red
+     */
+    public boolean isRed() { return this.color == Color.RED; }
+
 }
