@@ -44,6 +44,10 @@ public class Game {
         return toReturn;
     }
 
+    public Space[][] getBoard(){
+        return board;
+    }
+
     public static void main(String[] args) {
         // Stuff for testing
         Game game = new Game();
