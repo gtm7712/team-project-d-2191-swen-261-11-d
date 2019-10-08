@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -22,7 +24,9 @@ public class GetStartGameRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
     private final TemplateEngine templateEngine;
-  
+
+    private final Game game;
+
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
@@ -31,6 +35,7 @@ public class GetStartGameRoute implements Route {
      */
     public GetStartGameRoute(final TemplateEngine templateEngine) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+      game = new Game();
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -52,10 +57,10 @@ public class GetStartGameRoute implements Route {
       //
       Map<String, Object> vm = new HashMap<>();
 
+
       // Inject game information into template
-      vm.put("title", "");
-      vm.put("message", "");
-  
+      vm.put("title", " ");
+      vm.put("board", game.getBoardRed());
       // render the View
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }

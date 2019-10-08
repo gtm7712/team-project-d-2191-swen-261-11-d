@@ -20,7 +20,10 @@
       <#if currentUser??>
           <#list allUsers?keys as name>
               <#if name != currentUser && !allUsers[name].isInGame()>
-                  ${name}</br>
+                  <form id = "player" action = "/startgame" method = "GET">
+                    <a href = "#" onclick="event.preventDefault(); player.submit()"> ${name} </a>
+                  </form>
+                  </br>
               </#if>
           </#list>
       <#else>
