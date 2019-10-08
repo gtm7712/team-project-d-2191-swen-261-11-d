@@ -59,13 +59,13 @@ public class GetStartGameRoute implements Route {
       //
       Map<String, Object> vm = new HashMap<>();
 
-      System.out.println(request.session());
-
+      Player currentPlayer = request.session().attribute("Player");
+        System.out.println(currentPlayer);
       // Inject game information into template
       vm.put("title", " ");
       vm.put("board", game.getBoardRed());
       vm.put("viewMode", view.PLAY_MODE);
-
+      vm.put("currentUser", currentPlayer);
       // render the View
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }

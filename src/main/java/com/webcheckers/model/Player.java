@@ -2,17 +2,17 @@ package com.webcheckers.model;
 
 public class Player {
 
-    public final String name;
+    public String name;
     private boolean inGame;  //if a user is in a game or not
 
     //todo
 
     /**
      * A Player is logged in
-     * @param username of logged in player
+     * @param name of logged in player
      */
-    public Player(String username) {
-        this.name = username;
+    public Player(String name) {
+        this.name = name;
         this.inGame = false;
     }
 
@@ -20,7 +20,7 @@ public class Player {
      *
      * @return Players username
      */
-    public String getUsername() {
+    public String getName() {
         return name;
     }
 

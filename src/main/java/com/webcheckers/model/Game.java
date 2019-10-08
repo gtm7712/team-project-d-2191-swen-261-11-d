@@ -2,12 +2,20 @@ package com.webcheckers.model;
 
 public class Game {
     private Board board;
+    private Player redPlayer;
+    private Player whitePlayer;
 
     public Game() {
         this.board = new Board();
     }
 
+    public Player getWhitePlayer(){
+        return whitePlayer;
+    }
 
+    public Player getRedPlayer(){
+        return redPlayer;
+    }
 
     public Board getBoardRed() {
         return board;

@@ -62,6 +62,7 @@ public class GetHomeRoute implements Route {
 
     if(currentPlayer != null){
       vm.put("currentUser", currentPlayer);
+      request.session().attribute("Player",currentPlayer);
     }
 
     vm.put("title", "Welcome!");
