@@ -23,7 +23,7 @@ public class Space {
     }
 
     public boolean hasPiece() {
-        return piece == null;
+        return piece != null;
     }
 
     public boolean isPieceRed() {

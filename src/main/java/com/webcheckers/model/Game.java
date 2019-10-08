@@ -10,6 +10,7 @@ public class Game {
                 board[i][j] = new Space(i, j, (i%2==0) == (j%2==0));
             }
         }
+        resetGameBoard();
     }
 
     public void resetGameBoard() {
@@ -63,8 +64,14 @@ public class Game {
                     toReturn += "{-}";
                 }
             }
-            toReturn += "/n";
+            toReturn += "\n";
         }
         return toReturn;
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+
+        System.out.println(game);
     }
 }
