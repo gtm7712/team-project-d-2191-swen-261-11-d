@@ -66,6 +66,13 @@ public class GetStartGameRoute implements Route {
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
+      if(lobby.getPlayer(otherPlayer).isInGame()){
+          vm.put("title", "Welcome!");
+          vm.put("allUsers",lobby.getUsernames());
+          vm.put("error", "Player is already in a game!");
+          return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+      }
+
       currentPlayer.setOpponent(opponent);
       opponent.setOpponent(currentPlayer);
 

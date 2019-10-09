@@ -15,7 +15,9 @@
   <#include "nav-bar.ftl" />
 
   <div class="body">
-
+    <#if error??>
+        <p> ${error} </p>
+    </#if>
     <!-- Provide a message to the user, if supplied. -->
       <#if currentUser??>
           <#list allUsers?keys as name>
