@@ -13,7 +13,7 @@ public class Piece {
         RED, WHITE
     }
     public enum Type {
-        KING, NORMAL
+        KING, SINGLE
     }
 
     public Color color;
@@ -25,7 +25,7 @@ public class Piece {
      */
     public Piece(Color color) {
         this.color = color;
-        this.type=Type.NORMAL;
+        this.type=Type.SINGLE;
     }
 
     /**

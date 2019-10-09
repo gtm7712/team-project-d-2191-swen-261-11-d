@@ -68,7 +68,7 @@ public class GetStartGameRoute implements Route {
       // Inject game information into template
       vm.put("title", " ");
       vm.put("board", game.getBoardRed());
-      vm.put("viewMode", view.PLAY_MODE);
+      vm.put("viewMode", "PLAY");
       vm.put("currentUser", currentPlayer);
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", opponent);
