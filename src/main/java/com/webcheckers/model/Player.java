@@ -4,7 +4,8 @@ public class Player {
 
     public String name;
     private boolean inGame;  //if a user is in a game or not
-
+    private Player opponent;
+    private Game game;
     //todo
 
     /**
@@ -30,6 +31,30 @@ public class Player {
      */
     public boolean isInGame() {
         return inGame;
+    }
+
+    public void inGame(boolean inGame){
+        this.inGame = inGame;
+    }
+
+    public Player getOpponent(){
+        return opponent;
+    }
+
+    public void setOpponent(Player opponent){
+        this.opponent = opponent;
+    }
+
+    public Board getBoard(){
+        return this.game.getBoardRed();
+    }
+
+    public Game getGame(){
+        return this.game;
+    }
+
+    public void setGame(Game game){
+        this.game = game;
     }
 
     @Override

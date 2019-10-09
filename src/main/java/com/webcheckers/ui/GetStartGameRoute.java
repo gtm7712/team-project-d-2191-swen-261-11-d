@@ -65,8 +65,20 @@ public class GetStartGameRoute implements Route {
       Player currentPlayer = request.session().attribute("Player");
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
+
+      currentPlayer.setOpponent(opponent);
+      opponent.setOpponent(currentPlayer);
+
+      currentPlayer.inGame(true);
+      opponent.inGame(true);
+
+      game.setRedPlayer(currentPlayer);
+      game.setWhitePlayer(opponent);
+
+      currentPlayer.setGame(game);
+      opponent.setGame(game);
       // Inject game information into template
-      vm.put("title", " ");
+      vm.put("title", "Let's Play");
       vm.put("board", game.getBoardRed());
       vm.put("viewMode", "PLAY");
       vm.put("currentUser", currentPlayer);

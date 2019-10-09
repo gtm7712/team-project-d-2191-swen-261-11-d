@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
@@ -60,9 +62,26 @@ public class GetHomeRoute implements Route {
 
     Player currentPlayer = request.session().attribute("Player");
 
+
     if(currentPlayer != null){
       vm.put("currentUser", currentPlayer);
       request.session().attribute("Player",currentPlayer);
+      currentPlayer = lobby.getPlayer(currentPlayer.name);
+      System.out.println(currentPlayer.isInGame());
+      if(currentPlayer.isInGame()){
+        // Inject game information into template
+
+        Game currentGame = currentPlayer.getGame();
+
+        vm.put("title", "Let's Play");
+        vm.put("board", currentPlayer.getBoard());
+        vm.put("viewMode", "PLAY");
+        vm.put("currentUser", currentPlayer);
+        vm.put("redPlayer", currentGame.getRedPlayer());
+        vm.put("whitePlayer", currentGame.getWhitePlayer());
+        vm.put("activeColor", Piece.Color.RED);
+        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+      }
     }
 
     vm.put("title", "Welcome!");

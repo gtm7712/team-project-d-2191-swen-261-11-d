@@ -17,6 +17,14 @@ public class Game {
         return redPlayer;
     }
 
+    public void setRedPlayer(Player p){
+        this.redPlayer = p;
+    }
+
+    public void setWhitePlayer(Player p){
+        this.whitePlayer = p;
+    }
+
     public Board getBoardRed() {
         return board;
     }
