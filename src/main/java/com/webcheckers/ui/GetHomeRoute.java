@@ -67,7 +67,6 @@ public class GetHomeRoute implements Route {
       vm.put("currentUser", currentPlayer);
       request.session().attribute("Player",currentPlayer);
       currentPlayer = lobby.getPlayer(currentPlayer.name);
-      System.out.println(currentPlayer.isInGame());
       if(currentPlayer.isInGame()){
         // Inject game information into template
 

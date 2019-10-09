@@ -69,8 +69,8 @@ public class GetStartGameRoute implements Route {
       currentPlayer.setOpponent(opponent);
       opponent.setOpponent(currentPlayer);
 
-      currentPlayer.inGame(true);
-      opponent.inGame(true);
+      lobby.getPlayer(currentPlayer.name).inGame(true);
+      lobby.getPlayer(otherPlayer).inGame(true);
 
       game.setRedPlayer(currentPlayer);
       game.setWhitePlayer(opponent);
