@@ -12,12 +12,16 @@ public class Piece {
     public static enum Color {
         RED, WHITE
     }
+
+    /**
+     * Represents the type of a piece
+     */
     public enum Type {
         KING, SINGLE
     }
 
-    public Color color;
-    public Type type;
+    private Color color;
+    private Type type;
 
     /**
      * Create a new piece
