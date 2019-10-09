@@ -12,9 +12,12 @@ public class Piece {
     public static enum Color {
         RED, WHITE
     }
+    public enum Type {
+        KING, NORMAL
+    }
 
-    private Color color;
-    private boolean isKing;
+    public Color color;
+    public Type type;
 
     /**
      * Create a new piece
@@ -22,6 +25,7 @@ public class Piece {
      */
     public Piece(Color color) {
         this.color = color;
+        this.type=Type.NORMAL;
     }
 
     /**
@@ -29,14 +33,14 @@ public class Piece {
      * @return  true if the piece is a king
      */
     public boolean isKing() {
-        return isKing;
+        return type==Type.KING;
     }
 
     /**
      * King the piece
      */
     public void king() {
-        this.isKing = true;
+        type = Type.KING;
     }
 
     /**
@@ -53,4 +57,11 @@ public class Piece {
      */
     public boolean isRed() { return this.color == Color.RED; }
 
+    /**
+     *
+     * @return the pieces type
+     */
+    public Type getType() {
+        return type;
+    }
 }
