@@ -65,7 +65,7 @@
           <table id="game-board">
             <tbody>
             <#list board.getBoard() as row>
-              <tr data-row="${row[row?index]}">
+              <tr data-row="${row?index}">
               <#list row as space>
 
                 <td data-cell="${space?index}"

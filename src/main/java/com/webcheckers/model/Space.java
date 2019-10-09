@@ -33,4 +33,8 @@ public class Space {
     public boolean isValid() {
         return isValid;
     }
+
+    public int getRow(){
+        return row;
+    }
 }
