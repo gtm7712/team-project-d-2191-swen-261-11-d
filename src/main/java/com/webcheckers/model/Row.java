@@ -5,7 +5,7 @@ public class Row {
     private Space[] row;
     private int index;
 
-    public Row(Space[] row, int index) {
+    public Row(Space[] row) {
         this.row = row;
     }
 
@@ -15,6 +15,10 @@ public class Row {
 
     public Space get(int index) {
         return row[index];
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public int getIndex() {

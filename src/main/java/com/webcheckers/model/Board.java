@@ -10,7 +10,7 @@ public class Board {
     public Board() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = new Space(i, j, (i%2==0) == (j%2==0));
+                board[i][j] = new Space(i, j, (i%2!=0) == (j%2==0));
             }
         }
         resetGameBoard();
