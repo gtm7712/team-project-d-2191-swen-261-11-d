@@ -33,6 +33,10 @@ public class Player {
         return inGame;
     }
 
+    /**
+     * sets player to be in/ out of  game
+     * @param inGame
+     */
     public void inGame(boolean inGame){
         this.inGame = inGame;
     }
@@ -41,18 +45,34 @@ public class Player {
         return opponent;
     }
 
+    /**
+     * sets the Players opponent if you are in game
+     * @param opponent a Player that you are playing in checkers
+     */
     public void setOpponent(Player opponent){
         this.opponent = opponent;
     }
 
+    /**
+     *
+     * @return the board of the game you are playing
+     */
     public Board getBoard(){
         return this.game.getBoardRed();
     }
 
+    /**
+     *
+     * @return the game you are playing
+     */
     public Game getGame(){
         return this.game;
     }
 
+    /**
+     * sets the game you are playing
+     * @param game
+     */
     public void setGame(Game game){
         this.game = game;
     }

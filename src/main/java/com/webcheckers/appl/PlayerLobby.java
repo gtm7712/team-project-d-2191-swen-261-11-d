@@ -61,6 +61,12 @@ public class PlayerLobby {
         return loggedIn.size();
     }
 
+    /**
+     *
+     * @param name
+     * @return the logged in Player with that name
+     */
+
     public Player getPlayer(String name){
         return loggedIn.get(name);
     }

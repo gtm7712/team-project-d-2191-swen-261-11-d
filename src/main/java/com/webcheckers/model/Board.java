@@ -7,6 +7,9 @@ public class Board {
     public final static int BOARD_SIZE = 8;
     private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
 
+    /**
+     * initiates board
+     */
     public Board() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
@@ -16,10 +19,17 @@ public class Board {
         resetGameBoard();
     }
 
+    /**
+     * initiates the board with preset pieces
+     * @param preset double array of spaces with pieces
+     */
     public Board(Space[][] preset) {
         this.board = preset;
     }
 
+    /**
+     * @board is set to the  default boardstate
+     */
     public void resetGameBoard() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
@@ -36,6 +46,10 @@ public class Board {
         }
     }
 
+    /**
+     * Flips the board so the other players pieces show at the bottom
+     * @return flipped board
+     */
     public Board flipped() {
         Space[][] flipped = new Space[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -46,17 +60,13 @@ public class Board {
         return new Board(flipped);
     }
 
+    /**
+     *
+     * @return the board of spaces
+     */
     public Space[][] getBoard() {
         return board;
     }
 
-    public List<Space> iterator() {
-        List<Space> iter = new ArrayList<Space>();
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                iter.add(board[i][j]);
-            }
-        }
-        return iter;
-    }
+
 }
