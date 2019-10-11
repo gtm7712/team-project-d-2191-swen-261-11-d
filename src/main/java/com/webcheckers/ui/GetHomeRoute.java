@@ -73,7 +73,7 @@ public class GetHomeRoute implements Route {
         Game currentGame = currentPlayer.getGame();
 
         vm.put("title", "Let's Play");
-        vm.put("board", currentPlayer.getBoard());
+        vm.put("board", currentPlayer.getFlippedBoard());
         vm.put("viewMode", "PLAY");
         vm.put("currentUser", currentPlayer);
         vm.put("redPlayer", currentGame.getRedPlayer());

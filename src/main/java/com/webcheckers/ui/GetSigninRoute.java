@@ -21,7 +21,7 @@ import com.webcheckers.util.Message;
 public class GetSigninRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
 
-  private static final Message SELECT = Message.info("Please select a username.");
+  private static final Message SELECT = Message.info("Please choose a username.");
   private static final Message INVALID = Message.info("That username is invalid.  Usernames must be alphanumeric.");
   private static final Message IN_USE = Message.info("That username is already in use..");
 

@@ -63,6 +63,14 @@ public class Player {
 
     /**
      *
+     * @return the board of the game you are playing
+     */
+    public Board getFlippedBoard(){
+        return this.game.getBoardWhite();
+    }
+
+    /**
+     *
      * @return the game you are playing
      */
     public Game getGame(){
