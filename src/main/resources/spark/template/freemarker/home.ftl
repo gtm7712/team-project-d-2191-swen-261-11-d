@@ -15,12 +15,15 @@
   <#include "nav-bar.ftl" />
 
   <div class="body">
-
+    <#if error??>
+        <p> ${error} </p>
+    </#if>
     <!-- Provide a message to the user, if supplied. -->
       <#if currentUser??>
           <#list allUsers?keys as name>
               <#if name != currentUser && !allUsers[name].isInGame()>
-                  ${name}</br>
+                  <a href = "/startgame?otherPlayer=${name}"> ${name} </a>
+                  </br>
               </#if>
           </#list>
       <#else>

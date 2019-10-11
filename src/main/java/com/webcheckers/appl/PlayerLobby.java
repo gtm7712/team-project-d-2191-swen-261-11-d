@@ -63,6 +63,16 @@ public class PlayerLobby {
 
     /**
      *
+     * @param name
+     * @return the logged in Player with that name
+     */
+
+    public Player getPlayer(String name){
+        return loggedIn.get(name);
+    }
+
+    /**
+     *
      * @return The hashmap of all the logged in users
      */
     public HashMap<String, Player> getUsernames() {

@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/game.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
   <script>
   window.gameData = {
     "gameID" : ${gameID!'null'},
@@ -15,7 +16,9 @@
     "whitePlayer" : "${whitePlayer.name}",
     "activeColor" : "${activeColor}"
   };
+
   </script>
+
 </head>
 <body>
   <div class="page">
@@ -61,19 +64,20 @@
         <div class="game-board">
           <table id="game-board">
             <tbody>
-            <#list board.iterator() as row>
-              <tr data-row="${row.index}">
-              <#list row.iterator() as space>
-                <td data-cell="${space.cellIdx}"
+            <#list board.getBoard() as row>
+              <tr data-row="${row?index}">
+              <#list row as space>
+
+                <td data-cell="${space?index}"
                     <#if space.isValid() >
                     class="Space"
                     </#if>
                     >
-                <#if space.piece??>
+                <#if space.hasPiece()>
                   <div class="Piece"
-                       id="piece-${row.index}-${space.cellIdx}"
-                       data-type="${space.piece.type}"
-                       data-color="${space.piece.color}">
+                       id="piece-${row?index}-${space?index}"
+                       data-type="${space.getPiece().getType()}"
+                       data-color="${space.getPiece().getColor()}">
                   </div>
                 </#if>
                 </td>
