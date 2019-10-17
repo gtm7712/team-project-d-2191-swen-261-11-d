@@ -20,7 +20,7 @@ public class Space {
     public Space(int row, int col, boolean isValid) {
         this.row = row;
         this.col = col;
-        this.isValid = isValid;
+        this.isValid = isValid;  //dark or white square
     }
 
     /**
@@ -59,7 +59,7 @@ public class Space {
      * @return True if a piece can be placed on this Space
      */
     public boolean isValid() {
-        return isValid;
+        return isValid && !hasPiece();
     }
 
     /**
