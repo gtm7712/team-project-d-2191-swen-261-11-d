@@ -40,6 +40,13 @@ public class Space {
     }
 
     /**
+     * removes a piece from this space
+     *
+     */
+    public void removePiece(){
+        piece=null;
+    }
+    /**
      * 
      * @return True if the space has a piece
      */
