@@ -11,7 +11,7 @@ public class Space {
     public Space(int row, int col, boolean isValid) {
         this.row = row;
         this.col = col;
-        this.isValid = isValid;
+        this.isValid = isValid;  //dark or white square
     }
 
     public void setPiece(Piece piece) {
@@ -31,7 +31,7 @@ public class Space {
     }
 
     public boolean isValid() {
-        return isValid;
+        return isValid && !hasPiece();
     }
 
     public int getRow(){
