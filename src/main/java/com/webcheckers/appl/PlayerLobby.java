@@ -1,7 +1,7 @@
 package com.webcheckers.appl;
-import com.webcheckers.model.Player;
-
 import java.util.HashMap;
+
+import com.webcheckers.model.Player;
 
 /**
  * Application tier, controls and holds who is logged in, and if names are valid
@@ -51,6 +51,10 @@ public class PlayerLobby {
      */
     public void addUsername(String username) {
         loggedIn.put(username, new Player(username));
+    }
+
+    public void removeUsername(String username) {
+        loggedIn.remove(username);
     }
 
     /**
