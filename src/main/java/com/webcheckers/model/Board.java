@@ -60,6 +60,19 @@ public class Board {
         return new Board(flipped);
     }
 
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Board)) return false;
+
+        Board other = (Board)o;
+        for (int i = 0; i < BOARD_SIZE - 1; i++)
+            for (int j = 0; j < BOARD_SIZE - 1; j++)
+                if (!board[i][j].equals(other.getBoard()[i][j]))
+                    return false;
+
+        return true;
+    }
+
     /**
      *
      * @return the board of spaces

@@ -76,4 +76,17 @@ public class Space {
     public int getRow(){
         return row;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Space)) return false;
+
+        Space other = (Space)o;
+        if (other.hasPiece() != hasPiece()) return false;
+        if (hasPiece())
+            if (other.getPiece().getColor() != getPiece().getColor()) return false;
+        if (other.isValid != isValid) return false;
+
+        return true;
+    }
 }
