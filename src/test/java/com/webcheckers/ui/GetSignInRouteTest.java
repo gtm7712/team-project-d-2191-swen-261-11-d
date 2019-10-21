@@ -23,7 +23,7 @@ import spark.TemplateEngine;
  * @author Brandon Chen
  */
 @Tag("UI-tier")
-public class GetSignInRouteTester{
+public class GetSignInRouteTest{
 
     private GetSigninRoute CuT;
 

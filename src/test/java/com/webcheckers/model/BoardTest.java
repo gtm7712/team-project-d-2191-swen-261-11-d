@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
  * @author Giovanni Melchionne
  */
 @Tag ("model-tier")
-public class BoardTester {
+public class BoardTest {
 
     private Board board;
     private Board flipped;

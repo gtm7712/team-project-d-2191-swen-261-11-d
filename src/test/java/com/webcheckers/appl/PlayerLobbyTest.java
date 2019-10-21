@@ -16,8 +16,8 @@ import org.junit.jupiter.api.Test;
  * 
  * @author: Brandon Chen
  */
-@Tag("application-tier")
-public class PlayerLobbyTester{
+@Tag("Applicaion-tier")
+public class PlayerLobbyTest{
 
     /**
      * Test for usernames that only have numbers

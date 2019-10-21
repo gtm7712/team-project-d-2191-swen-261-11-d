@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
  * 
  * @author Giovanni Melchionne
  */
-@Tag ("model-tier")
-public class GameTester {
+@Tag ("Model-tier")
+public class GameTest {
 
     private Game game;
     private Player pRed;
