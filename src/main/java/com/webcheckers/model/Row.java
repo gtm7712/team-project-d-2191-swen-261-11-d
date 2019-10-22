@@ -50,7 +50,7 @@ public class Row implements Iterable<Space>{
      * @return The contents at the index
      */
     public Space get(int index) {
-        if(index>0 && index<8)
+        if(index>=0 && index<8 && index<row.size())
             return row.get(index);
         else
             return null;
