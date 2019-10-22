@@ -30,7 +30,9 @@ public class BoardTest {
     @BeforeEach
     public void setup() {
         board = new Board();
+        System.out.println(board + "\n===\n");
         flipped = new Board().flipped();
+        System.out.println(flipped + "\n===\n");
     }
 
     /**
@@ -38,10 +40,10 @@ public class BoardTest {
      */
     @Test
     public void flip() {
-        Space e = board.getSpace(0,0);
+        Space e = board.getSpace(0, 0);
         Space f = flipped.getSpace(SIZE, SIZE);
         assertTrue(e.isCongruent(f),
-            "Spaces on opposite corners should be equal");
+                "Spaces on opposite corners should be equal");
     }
 
     /**

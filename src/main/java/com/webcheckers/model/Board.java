@@ -36,7 +36,7 @@ public class Board implements Iterable<Row> {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 Space space = board.get(i).get(j);
-                if(space.isValid()) {
+                if(space.isSpaceValid()) {
                     if(i < 3) {
                         space.setPiece(new Piece(Piece.Color.WHITE));
                     }
@@ -100,5 +100,42 @@ public class Board implements Iterable<Row> {
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();
+    }
+
+    public String toString() {
+        String toReturn = "";
+        for(int i = 0; i < BOARD_SIZE; i++) {
+            for(int j = 0; j < BOARD_SIZE; j++) {
+                Space sp = getSpace(i, j);
+                if(sp.isSpaceValid()) {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "[R]";
+                        }
+                        else {
+                            toReturn += "[W]";
+                        }
+                    }
+                    else {
+                        toReturn += "[X]";
+                    }
+                }
+                else {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "!R!";
+                        }
+                        else {
+                            toReturn += "!W!";
+                        }
+                    }
+                    else {
+                        toReturn += "{ }";
+                    }
+                }
+            }
+            toReturn += "\n";
+        }
+        return toReturn;
     }
 }
