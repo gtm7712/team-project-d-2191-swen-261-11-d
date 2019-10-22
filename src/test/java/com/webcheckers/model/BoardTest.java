@@ -1,10 +1,9 @@
 package com.webcheckers.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -30,9 +29,7 @@ public class BoardTest {
     @BeforeEach
     public void setup() {
         board = new Board();
-        System.out.println(board + "\n===\n");
         flipped = new Board().flipped();
-        System.out.println(flipped + "\n===\n");
     }
 
     /**
@@ -40,9 +37,7 @@ public class BoardTest {
      */
     @Test
     public void flip() {
-        Space e = board.getSpace(0, 0);
-        Space f = flipped.getSpace(SIZE, SIZE);
-        assertTrue(e.isCongruent(f),
+        assertTrue(board.getSpace(0, 0).isCongruent(flipped.getSpace(SIZE, SIZE)),
                 "Spaces on opposite corners should be equal");
     }
 
@@ -56,7 +51,7 @@ public class BoardTest {
         assertTrue(b.equals(board),
             "New boards should be equal to each other");
         // Not equal test
-        assertTrue(b.equals(flipped) == false,
+        assertFalse(b.equals(flipped),
             "Flipped board shouldn't equal non-flipped board");
     }
 

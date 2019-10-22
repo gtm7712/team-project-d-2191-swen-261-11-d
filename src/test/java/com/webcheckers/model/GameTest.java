@@ -53,7 +53,7 @@ public class GameTest {
      */
     @Test
     public void boards_not_equal() {
-        assertTrue(game.getBoardRed().equals(game.getBoardWhite()) == false,
+        assertFalse(game.getBoardRed().equals(game.getBoardWhite()),
             "Red board & White board shouldn't be equal");
     }
 
