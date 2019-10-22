@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.stubbing.Answer;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -46,7 +48,51 @@ public class PostSignInRouteTest {
         CuT = new PostSignInRoute(engine, lobby);
     }
     @Test
-    public void SignIn(){
+    public void SignInNumbers(){
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
 
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("123");
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+        testHelper.assertViewModelAttribute("title","Sign In!");
+        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
+        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "123");
+        testHelper.assertViewModelAttribute("logIN", PostSignInRoute.INVALID_USERNAME);
+        testHelper.assertViewName("signin.ftl");
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("bob");
+    }
+    @Test
+    public void SignInValid(){
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+        testHelper.assertViewModelAttribute("title","Sign In!");
+        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
+        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
+        testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_GOOD);
+        testHelper.assertViewName("signin.ftl");
+    }
+    @Test
+    public void NameInUse(){
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        CuT.handle(request, response);
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("Bob");
+        lobby.addUsername("Bob");
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+        testHelper.assertViewModelAttribute("title","Sign In!");
+        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
+        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
+        testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_IN_USE);
+        testHelper.assertViewName("signin.ftl");
     }
 }
