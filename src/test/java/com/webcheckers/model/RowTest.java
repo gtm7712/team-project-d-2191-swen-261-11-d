@@ -38,6 +38,7 @@ public class RowTest {
     @Test public void get(){
         row2.add(new Space(0,0,true));
         assertTrue(row2.get(0).equals(new Space(0,0,true)));
+        assertNull(row2.get(1));
         assertNull(row1.get(9));
         assertNull(row1.get(-1));
     }
