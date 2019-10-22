@@ -6,13 +6,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.util.Message;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.stubbing.Answer;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -83,10 +81,10 @@ public class PostSignInRouteTest {
     public void NameInUse(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
 
-        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        CuT.handle(request, response);
-        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NAME);
         lobby.addUsername(NAME);
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NAME);
+        CuT.handle(request, response);
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
