@@ -35,7 +35,8 @@ public class PostSignInRouteTest {
     private TemplateEngine engine;
 
     private PlayerLobby lobby;
-
+    private static final String NUMBERS="123";
+    private static final String NAME="Bob";
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -49,9 +50,8 @@ public class PostSignInRouteTest {
     }
     @Test
     public void SignInNumbers(){
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NUMBERS);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
-
-        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("123");
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         CuT.handle(request, response);
 
@@ -59,7 +59,7 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
         //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
-        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "123");
+        //testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "123");
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.INVALID_USERNAME);
         testHelper.assertViewName("signin.ftl");
         when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("bob");
@@ -67,6 +67,7 @@ public class PostSignInRouteTest {
     @Test
     public void SignInValid(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NAME);
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         CuT.handle(request, response);
 
@@ -74,7 +75,7 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
         //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
-        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
+        //testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_GOOD);
         testHelper.assertViewName("signin.ftl");
     }
@@ -83,15 +84,12 @@ public class PostSignInRouteTest {
         final TemplateEngineTester testHelper = new TemplateEngineTester();
 
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
         CuT.handle(request, response);
-        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("Bob");
-        lobby.addUsername("Bob");
+        when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NAME);
+        lobby.addUsername(NAME);
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
-        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
-        testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_IN_USE);
         testHelper.assertViewName("signin.ftl");
     }
