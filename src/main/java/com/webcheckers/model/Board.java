@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
@@ -37,7 +36,7 @@ public class Board implements Iterable<Row> {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 Space space = board.get(i).get(j);
-                if(space.isValid()) {
+                if(space.isSpaceValid()) {
                     if(i < 3) {
                         space.setPiece(new Piece(Piece.Color.WHITE));
                     }
@@ -56,9 +55,9 @@ public class Board implements Iterable<Row> {
     public Board flipped() {
         ArrayList<Row> flipped = new ArrayList<>();
         for (int i = 0; i < BOARD_SIZE; i++) {
-            flipped.add(board.get(BOARD_SIZE-1-i));
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                flipped.get(i).add(getSpace(BOARD_SIZE-1-j,BOARD_SIZE-1-j));
+            flipped.add(new Row(i));
+            for(int j = BOARD_SIZE - 1; j >= 0; j--) {
+                flipped.get(i).add(board.get(BOARD_SIZE - 1 - i).get(j));
             }
         }
         return new Board(flipped);
@@ -81,7 +80,8 @@ public class Board implements Iterable<Row> {
      * @return
      */
     public Space getSpace(int row, int col){
-        return board.get(row).get(col);
+        Space s = board.get(row).get(col);
+        return s;
     }
     @Override
     public boolean equals (Object o) {
@@ -99,4 +99,41 @@ public class Board implements Iterable<Row> {
     public Iterator<Row> iterator() {
         return board.iterator();
     }
+
+/*    public String toString() {
+        String toReturn = "";
+        for(int i = 0; i < BOARD_SIZE; i++) {
+            for(int j = 0; j < BOARD_SIZE; j++) {
+                Space sp = getSpace(i, j);
+                if(sp.isSpaceValid()) {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "[R]";
+                        }
+                        else {
+                            toReturn += "[W]";
+                        }
+                    }
+                    else {
+                        toReturn += "[X]";
+                    }
+                }
+                else {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "!R!";
+                        }
+                        else {
+                            toReturn += "!W!";
+                        }
+                    }
+                    else {
+                        toReturn += "{ }";
+                    }
+                }
+            }
+            toReturn += "\n";
+        }
+        return toReturn;
+    }*/
 }

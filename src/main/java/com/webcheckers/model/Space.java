@@ -69,6 +69,10 @@ public class Space {
         return isValid && !hasPiece();
     }
 
+    public boolean isSpaceValid() {
+        return isValid;
+    }
+
     /**
      * 
      * @return The row this space is in
@@ -86,9 +90,12 @@ public class Space {
         if (!(o instanceof Space)) return false;
 
         Space other = (Space)o;
-        if (other.hasPiece() != hasPiece()) return false;
-        if (hasPiece())
-            if (other.getPiece().getColor() != getPiece().getColor()) return false;
+        if (other.hasPiece() != hasPiece()) {
+            return false;
+        }
+        if (hasPiece()) {
+            if (other.getPiece().getColor() != getPiece().getColor()) { return false; }
+        }
         if (other.isValid != isValid) return false;
 
         return true;

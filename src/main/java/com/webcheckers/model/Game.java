@@ -68,7 +68,7 @@ public class Game {
     /**
      * @return The board represented in String format
      */
-    public String toString() {
+/*    public String toString() {
         String toReturn = "";
         //ArrayList<Row> boardArray = board.getBoard();
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
@@ -93,17 +93,17 @@ public class Game {
             toReturn += "\n";
         }
         return toReturn;
-    }
+    }*/
 
 
     /**
      * Main entry point for the Game
      * @param args
      */
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         // Stuff for testing
         Game game = new Game();
 
         System.out.println(game);
-    }
+    }*/
 }
