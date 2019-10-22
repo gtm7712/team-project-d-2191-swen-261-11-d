@@ -91,7 +91,10 @@ public class Space {
         if (hasPiece())
             if (other.getPiece().getColor() != getPiece().getColor()) return false;
         if (other.isValid != isValid) return false;
-
+        if(getCellIdx()!=other.getCellIdx())
+            return false;
+        if(getRow()!=other.getRow())
+            return false;
         return true;
     }
 }

@@ -25,7 +25,12 @@ public class Row implements Iterable<Space>{
      * @return
      */
     public boolean add(Space space){
-        return row.add(space);
+        if(row.size()<8) {
+            return row.add(space);
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -35,7 +40,9 @@ public class Row implements Iterable<Space>{
      * @return
      */
     public Space set(int spot, Space space){
-        return row.set(spot, space);
+        if(spot<8 && spot>0)
+            return row.set(spot, space);
+        else return null;
     }
 
     /**
@@ -43,7 +50,10 @@ public class Row implements Iterable<Space>{
      * @return The contents at the index
      */
     public Space get(int index) {
-        return row.get(index);
+        if(index>0 && index<8)
+            return row.get(index);
+        else
+            return null;
     }
 
     /**
@@ -53,7 +63,18 @@ public class Row implements Iterable<Space>{
     public int getIndex() {
         return index;
     }
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Row)) return false;
 
+        Row other = (Row)o;
+        if(index!=other.getIndex())
+            return false;
+        for (int i = 0; i <  row.size(); i++)
+                if (!row.get(i).equals(other.get(i)))
+                    return false;
+        return true;
+    }
     @Override
     public Iterator<Space> iterator() {
         return row.iterator();
