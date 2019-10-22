@@ -3,6 +3,9 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,7 +38,9 @@ public class BoardTest {
      */
     @Test
     public void flip() {
-        assertEquals(board.getBoard()[0][0], flipped.getBoard()[SIZE][SIZE],
+        Space e = board.getSpace(0,0);
+        Space f = flipped.getSpace(SIZE, SIZE);
+        assertTrue(e.isCongruent(f),
             "Spaces on opposite corners should be equal");
     }
 
@@ -60,7 +65,7 @@ public class BoardTest {
     @Test
     public void preset() {
         // use flipped as preset
-        Space[][] preset = flipped.getBoard();
+        ArrayList<Row> preset = flipped.getBoard();
         Board b = new Board(preset);
 
         // Equal test
