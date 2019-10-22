@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
+
 /**
  * The Game
  */
@@ -68,12 +70,12 @@ public class Game {
      */
     public String toString() {
         String toReturn = "";
-        Space[][] boardArray = board.getBoard();
+        //ArrayList<Row> boardArray = board.getBoard();
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
             for(int j = 0; j < Board.BOARD_SIZE; j++) {
-                if(boardArray[i][j].isValid()) {
-                    if(boardArray[i][j].hasPiece()) {
-                        if(boardArray[i][j].isPieceRed()) {
+                if(board.getSpace(i, j).isValid()) {
+                    if(board.getSpace(i,j).hasPiece()) {
+                        if(board.getSpace(i,j).isPieceRed()) {
                             toReturn += "[R]";
                         }
                         else {

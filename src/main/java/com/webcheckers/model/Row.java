@@ -1,27 +1,29 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Represents a Row on the checkers board
  */
-public class Row {
+public class Row implements Iterable<Space>{
 
-    private Space[] row;
-    private int index;
+    private ArrayList<Space> row;
+    private int index;     //position in board
 
     /**
      * Create a new Row
-     * @param row Contents of the Row
      */
-    public Row(Space[] row) {
-        this.row = row;
+    public Row(int index) {
+        this.index=index;
+        row = new ArrayList<>(8);
     }
 
-    /**
-     * 
-     * @return The contents of the Row
-     */
-    public Space[] getRow() {
-        return row;
+    public boolean add(Space space){
+        return row.add(space);
+    }
+    public Space set(int spot, Space space){
+        return row.set(spot, space);
     }
 
     /**
@@ -29,15 +31,7 @@ public class Row {
      * @return The contents at the index
      */
     public Space get(int index) {
-        return row[index];
-    }
-
-    /**
-     * Set the index
-     * @param index
-     */
-    public void setIndex(int index) {
-        this.index = index;
+        return row.get(index);
     }
 
     /**
@@ -48,4 +42,8 @@ public class Row {
         return index;
     }
 
+    @Override
+    public Iterator<Space> iterator() {
+        return row.iterator();
+    }
 }

@@ -1,19 +1,22 @@
 package com.webcheckers.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Board {
+public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
-    private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
-
+    //private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
+    private ArrayList<Row>board;
     /**
      * initiates board
      */
     public Board() {
+        board=new ArrayList<>(8);
         for(int i = 0; i < BOARD_SIZE; i++) {
+            board.set(i, new Row(i));
             for(int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = new Space(i, j, (i%2!=0) == (j%2==0));
+                board.get(i).set(j, new Space(i, j, (i%2!=0) == (j%2==0)));
             }
         }
         resetGameBoard();
@@ -23,7 +26,7 @@ public class Board {
      * initiates the board with preset pieces
      * @param preset double array of spaces with pieces
      */
-    public Board(Space[][] preset) {
+    public Board(ArrayList<Row> preset) {
         this.board = preset;
     }
 
@@ -33,7 +36,7 @@ public class Board {
     public void resetGameBoard() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
-                Space space = board[i][j];
+                Space space = board.get(i).get(j);
                 if(space.isValid()) {
                     if(i < 3) {
                         space.setPiece(new Piece(Piece.Color.WHITE));
@@ -51,10 +54,11 @@ public class Board {
      * @return flipped board
      */
     public Board flipped() {
-        Space[][] flipped = new Space[BOARD_SIZE][BOARD_SIZE];
+        ArrayList<Row> flipped = new ArrayList<>(8);
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                flipped[BOARD_SIZE - 1 - i][BOARD_SIZE - 1 - j] = board[i][j];
+                flipped.set(BOARD_SIZE-1-i, board.get(i));
+                flipped.get(BOARD_SIZE-1-i).set(BOARD_SIZE-1-j, board.get(i).get(j));
             }
         }
         return new Board(flipped);
@@ -67,7 +71,7 @@ public class Board {
         Board other = (Board)o;
         for (int i = 0; i < BOARD_SIZE - 1; i++)
             for (int j = 0; j < BOARD_SIZE - 1; j++)
-                if (!board[i][j].equals(other.getBoard()[i][j]))
+                if (!board.get(i).get(j).equals(other.getBoard().get(i).get(j)))
                     return false;
 
         return true;
@@ -77,9 +81,15 @@ public class Board {
      *
      * @return the board of spaces
      */
-    public Space[][] getBoard() {
+    public ArrayList<Row> getBoard() {
         return board;
     }
+    public Space getSpace(int row, int col){
+        return board.get(row).get(col);
+    }
 
-
+    @Override
+    public Iterator<Row> iterator() {
+        return board.iterator();
+    }
 }
