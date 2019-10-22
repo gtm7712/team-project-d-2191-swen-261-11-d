@@ -35,6 +35,12 @@ public class PlayerTest {
         this.playerName = "Player_1";
 
         this.game = new Game();
+
+        player1.setGame(game);
+        player2.setGame(game);
+        game.setRedPlayer(player1);
+        game.setWhitePlayer(player2);
+        
         this.board = this.game.getBoardRed();
         this.flipped = this.game.getBoardWhite();
     }
@@ -45,6 +51,7 @@ public class PlayerTest {
     @Test
     public void getNameTest() {
         assertTrue(player1.getName() == playerName);
+        assertTrue(player1.toString() == playerName);
     }
 
     /**
@@ -79,7 +86,7 @@ public class PlayerTest {
     @Test
     public void getBoardTest() {
 
-        assertTrue(player1.getBoard() == board);
+        assertTrue(player1.getBoard().equals(this.board));
 
     }
 
@@ -88,8 +95,7 @@ public class PlayerTest {
      */
     @Test
     public void getFlippedBoardTest() {
-
-        assertTrue(player1.getFlippedBoard() == flipped);
+        assertTrue(player1.getFlippedBoard().equals(this.flipped), this.flipped.toString());
 
     }
 
@@ -103,31 +109,7 @@ public class PlayerTest {
         assertTrue(player1.getGame() == game);
 
     }
-
-
-
-
-
-
-
-
-
-
     
-
-
-
-    
-
-
-
-
-
-
-
-  
-
-
 
 
 }

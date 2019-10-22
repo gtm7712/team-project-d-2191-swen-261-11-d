@@ -100,7 +100,7 @@ public class Board implements Iterable<Row> {
         return board.iterator();
     }
 
-/*    public String toString() {
+   /*public String toString() {
         String toReturn = "";
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
