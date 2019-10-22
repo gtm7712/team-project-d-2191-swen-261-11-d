@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.HashMap;
 
-import com.webcheckers.model.Board;
 import com.webcheckers.model.Player;
 
 import org.junit.jupiter.api.Tag;
@@ -26,6 +25,15 @@ public class PlayerLobbyTest{
     public void numericOnly(){
         final PlayerLobby CuT = new PlayerLobby();
         assertEquals(CuT.checkUsername("123"), 0);
+    }
+
+    /**
+     * Test for usernames that only have numbers
+     */
+    @Test
+    public void specialCharOnly(){
+        final PlayerLobby CuT = new PlayerLobby();
+        assertEquals(CuT.checkUsername("*"), 0);
     }
 
     /**

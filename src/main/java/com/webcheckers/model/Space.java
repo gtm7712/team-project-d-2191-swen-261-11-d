@@ -69,12 +69,36 @@ public class Space {
         return isValid && !hasPiece();
     }
 
+    public boolean isSpaceValid() {
+        return isValid;
+    }
+
     /**
      * 
      * @return The row this space is in
      */
     public int getRow(){
         return row;
+    }
+
+    /**
+     * Equals check without x,y check
+     * @param o Object to compare to
+     * @return
+     */
+    public boolean isCongruent(Object o) {
+        if (!(o instanceof Space)) return false;
+
+        Space other = (Space)o;
+        if (other.hasPiece() != hasPiece()) {
+            return false;
+        }
+        if (hasPiece()) {
+            if (other.getPiece().getColor() != getPiece().getColor()) { return false; }
+        }
+        if (other.isValid != isValid) return false;
+
+        return true;
     }
 
     /**
