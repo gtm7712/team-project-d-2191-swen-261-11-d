@@ -3,10 +3,6 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics._
 
 ## Team Information
 * Team name: Team D
@@ -34,7 +30,6 @@ Provide a way for users to play checkers with their friends. The target user bas
 
 
 ## Requirements
-
 Allow users to Sign In with a username, without Sign Out functionality.<br>
 Allow users to start a game with other online players who are not in a game.<br>
 Allow users to play a game with their opponent.<br>
@@ -52,8 +47,8 @@ Validate the moves.<br>
 Submit and pass your turn.<br>
 
 ### Roadmap of Enhancements
-> _Provide a list of top-level features in the order you plan to consider them._
-
+Allow users to ask for help about available moves.<br>
+Allow users to record the moves in the game and replay them.<br>
 
 ## Application Domain
 
@@ -61,9 +56,11 @@ This section describes the application domain.
 
 ![The WebCheckers Domain Model](domain-model-placeholder.png)
 
-> _Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
+The main entities are the board, player, piece, moves, and square.<br>
+Pieces belong on the board, and the board is made of squares.<br> 
+A Player is represented by a piece and makes moves.<br>
+A Piece can either be a regular piece or king piece.<br>
+The different types of moves are capture, regular move, and king move.<br>
 
 
 ## Architecture and Design
@@ -94,9 +91,7 @@ with the WebCheckers application.
 
 ![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
 
-> _Provide a summary of the application's user interface.  Describe, from
-> the user's perspective, the flow of the pages in the web application._
-
+After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game".
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.

@@ -32,7 +32,7 @@ public class PieceTest {
         assertTrue(!red_piece.isKing());
         red_piece.king();
         assertTrue(red_piece.isKing());
-        assertTrue(white_piece.isKing());
+        assertTrue(!white_piece.isKing());
     }
 
 
