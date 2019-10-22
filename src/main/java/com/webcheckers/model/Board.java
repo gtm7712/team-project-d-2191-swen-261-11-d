@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
@@ -82,7 +81,9 @@ public class Board implements Iterable<Row> {
      * @return
      */
     public Space getSpace(int row, int col){
-        return board.get(row).get(col);
+        System.out.println(row + "," + col);
+        Space s = board.get(row).get(col);
+        return s;
     }
     @Override
     public boolean equals (Object o) {
