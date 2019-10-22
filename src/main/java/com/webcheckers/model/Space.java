@@ -78,6 +78,23 @@ public class Space {
     }
 
     /**
+     * Equals check without x,y check
+     * @param o Object to compare to
+     * @return
+     */
+    public boolean isCongruent(Object o) {
+        if (!(o instanceof Space)) return false;
+
+        Space other = (Space)o;
+        if (other.hasPiece() != hasPiece()) return false;
+        if (hasPiece())
+            if (other.getPiece().getColor() != getPiece().getColor()) return false;
+        if (other.isValid != isValid) return false;
+
+        return true;
+    }
+
+    /**
      *
      * @return The column the space is in
      */
