@@ -55,10 +55,11 @@ public class Board implements Iterable<Row> {
      */
     public Board flipped() {
         ArrayList<Row> flipped = new ArrayList<>();
+
         for (int i = 0; i < BOARD_SIZE; i++) {
             flipped.add(board.get(BOARD_SIZE-1-i));
             for (int j = 0; j < BOARD_SIZE; j++) {
-                flipped.get(i).add(getSpace(BOARD_SIZE-1-j,BOARD_SIZE-1-j));
+                flipped.get(i).add(getSpace(BOARD_SIZE-1-i,BOARD_SIZE-1-j));
             }
         }
         return new Board(flipped);
