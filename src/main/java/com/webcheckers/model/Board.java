@@ -14,9 +14,9 @@ public class Board implements Iterable<Row> {
     public Board() {
         board=new ArrayList<>(8);
         for(int i = 0; i < BOARD_SIZE; i++) {
-            board.set(i, new Row(i));
+            board.add(new Row(i));
             for(int j = 0; j < BOARD_SIZE; j++) {
-                board.get(i).set(j, new Space(i, j, (i%2!=0) == (j%2==0)));
+                board.get(i).add(new Space(i, j, (i%2!=0) == (j%2==0)));
             }
         }
         resetGameBoard();
@@ -54,28 +54,17 @@ public class Board implements Iterable<Row> {
      * @return flipped board
      */
     public Board flipped() {
-        ArrayList<Row> flipped = new ArrayList<>(8);
+        ArrayList<Row> flipped = new ArrayList<>();
         for (int i = 0; i < BOARD_SIZE; i++) {
+            flipped.add(board.get(BOARD_SIZE-1-i));
             for (int j = 0; j < BOARD_SIZE; j++) {
-                flipped.set(BOARD_SIZE-1-i, board.get(i));
-                flipped.get(BOARD_SIZE-1-i).set(BOARD_SIZE-1-j, board.get(i).get(j));
+                flipped.get(i).add(getSpace(BOARD_SIZE-1-j,BOARD_SIZE-1-j));
             }
         }
         return new Board(flipped);
     }
 
-    @Override
-    public boolean equals (Object o) {
-        if (!(o instanceof Board)) return false;
 
-        Board other = (Board)o;
-        for (int i = 0; i < BOARD_SIZE - 1; i++)
-            for (int j = 0; j < BOARD_SIZE - 1; j++)
-                if (!board.get(i).get(j).equals(other.getBoard().get(i).get(j)))
-                    return false;
-
-        return true;
-    }
 
     /**
      *
@@ -84,10 +73,28 @@ public class Board implements Iterable<Row> {
     public ArrayList<Row> getBoard() {
         return board;
     }
+
+    /**
+     *  gets the piece at a certain space
+     * @param row spot in board array
+     * @param col spot in row array
+     * @return
+     */
     public Space getSpace(int row, int col){
         return board.get(row).get(col);
     }
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Board)) return false;
 
+        Board other = (Board)o;
+        for (int i = 0; i < BOARD_SIZE - 1; i++)
+            for (int j = 0; j < BOARD_SIZE - 1; j++)
+                if (!getSpace(i ,j).equals(other.getSpace(i,j)))
+                    return false;
+
+        return true;
+    }
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();

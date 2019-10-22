@@ -6,7 +6,7 @@ package com.webcheckers.model;
 public class Space {
 
     private int row;
-    private int cellidx;
+    private int cellIdx;
     private boolean isValid;
 
     private Piece piece = null;
@@ -19,7 +19,7 @@ public class Space {
      */
     public Space(int row, int col, boolean isValid) {
         this.row = row;
-        this.cellidx = col;
+        this.cellIdx = col;
         this.isValid = isValid;  //dark or white square
     }
 
@@ -81,7 +81,7 @@ public class Space {
      *
      * @return The column the space is in
      */
-    public int getCellidx(){ return cellidx;}
+    public int getCellIdx(){ return cellIdx;}
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Space)) return false;

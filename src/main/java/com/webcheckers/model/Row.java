@@ -19,9 +19,21 @@ public class Row implements Iterable<Space>{
         row = new ArrayList<>(8);
     }
 
+    /**
+     * adds a space to the row
+     * @param space space being added
+     * @return
+     */
     public boolean add(Space space){
         return row.add(space);
     }
+
+    /**
+     *
+     * @param spot x position in row
+     * @param space the piece being put there
+     * @return
+     */
     public Space set(int spot, Space space){
         return row.set(spot, space);
     }
@@ -36,7 +48,7 @@ public class Row implements Iterable<Space>{
 
     /**
      * 
-     * @return The index
+     * @return The index of the row
      */
     public int getIndex() {
         return index;
