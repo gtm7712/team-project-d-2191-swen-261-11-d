@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -53,6 +54,15 @@ public class BoardTest {
         // Not equal test
         assertFalse(b.equals(flipped),
             "Flipped board shouldn't equal non-flipped board");
+
+        assertFalse(b.equals(5),
+            "A board shouldn't equal a non-board object");
+    }
+
+    @Test
+    public void iter() {
+        assertNotNull(board.iterator(),
+            "Iterator shouldn't be null");
     }
 
 
