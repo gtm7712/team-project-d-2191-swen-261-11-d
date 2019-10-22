@@ -9,20 +9,21 @@ geometry: margin=1in
 > and appear in the generated PDF in italics._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: Team D
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Brandon Chen
+  * Giovanni Melchionne
+  * Kris Schnupp
+  * Johnny Puskar
+  * Kyle Collins
 
 ## Executive Summary
 
-This is a summary of the project.
+Web Checkers is a online, multiplayer web app that allows users to play checkers with one another.
+Users can sign in with a desired username and play against friends and strangers.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
+Provide a way for users to play checkers with their friends. The target user base would be all checkers lovers.
 
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
@@ -34,17 +35,21 @@ This is a summary of the project.
 
 ## Requirements
 
-This section describes the features of the application.
-
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
+Allow users to Sign In with a username, without Sign Out functionality.<br>
+Allow users to start a game with other online players who are not in a game.<br>
+Allow users to play a game with their opponent.<br>
+Allow users to record and watch replays of any game.<br>
+Allow users to ask for help when they are stuck.<br>
 
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+The MVP of the project is to have a basic checkers game with sign in and sign out functionality.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+The features of the MVP will be sign in with a username and sign out.<br>
+Start a game with a player who is not in a game.<br>
+Resign a game.<br>
+Validate the moves.<br>
+Submit and pass your turn.<br>
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
