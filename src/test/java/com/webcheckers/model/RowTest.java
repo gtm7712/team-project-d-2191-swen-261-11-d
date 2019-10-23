@@ -57,6 +57,7 @@ public class RowTest {
         assertTrue(row1.equals(row1));
         assertFalse(row1.equals(row2));
         assertFalse(board.getBoard().get(2).equals(row1));
+        assertFalse(row1.equals("hello"));
     }
 
     @Test
