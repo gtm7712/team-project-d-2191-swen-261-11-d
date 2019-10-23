@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -56,14 +57,15 @@ public class GetStartGameRouteTest{
 
         game = new Game();
 
+
         player = lobby.getPlayer(PLAYER_1);
-        opponent = lobby.getPlayer(PLAYER_1);
+        opponent = lobby.getPlayer(PLAYER_2);
 
         player.setOpponent(opponent);
         opponent.setOpponent(player);
 
         game.setRedPlayer(player);
-        game.setWhitePlayer(player);
+        game.setWhitePlayer(opponent);
 
         player.setGame(game);
         player.inGame(true);
@@ -83,6 +85,8 @@ public class GetStartGameRouteTest{
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(opponent.getName());
+        when(session.attribute("Player")).thenReturn(player);        
 
         CuT.handle(request, response);
 
@@ -97,6 +101,39 @@ public class GetStartGameRouteTest{
         testHelper.assertViewModelAttribute("viewMode", "PLAY");
 
         testHelper.assertViewName("game.ftl");
+
+        assertTrue(player.isInGame());
+        assertTrue(opponent.isInGame());
+               
+    }
+
+    /**
+     * Test for start game route
+     * Check for if a user is in a game
+     */
+    @Test
+    public void userAlreadyInGame(){
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        
+        lobby.addUsername("test");
+        Player newPlayer = lobby.getPlayer("test");
+        opponent.inGame(true);
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(opponent.getName());
+        when(session.attribute("Player")).thenReturn(newPlayer);        
+
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewModelAttribute("title", "Welcome!");
+        testHelper.assertViewModelAttribute("allUsers", lobby.getUsernames());
+        testHelper.assertViewModelAttribute("error", "Player is already in a game!");
+
+        testHelper.assertViewName("home.ftl");
+               
     }
 
 }
