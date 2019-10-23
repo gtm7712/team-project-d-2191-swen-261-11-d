@@ -1,6 +1,3 @@
----
-geometry: margin=1in
----
 # PROJECT Design Documentation
 
 
@@ -15,8 +12,8 @@ geometry: margin=1in
 
 ## Executive Summary
 
-Web Checkers is a online, multiplayer web app that allows users to play checkers with one another.
-Users can sign in with a desired username and play against friends and strangers.
+Web Checkers is an online, multiplayer web app that allows users to play checkers with one another.
+Users can sign in with a desired username and play against friends or strangers.
 
 ### Purpose
 Provide a way for users to play checkers with their friends. The target user base would be all checkers lovers.
