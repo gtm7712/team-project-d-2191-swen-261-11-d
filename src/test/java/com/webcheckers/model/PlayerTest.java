@@ -127,6 +127,7 @@ public class PlayerTest {
     public void equalsTest() {
 
         assertTrue(player1.equals(player1) == true);
+        assertTrue(player1.equals(null) == false);
 
     }
 
