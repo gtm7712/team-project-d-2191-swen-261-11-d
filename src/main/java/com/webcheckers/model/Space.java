@@ -108,13 +108,9 @@ public class Space {
     public int getCellIdx(){ return cellIdx;}
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Space)) return false;
+        if (!isCongruent(o)) return false;
 
         Space other = (Space)o;
-        if (other.hasPiece() != hasPiece()) return false;
-        if (hasPiece())
-            if (other.getPiece().getColor() != getPiece().getColor()) return false;
-        if (other.isValid != isValid) return false;
         if(getCellIdx()!=other.getCellIdx())
             return false;
         if(getRow()!=other.getRow())
