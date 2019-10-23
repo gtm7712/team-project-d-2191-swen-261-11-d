@@ -109,6 +109,46 @@ public class PlayerTest {
         assertTrue(player1.getGame() == game);
 
     }
+
+    /**
+     * Test hash code
+     */
+    @Test
+    public void hashCodeTest() {
+
+        assertTrue(player1.hashCode() == "Player_1".hashCode());
+
+    }
+
+    /**
+     * Test equals function
+     */
+    @Test
+    public void equalsTest() {
+
+        assertTrue(player1.equals(player1) == true);
+        assertTrue(player1.equals(null) == false);
+
+    }
+
+    /**
+     * Test to string
+     */
+    @Test
+    public void toStringTest() {
+        
+        assertTrue(player1.toString() == "Player_1");
+
+    }
+
+
+
+
+
+
+    
+
+
     
 
 
