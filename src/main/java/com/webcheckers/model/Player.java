@@ -60,7 +60,7 @@ public class Player {
     public Board getBoard(){
         return this.game.getBoardRed();
     }
-
+ 
     /**
      *
      * @return the board of the game you are playing

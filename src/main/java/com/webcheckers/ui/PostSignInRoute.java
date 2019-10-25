@@ -25,9 +25,9 @@ public class PostSignInRoute implements Route{
     private static final Message SELECT = Message.info("Please select a username.");
     private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
-    private final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric and must contain atleast 1 letter.";
-    private final String USERNAME_IN_USE = "Pick another username, this one is already in use.";
-    private final String USERNAME_GOOD = "Logged in";
+    static final String INVALID_USERNAME = "This username is not valid!  Usernames must be alphanumeric and must contain atleast 1 letter.";
+    static final String USERNAME_IN_USE = "Pick another username, this one is already in use.";
+    static final String USERNAME_GOOD = "Logged in";
 
     private final PlayerLobby lobby;
     private final TemplateEngine templateEngine;

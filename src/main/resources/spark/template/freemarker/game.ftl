@@ -64,18 +64,18 @@
         <div class="game-board">
           <table id="game-board">
             <tbody>
-            <#list board.getBoard() as row>
-              <tr data-row="${row?index}">
-              <#list row as space>
+            <#list board.iterator() as row>
+              <tr data-row="${row.getIndex()}">
+              <#list row.iterator() as space>
+                <td data-cell="${space.getCellIdx()}"
 
-                <td data-cell="${space?index}"
                     <#if space.isValid() >
                     class="Space"
                     </#if>
                     >
                 <#if space.hasPiece()>
                   <div class="Piece"
-                       id="piece-${row?index}-${space?index}"
+                       id="piece-${row.getIndex()}-${space.getCellIdx()}"
                        data-type="${space.getPiece().getType()}"
                        data-color="${space.getPiece().getColor()}">
                   </div>

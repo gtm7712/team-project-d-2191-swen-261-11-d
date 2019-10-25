@@ -1,28 +1,22 @@
----
-geometry: margin=1in
----
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: Team D
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Brandon Chen
+  * Giovanni Melchionne
+  * Kris Schnupp
+  * Johnny Puskar
+  * Kyle Collins
 
 ## Executive Summary
 
-This is a summary of the project.
+Web Checkers is an online, multiplayer web app that allows users to play checkers with one another.
+Users can sign in with a desired username and play against friends or strangers.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
+Provide a way for users to play checkers with their friends. The target user base would be all checkers lovers.
 
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
@@ -33,22 +27,25 @@ This is a summary of the project.
 
 
 ## Requirements
-
-This section describes the features of the application.
-
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
+Allow users to Sign In with a username, without Sign Out functionality.<br>
+Allow users to start a game with other online players who are not in a game.<br>
+Allow users to play a game with their opponent.<br>
+Allow users to record and watch replays of any game.<br>
+Allow users to ask for help when they are stuck.<br>
 
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+The MVP of the project is to have a basic checkers game with sign in and sign out functionality.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+The features of the MVP will be sign in with a username and sign out.<br>
+Start a game with a player who is not in a game.<br>
+Resign a game.<br>
+Validate the moves.<br>
+Submit and pass your turn.<br>
 
 ### Roadmap of Enhancements
-> _Provide a list of top-level features in the order you plan to consider them._
-
+Allow users to ask for help about available moves.<br>
+Allow users to record the moves in the game and replay them.<br>
 
 ## Application Domain
 
@@ -56,9 +53,11 @@ This section describes the application domain.
 
 ![The WebCheckers Domain Model](domain-model-placeholder.png)
 
-> _Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
+The main entities are the board, player, piece, moves, and square.<br>
+Pieces belong on the board, and the board is made of squares.<br> 
+A Player is represented by a piece and makes moves.<br>
+A Piece can either be a regular piece or king piece.<br>
+The different types of moves are capture, regular move, and king move.<br>
 
 
 ## Architecture and Design
@@ -89,9 +88,7 @@ with the WebCheckers application.
 
 ![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
 
-> _Provide a summary of the application's user interface.  Describe, from
-> the user's perspective, the flow of the pages in the web application._
-
+After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game".
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.

@@ -1,19 +1,21 @@
 package com.webcheckers.model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
-public class Board {
+public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
-    private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
-
+    //private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
+    private ArrayList<Row>board;
     /**
      * initiates board
      */
     public Board() {
+        board=new ArrayList<>(8);
         for(int i = 0; i < BOARD_SIZE; i++) {
+            board.add(new Row(i));
             for(int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = new Space(i, j, (i%2!=0) == (j%2==0));
+                board.get(i).add(new Space(i, j, (i%2!=0) == (j%2==0)));
             }
         }
         resetGameBoard();
@@ -23,7 +25,7 @@ public class Board {
      * initiates the board with preset pieces
      * @param preset double array of spaces with pieces
      */
-    public Board(Space[][] preset) {
+    public Board(ArrayList<Row> preset) {
         this.board = preset;
     }
 
@@ -33,8 +35,8 @@ public class Board {
     public void resetGameBoard() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for(int j = 0; j < BOARD_SIZE; j++) {
-                Space space = board[i][j];
-                if(space.isValid()) {
+                Space space = board.get(i).get(j);
+                if(space.isSpaceValid()) {
                     if(i < 3) {
                         space.setPiece(new Piece(Piece.Color.WHITE));
                     }
@@ -51,22 +53,87 @@ public class Board {
      * @return flipped board
      */
     public Board flipped() {
-        Space[][] flipped = new Space[BOARD_SIZE][BOARD_SIZE];
+        ArrayList<Row> flipped = new ArrayList<>();
         for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                flipped[BOARD_SIZE - 1 - i][BOARD_SIZE - 1 - j] = board[i][j];
+            flipped.add(new Row(i));
+            for(int j = BOARD_SIZE - 1; j >= 0; j--) {
+                flipped.get(i).add(board.get(BOARD_SIZE - 1 - i).get(j));
             }
         }
         return new Board(flipped);
     }
 
+
+
     /**
      *
      * @return the board of spaces
      */
-    public Space[][] getBoard() {
+    public ArrayList<Row> getBoard() {
         return board;
     }
 
+    /**
+     *  gets the piece at a certain space
+     * @param row spot in board array
+     * @param col spot in row array
+     * @return
+     */
+    public Space getSpace(int row, int col){
+        Space s = board.get(row).get(col);
+        return s;
+    }
+    @Override
+    public boolean equals (Object o) {
+        if (!(o instanceof Board)) return false;
 
+        Board other = (Board)o;
+        for (int i = 0; i < BOARD_SIZE - 1; i++)
+            for (int j = 0; j < BOARD_SIZE - 1; j++)
+                if (!getSpace(i ,j).equals(other.getSpace(i,j)))
+                    return false;
+
+        return true;
+    }
+    @Override
+    public Iterator<Row> iterator() {
+        return board.iterator();
+    }
+
+   /*public String toString() {
+        String toReturn = "";
+        for(int i = 0; i < BOARD_SIZE; i++) {
+            for(int j = 0; j < BOARD_SIZE; j++) {
+                Space sp = getSpace(i, j);
+                if(sp.isSpaceValid()) {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "[R]";
+                        }
+                        else {
+                            toReturn += "[W]";
+                        }
+                    }
+                    else {
+                        toReturn += "[X]";
+                    }
+                }
+                else {
+                    if(sp.hasPiece()) {
+                        if(sp.isPieceRed()) {
+                            toReturn += "!R!";
+                        }
+                        else {
+                            toReturn += "!W!";
+                        }
+                    }
+                    else {
+                        toReturn += "{ }";
+                    }
+                }
+            }
+            toReturn += "\n";
+        }
+        return toReturn;
+    }*/
 }
