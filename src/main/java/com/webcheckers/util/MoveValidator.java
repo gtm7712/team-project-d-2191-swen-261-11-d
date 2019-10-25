@@ -18,8 +18,9 @@ public class MoveValidator {
      * CONTINUE:  The player must make another move
      * KING:      The piece has reached the end of the board
      *                (end of turn is implied)
+     * FAIL:      The move was not valid
      */
-    public enum TurnResult { COMPLETE, CONTINUE, KING };
+    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL };
 
     //
     
@@ -46,10 +47,14 @@ public class MoveValidator {
      */
     public TurnResult validateMove(Move move) {
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
-        if (!canTakePiece(move)) {
+        if (!madeJump(move)) {
             if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE; 
         } else {
-            /* TODO: TAKE PIECE */ 
+            if (isJumpValid(move)) {
+                /* TODO: TAKE PIECE */ 
+            } else {
+                return TurnResult.FAIL;
+            }
         }
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
@@ -61,12 +66,46 @@ public class MoveValidator {
     }
     
     /**
-     * Check if a piece could be taken through the move
+     * Check if a jump was made
      * 
      * @param move Move to check
      * @return True if a piece could be taken
      */
-    private boolean canTakePiece(Move move) {
+    private boolean madeJump(Move move) {
+        Position jump = getMidpoint(move);
+
+        if (jump.equals(move.getStart()) || jump.equals(move.getEnd())) return false; 
+        else return true;
+    }
+
+    /**
+     * Check if the jump made was valic
+     * 
+     * @param move Move to check
+     * @return True if the jump was valid
+     */
+    private boolean isJumpValid(Move move) {        
+        Position jump = getMidpoint(move);
+
+        Space jumpSpace = board.getSpace(jump);
+
+        if (jumpSpace.hasPiece()) { // Cannot jump own piece
+            if (jumpSpace.getPiece().getColor() != board.getSpace(move.getStart()).getPiece().getColor()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else return false; // No piece to jump
+    }
+
+    /**
+     * Get the midpoint of the move
+     * 
+     * @param move Move to check
+     * @return The midpoint of the move
+     */
+    private Position getMidpoint(Move move) {
         // Extract coordinates of the move
         int sr = move.getStart().getRow();
         int sc = move.getStart().getCell();
@@ -74,18 +113,9 @@ public class MoveValidator {
         int ec = move.getEnd().getCell();
 
         // Calculate the midpoint
-        Position jump = new Position(
+        return new Position(
             (int) Math.floor((sr + er) / 2),
             (int) Math.floor((sc + ec) / 2));
-
-        // No jump was made
-        if (jump.equals(move.getStart()) || jump.equals(move.getEnd())) return false;
-
-        Space jumpSpace = board.getSpace(jump);
-
-        // If there is a piece in the space jumped it should be taken
-        if (jumpSpace.hasPiece()) return true;
-        else return false;
     }
 
     /**
