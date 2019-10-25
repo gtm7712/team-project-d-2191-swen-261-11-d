@@ -54,13 +54,10 @@ public class PostSignOutRoute implements Route{
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("PostSignIn is invoked.");
+        LOG.finer("PostSignOut is invoked.");
         //
 
         Player currentPlayer = request.session().attribute("Player");
-        
-        // TODO: Add username checks
-
 
         Map<String, Object> vm = new HashMap<>();
 
