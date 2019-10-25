@@ -63,8 +63,6 @@ public class Board implements Iterable<Row> {
         return new Board(flipped);
     }
 
-
-
     /**
      *
      * @return the board of spaces
@@ -74,15 +72,25 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     *  gets the piece at a certain space
+     * Get the Space at the position specified
+     * @param p Position to get
+     * @return The space
+     */
+    public Space getSpace(Position p) {
+        return board.get(p.getRow()).get(p.getCell());
+    }
+
+    /**
+     *  Get the Space at the position specified
      * @param row spot in board array
      * @param col spot in row array
-     * @return
+     * @return The space
      */
     public Space getSpace(int row, int col){
         Space s = board.get(row).get(col);
         return s;
     }
+
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof Board)) return false;
@@ -95,6 +103,7 @@ public class Board implements Iterable<Row> {
 
         return true;
     }
+
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();
