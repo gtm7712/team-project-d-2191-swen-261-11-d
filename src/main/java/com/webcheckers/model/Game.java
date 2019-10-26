@@ -10,6 +10,7 @@ public class Game {
     private Player redPlayer;
     private Player whitePlayer;
     private ArrayList<Move>turn= new ArrayList<>();
+    private Player theirTurn;     //says who's turn it is
     /**
      * Create a new Game
      */
@@ -39,6 +40,7 @@ public class Game {
      */
     public void setRedPlayer(Player p){
         this.redPlayer = p;
+        theirTurn=p;
     }
 
     /**
@@ -65,6 +67,13 @@ public class Game {
         return board.flipped();
     }
 
+    /**
+     * Adds a move to your turn, to be ready to be submitted when your turn is swapped
+     * @param madeMove move that went through validation
+     */
+    public void makeMove(Move madeMove){
+        turn.add(madeMove);
+    }
     /**
      * @return The board represented in String format
      */
