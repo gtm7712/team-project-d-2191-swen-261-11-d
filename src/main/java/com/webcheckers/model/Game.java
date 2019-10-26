@@ -11,11 +11,13 @@ public class Game {
     private Player whitePlayer;
     private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
+    private Board clonedBoard;
     /**
      * Create a new Game
      */
     public Game() {
         this.board = new Board();
+        this.clonedBoard=board;
     }
 
     /**
