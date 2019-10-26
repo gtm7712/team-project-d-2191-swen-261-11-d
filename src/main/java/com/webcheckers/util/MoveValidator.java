@@ -53,7 +53,7 @@ public class MoveValidator {
             if (isJumpValid(move)) {
                 /* TODO: TAKE PIECE */ 
             } else {
-                return TurnResult.FAIL;
+                return TurnResult.FAIL; // Not a valid jump
             }
         }
         
