@@ -102,6 +102,12 @@ public class Space {
     }
 
     /**
+     * Kings the piece on this space
+     */
+    public void kingPiece(){
+        piece.king();
+    }
+    /**
      *
      * @return The column the space is in
      */

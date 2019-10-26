@@ -62,6 +62,14 @@ public class Game {
     }
 
     /**
+     * get clone board that updates with validated moves
+     * @return the cloned board
+     */
+    public Board getClonedBoard(){
+        return clonedBoard;
+    }
+
+    /**
      * 
      * @return The board oriented for the White player
      */

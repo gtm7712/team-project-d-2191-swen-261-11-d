@@ -46,5 +46,8 @@ public class Move {
 
         return true;
     }
-
+    @Override
+    public String toString(){
+        return "Start : " + getStart() + " End : " + getEnd();
+    }
 }

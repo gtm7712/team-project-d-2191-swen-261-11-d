@@ -47,4 +47,13 @@ public class Position {
         return true;
     }
 
+    /**
+     * to string for testing purposes
+     * @return
+     */
+    @Override
+    public String toString(){
+        return "Row : " + row + " Cell: " + cell;
+    }
+
 }
