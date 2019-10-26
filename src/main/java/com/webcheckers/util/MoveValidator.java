@@ -161,9 +161,15 @@ public class MoveValidator {
      * @return True if the piece should be kinged
      */
     private boolean shouldKing(Move move) {
-        Position endPosition = move.getEnd();
+        Position endPos = move.getEnd();
+        Piece p = board.getSpace(move.getStart()).getPiece();
 
-        return false; // TODO
+        if (!p.isKing()) {
+            if (endPos.getRow() == Board.BOARD_SIZE - 1)
+                return true;
+        }
+        
+        return false;
     }
 
 }
