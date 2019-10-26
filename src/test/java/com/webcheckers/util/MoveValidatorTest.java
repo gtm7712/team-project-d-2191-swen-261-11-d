@@ -34,6 +34,7 @@ public class MoveValidatorTest {
      */
     @Test
     public void noJump() {
+        board.getSpace(1, 1).setPiece(new Piece(Color.RED));
         Move m = new Move(new Position(1, 1), new Position(2, 2));
         assertEquals(mv.validateMove(m), TurnResult.COMPLETE);
     }
@@ -63,5 +64,105 @@ public class MoveValidatorTest {
 
         assertEquals(mv.validateMove(m), TurnResult.FAIL);
     }
+
+    @Test
+    public void validSingleJump() {
+        Piece p = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(1, 1), new Position(3, 3));
+        
+        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(2, 2).setPiece(j);
+        board.getSpace(3, 3).setPiece(null);
+
+        assertEquals(mv.validateMove(m), TurnResult.COMPLETE);
+    }
+
+    @Test
+    public void upRight() {
+        Piece p = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+        Piece j2 = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(1, 1), new Position(3, 3));
+        
+        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(2, 2).setPiece(j);
+        board.getSpace(3, 3).setPiece(null);
+        board.getSpace(4, 4).setPiece(j2);
+
+        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+    }
+
+    @Test
+    public void upLeft() {
+        Piece p = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+        Piece j2 = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(1, 1), new Position(3, 3));
+        
+        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(2, 2).setPiece(j);
+        board.getSpace(3, 3).setPiece(null);
+        board.getSpace(4, 2).setPiece(j2);
+
+        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+    }
+
+    @Test
+    public void downRight() {
+        Piece p = new Piece(Color.RED);
+        p.king();
+        Piece j = new Piece(Color.WHITE);
+        Piece j2 = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(4, 4), new Position(2, 2));
+        
+        board.getSpace(4, 4).setPiece(p);
+        board.getSpace(3, 3).setPiece(j);
+        board.getSpace(2, 2).setPiece(null);
+        board.getSpace(1, 3).setPiece(j2);
+
+        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+    }
+
+    @Test
+    public void downLeft() {
+        Piece p = new Piece(Color.RED);
+        p.king();
+        Piece j = new Piece(Color.WHITE);
+        Piece j2 = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(4, 4), new Position(2, 2));
+        
+        board.getSpace(4, 4).setPiece(p);
+        board.getSpace(3, 3).setPiece(j);
+        board.getSpace(2, 2).setPiece(null);
+        board.getSpace(1, 1).setPiece(j2);
+
+        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+    }
+
+    @Test
+    public void king() {
+        Piece p = new Piece(Color.RED);
+        board.getSpace(6, 6).setPiece(p);
+        Move m = new Move(new Position(6, 6), new Position(7, 7));
+        assertEquals(mv.validateMove(m), TurnResult.KING);
+    }
+
+    @Test
+    public void kingOnJump() {
+        Piece p = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+        
+        board.getSpace(5, 5).setPiece(p);
+        board.getSpace(6, 6).setPiece(j);
+        Move m = new Move(new Position(5, 5), new Position(7, 7));
+        assertEquals(mv.validateMove(m), TurnResult.KING);
+    }
+    
 
 }
