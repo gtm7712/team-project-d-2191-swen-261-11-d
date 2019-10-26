@@ -77,7 +77,11 @@ public class Board implements Iterable<Row> {
      * @return The space
      */
     public Space getSpace(Position p) {
-        return board.get(p.getRow()).get(p.getCell());
+        try {
+            return board.get(p.getRow()).get(p.getCell());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -87,8 +91,11 @@ public class Board implements Iterable<Row> {
      * @return The space
      */
     public Space getSpace(int row, int col){
-        Space s = board.get(row).get(col);
-        return s;
+        try {
+            return board.get(row).get(col);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
