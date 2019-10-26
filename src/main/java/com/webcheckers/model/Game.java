@@ -9,7 +9,7 @@ public class Game {
     private Board board;
     private Player redPlayer;
     private Player whitePlayer;
-
+    private ArrayList<Move>turn= new ArrayList<>();
     /**
      * Create a new Game
      */
