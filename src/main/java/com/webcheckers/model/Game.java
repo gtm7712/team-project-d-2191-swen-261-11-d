@@ -75,6 +75,27 @@ public class Game {
      */
     public void makeMove(Move madeMove){
         turn.add(madeMove);
+        clonedBoard.makeMove(madeMove);
+    }
+
+    /**
+     * handles if revert turn button is clicked.
+     */
+    public void revertTurn(){
+        clonedBoard=board;
+        turn=new ArrayList<>();
+    }
+
+    /**
+     * handles when End Turn button is clicked.
+     */
+    public void endTurn(){
+        board=clonedBoard;
+        turn=new ArrayList<>();
+        if(theirTurn.equals(redPlayer))
+            theirTurn=whitePlayer;
+        else
+            theirTurn=redPlayer;
     }
     /**
      * @return The board represented in String format
