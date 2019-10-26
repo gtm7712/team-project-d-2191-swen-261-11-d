@@ -61,7 +61,6 @@ public class PostSignOutRoute implements Route{
 
         Map<String, Object> vm = new HashMap<>();
 
-        System.out.println(currentPlayer.getName());
         lobby.removeUsername(currentPlayer.getName());
         request.session().removeAttribute("Player");
         vm.put("title", "Welcome!");
