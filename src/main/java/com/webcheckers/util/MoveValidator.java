@@ -2,8 +2,10 @@ package com.webcheckers.util;
 
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Move;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Space;
+import com.webcheckers.model.Piece.Color;
 
 /**
  * Utility class to validate @link{Move}s
@@ -58,7 +60,7 @@ public class MoveValidator {
         }
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
-        if (!isCapturePossible(move)) {
+        if (!isCapturePossible(move.getEnd(), board.getSpace(move.getStart()).getPiece())) {
             if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE;
         } else {  // Turn continues
             return TurnResult.CONTINUE;
@@ -121,13 +123,35 @@ public class MoveValidator {
     /**
      * Check if another capture is possible
      * 
-     * @param move Move to check
+     * @param pos Position to check from
+     * @param piece Piece to check against
      * @return True if another capture is possible
      */
-    private boolean isCapturePossible(Move move) {
-        Position endPosition = move.getEnd();
+    private boolean isCapturePossible(Position pos, Piece piece) {
+        Color c = piece.getColor();
+        boolean king = piece.isKing();
 
-        return false; // TODO
+        Space upRight = board.getSpace(new Position(
+            pos.getRow() + 1, pos.getCell() + 1));
+        Space upLeft = board.getSpace(new Position(
+            pos.getRow() + 1, pos.getCell() - 1));
+        Space dnRight = board.getSpace(new Position(
+            pos.getRow() - 1, pos.getCell() + 1));
+        Space dnLeft = board.getSpace(new Position(
+            pos.getRow() - 1, pos.getCell() + 1));
+
+        if (upRight != null)
+            if (upRight.hasPiece() && upRight.getPiece().getColor() != c) return true;
+        if (upLeft != null)
+            if (upLeft.hasPiece() && upLeft.getPiece().getColor() != c) return true;
+        
+        if (king) { // No need to check down if the piece is not a king
+            if (dnRight != null)
+                if (dnRight.hasPiece() && dnRight.getPiece().getColor() != c) return true;
+            if (dnLeft != null)
+                if (dnLeft.hasPiece() && dnLeft.getPiece().getColor() != c) return true;
+        }
+        return false;
     }
 
     /**
