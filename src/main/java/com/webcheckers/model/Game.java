@@ -12,12 +12,16 @@ public class Game {
     private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
+    private Player winner;
+    private boolean gameOver;
+
     /**
      * Create a new Game
      */
     public Game() {
         this.board = new Board();
         this.clonedBoard=board;
+        this.gameOver = false;
     }
 
     /**
@@ -110,15 +114,31 @@ public class Game {
         return theirTurn;
     }
 
+    public Player getWinner(){
+        return winner;
+    }
+
+    public void setWinner(Player a){
+        winner = a;
+    }
+
+    public void setGameOver(boolean a){
+        gameOver = a;
+    }
+
+    public boolean getGameStatus(){
+        return gameOver;
+    }
+
     /**
      * @return The board represented in String format
      */
-    public String toString() {
+/*    public String toString() {
         String toReturn = "";
         //ArrayList<Row> boardArray = board.getBoard();
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
             for(int j = 0; j < Board.BOARD_SIZE; j++) {
-                if(board.getSpace(i, j).isValid()) {
+                if(board.getSpace(i, j).isSpaceValid()) {
                     if(board.getSpace(i,j).hasPiece()) {
                         if(board.getSpace(i,j).isPieceRed()) {
                             toReturn += "[R]";
@@ -139,7 +159,7 @@ public class Game {
         }
         return toReturn;
     }
-
+    */
 
     /**
      * Main entry point for the Game

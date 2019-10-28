@@ -20,11 +20,11 @@ import com.webcheckers.util.Message;
 /**
  * ui controller for validating moves
  */
-public class PostCheckTurn implements Route {
+public class PostResignGame implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
-    public PostCheckTurn(final Gson gson ){
+    public PostResignGame(final Gson gson ){
         this.gson = gson;
     }
 
@@ -39,17 +39,15 @@ public class PostCheckTurn implements Route {
         vm.put("currentUser", currentPlayer);
         vm.put("redPlayer", game.getRedPlayer());
         vm.put("whitePlayer", game.getWhitePlayer());
-        if(currentPlayer.equals(game.getRedPlayer()))
-            vm.put("activeColor", Piece.Color.RED);
-        if(currentPlayer.equals(game.getWhitePlayer()))
-            vm.put("activeColor", Piece.Color.WHITE);
-        if(currentPlayer.equals(game.whoseTurn())){
-            return gson.toJson(new Message("true", Message.Type.INFO));
+        currentPlayer.resign();
+        if(game.getGameStatus()){
+            final Map<String, Object> modeOptions = new HashMap<>(2);
+            modeOptions.put("isGameOver", true);
+            modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            return gson.toJson(new Message("You resigned!", Message.Type.INFO));   
         }
-        else{
-            return gson.toJson(new Message("false", Message.Type.INFO));   
-        }
-    
+        return gson.toJson(new Message("Failed to resign", Message.Type.ERROR));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

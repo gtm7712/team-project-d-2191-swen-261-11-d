@@ -58,6 +58,7 @@ public class WebServer {
   public static final String STARTGAME_URL = "/startgame";
   public static final String VALIDATEMOVE_URL = "/validateMove";
   public static final String CHECKTURN_URL = "/checkTurn";
+  public static final String RESIGNGAME_URL = "/resignGame";
 
   //
   // Attributes
@@ -150,6 +151,7 @@ public class WebServer {
     get(STARTGAME_URL, new GetStartGameRoute(templateEngine, lobby));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
     post(CHECKTURN_URL, new PostCheckTurn(gson));
+    post(RESIGNGAME_URL, new PostResignGame(gson));
     //
     LOG.config("WebServer is initialized.");
   }

@@ -85,6 +85,13 @@ public class Player {
         this.game = game;
     }
 
+    public void resign(){
+        this.game.setGameOver(true);
+        this.game.setWinner(opponent);
+        this.inGame = false;
+        this.opponent.inGame(false);
+    }
+
     @Override
     public int hashCode() {
         return name.hashCode();

@@ -72,7 +72,7 @@ public class GetHomeRoute implements Route {
         // Inject game information into template
 
         Game currentGame = currentPlayer.getGame();
-
+        
         vm.put("title", "Let's Play");
         vm.put("board", currentPlayer.getFlippedBoard());
         vm.put("viewMode", "PLAY");

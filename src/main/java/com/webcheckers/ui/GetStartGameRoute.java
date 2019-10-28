@@ -73,6 +73,11 @@ public class GetStartGameRoute implements Route {
           return templateEngine.render(new ModelAndView(vm , "home.ftl"));
       }
 
+      if(!currentPlayer.isInGame() && game.getGameStatus()){
+        request.session().attribute("Player", currentPlayer );
+        response.redirect("/");
+      }
+      
       currentPlayer.setOpponent(opponent);
       opponent.setOpponent(currentPlayer);
 
