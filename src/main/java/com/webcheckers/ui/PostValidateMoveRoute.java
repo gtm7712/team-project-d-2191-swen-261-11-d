@@ -36,6 +36,7 @@ public class PostValidateMoveRoute implements Route {
         Board board = game.getClonedBoard();
         MoveValidator validate = new MoveValidator(board);
         System.out.println(request.queryParams("actionData"));
+        
 
         String move = request.queryParams("actionData");
         int startR = Character.getNumericValue(move.charAt(16));
@@ -59,6 +60,7 @@ public class PostValidateMoveRoute implements Route {
         {
             board.makeMove(madeMove);
             vm.put("board", board);
+            return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         }
         if(result.equals(MoveValidator.TurnResult.CONTINUE)) {
             board.makeMove(madeMove);
@@ -68,11 +70,13 @@ public class PostValidateMoveRoute implements Route {
             board.makeMove(madeMove);
             board.getSpace(madeMove.getEnd()).kingPiece();
             vm.put("board", board);
+            return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         }
         if(result.equals(MoveValidator.TurnResult.FAIL)){
             vm.put("board", board);
+            return gson.toJson(new Message("Invalid Move!", Message.Type.INFO));
         }
-        return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
+        return gson.toJson(new Message("Invalid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

@@ -105,6 +105,11 @@ public class Game {
         else
             theirTurn=redPlayer;
     }
+
+    public Player whoseTurn(){
+        return theirTurn;
+    }
+
     /**
      * @return The board represented in String format
      */
