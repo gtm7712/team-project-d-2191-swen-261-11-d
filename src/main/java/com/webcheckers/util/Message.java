@@ -63,14 +63,13 @@ public final class Message {
   //
   // Constructor
   //
-
   /**
    * Create a new message.
    *
    * @param message  the text of the message
    * @param type  the type of message
    */
-  private Message(final String message, final Type type) {
+  public Message(final String message, final Type type) {
     this.text = message;
     this.type = type;
     LOG.finer(this + " created.");

@@ -12,6 +12,9 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
+
 import com.webcheckers.util.Message;
 
 /**
@@ -19,9 +22,10 @@ import com.webcheckers.util.Message;
  */
 public class PostValidateMoveRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
-    private final TemplateEngine templateEngine;
-    public PostValidateMoveRoute(final TemplateEngine templateEngine ){
-        this.templateEngine=templateEngine;
+    private final Gson gson;
+
+    public PostValidateMoveRoute(final Gson gson ){
+        this.gson = gson;
     }
 
     @Override
@@ -33,11 +37,11 @@ public class PostValidateMoveRoute implements Route {
         MoveValidator validate = new MoveValidator(board);
         System.out.println(request.queryParams("actionData"));
 
-        String move=request.queryParams("actionData");
-        int startR=Character.getNumericValue(move.charAt(16));
-        int startC=Character.getNumericValue(move.charAt(25));
-        int endR=Character.getNumericValue(move.charAt(41));
-        int endC=Character.getNumericValue(move.charAt(50));
+        String move = request.queryParams("actionData");
+        int startR = Character.getNumericValue(move.charAt(16));
+        int startC = Character.getNumericValue(move.charAt(25));
+        int endR = Character.getNumericValue(move.charAt(41));
+        int endC = Character.getNumericValue(move.charAt(50));
         vm.put("title", "Let's Play");
         vm.put("viewMode", "PLAY");
         vm.put("currentUser", currentPlayer);
@@ -68,6 +72,7 @@ public class PostValidateMoveRoute implements Route {
         if(result.equals(MoveValidator.TurnResult.FAIL)){
             vm.put("board", board);
         }
-        return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+        return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
+        //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }
