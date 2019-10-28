@@ -36,7 +36,6 @@ public class PostValidateMoveRoute implements Route {
         Board board = game.getClonedBoard();
         MoveValidator validate = new MoveValidator(board);
         System.out.println(request.queryParams("actionData"));
-        
 
         String move = request.queryParams("actionData");
         int startR = Character.getNumericValue(move.charAt(16));
@@ -56,27 +55,25 @@ public class PostValidateMoveRoute implements Route {
         Move madeMove= new Move(new Position(startR, startC), new Position(endR, endC));
         System.out.println(madeMove);
         Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
-        if (result.equals(MoveValidator.TurnResult.COMPLETE))
-        {
-            board.makeMove(madeMove);
-            vm.put("board", board);
-            return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
+        switch (validate.validateMove(madeMove)) {
+            case COMPLETE:
+                board.makeMove(madeMove);
+                vm.put("board", board);
+                break;
+            case CONTINUE:
+                board.makeMove(madeMove);
+                vm.put("board", board);
+                break;
+            case KING:
+                board.makeMove(madeMove);
+                board.getSpace(madeMove.getEnd()).kingPiece();
+                vm.put("board", board);
+                break;
+            case FAIL:
+                vm.put("board", board);
+                break;
         }
-        if(result.equals(MoveValidator.TurnResult.CONTINUE)) {
-            board.makeMove(madeMove);
-            vm.put("board", board);
-        }
-        if(result.equals(MoveValidator.TurnResult.KING)){
-            board.makeMove(madeMove);
-            board.getSpace(madeMove.getEnd()).kingPiece();
-            vm.put("board", board);
-            return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
-        }
-        if(result.equals(MoveValidator.TurnResult.FAIL)){
-            vm.put("board", board);
-            return gson.toJson(new Message("Invalid Move!", Message.Type.ERROR));
-        }
-        return gson.toJson(new Message("Invalid Move!", Message.Type.ERROR));
+        return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }
