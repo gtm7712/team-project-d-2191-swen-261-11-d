@@ -74,9 +74,9 @@ public class PostValidateMoveRoute implements Route {
         }
         if(result.equals(MoveValidator.TurnResult.FAIL)){
             vm.put("board", board);
-            return gson.toJson(new Message("Invalid Move!", Message.Type.INFO));
+            return gson.toJson(new Message("Invalid Move!", Message.Type.ERROR));
         }
-        return gson.toJson(new Message("Invalid Move!", Message.Type.INFO));
+        return gson.toJson(new Message("Invalid Move!", Message.Type.ERROR));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

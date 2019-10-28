@@ -33,7 +33,7 @@ public class PostCheckTurn implements Route {
         Map<String, Object> vm = new HashMap<>();
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
-
+        
         vm.put("title", "Let's Play");
         vm.put("viewMode", "PLAY");
         vm.put("currentUser", currentPlayer);
