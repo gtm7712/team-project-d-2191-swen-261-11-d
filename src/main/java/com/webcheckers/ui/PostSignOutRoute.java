@@ -42,7 +42,7 @@ public class PostSignOutRoute implements Route{
     }
 
     /**
-     * Render the WebCheckers Home page.
+     * Render the WebCheckers Home page after signout.
      *
      * @param request
      *   the HTTP request
