@@ -2,6 +2,7 @@ package com.webcheckers.util;
 
 import com.webcheckers.model.*;
 import com.webcheckers.model.Piece.Color;
+import com.webcheckers.util.ValidationResult.TurnResult;
 
 /**
  * Utility class to validate @link{Move}s
@@ -9,19 +10,6 @@ import com.webcheckers.model.Piece.Color;
  * @author Giovanni Melchionne
  */
 public class MoveValidator {
-
-    /**
-     * Result of the move
-     * COMPLETE:  The turn is over
-     * CONTINUE:  The player must make another move
-     * KING:      The piece has reached the end of the board
-     *                (end of turn is implied)
-     * FAIL:      The move was not valid
-     * JUMP:      A jump was performed
-     */
-    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL, JUMP };
-
-    //
     
     private Board board;
     private Game game;
@@ -46,29 +34,29 @@ public class MoveValidator {
      * @param move Move to validate
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
-    public TurnResult validateMove(Move move) {
+    public ValidationResult validateMove(Move move) {
         Piece pce = board.getSpace(move.getStart()).getPiece();
+        boolean didJump = false;
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
         if (simpleMove(move)) {
-            if (shouldMakeJump(pce.getColor())) return TurnResult.FAIL;
-            if(shouldKing(move)) return TurnResult.KING;
+            if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
+            if(shouldKing(move)) return new ValidationResult(TurnResult.KING, false);
 
-            return TurnResult.COMPLETE;
-        } else if( madeJump(move)) {
+            return new ValidationResult(TurnResult.COMPLETE, false);
+        } else if (madeJump(move)) {
             if (isJumpValid(move)) {
-
-                return TurnResult.JUMP;
-                /* TODO: TAKE PIECE */ 
+                didJump = true;
             } else {
-                return TurnResult.FAIL; // Not a valid jump
+                return new ValidationResult(TurnResult.FAIL, false);
             }
         }
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
         if (!isCapturePossible(move.getEnd(), pce)) {
-            if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE;
+            if (shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump); 
+            else return new ValidationResult(TurnResult.COMPLETE, didJump);
         } else {  // Turn continues
-            return TurnResult.CONTINUE;
+            return new ValidationResult(TurnResult.CONTINUE, didJump);
         }
     }
     
@@ -105,6 +93,7 @@ public class MoveValidator {
 
         } else return false; // No piece to jump
     }
+
     public boolean simpleMove(Move move){
         if(board.getSpace(move.getStart()).getPiece().isKing()){
             if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
@@ -116,8 +105,7 @@ public class MoveValidator {
             else
                 return false;
 
-        }
-        else{
+        } else {
             if(game.whoseTurn().equals(game.getRedPlayer())){
                 if(move.getEnd().getRow()==move.getStart().getRow()-1){
                     if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
@@ -128,16 +116,14 @@ public class MoveValidator {
                 else
                     return false;
 
-            }
-            else{  //white player
+            } else {  //white player
 
                 if(move.getEnd().getRow()==move.getStart().getRow()+1){
                     if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
                         return true;
                     else
                         return false;
-                }
-                else
+                } else
                     return false;
             }
         }

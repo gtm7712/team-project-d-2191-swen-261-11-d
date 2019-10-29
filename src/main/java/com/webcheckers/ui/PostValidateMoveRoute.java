@@ -57,7 +57,7 @@ public class PostValidateMoveRoute implements Route {
         //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
         if(game.isComplete())
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
-        switch (validate.validateMove(madeMove)) {
+        switch (validate.validateMove(madeMove).getTurnResult()) {
             case COMPLETE:
                 board.makeMove(madeMove);
                 vm.put("board", board);

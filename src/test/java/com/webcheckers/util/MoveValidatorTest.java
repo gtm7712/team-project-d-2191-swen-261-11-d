@@ -3,11 +3,13 @@ package com.webcheckers.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.webcheckers.model.Board;
+import com.webcheckers.model.Game;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Piece.Color;
-import com.webcheckers.util.MoveValidator.TurnResult;
+import com.webcheckers.util.ValidationResult.TurnResult;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,14 +21,24 @@ public class MoveValidatorTest {
 
     MoveValidator mv;
     Board board;
+    Game game;
+    Player player1;
+    Player player2;
 
     /**
      * Set up a new board amd MoveValidator instance for each test
      */
     @BeforeEach
     public void setup() {
-        board = new Board();
-        mv = new MoveValidator(board);
+        player1 = new Player("Thomas");
+        player2 = new Player("Mitsuha");
+
+        game = new Game();
+        game.setRedPlayer(player1);
+        game.setWhitePlayer(player2);
+
+        board = game.getClonedBoard();
+        mv = new MoveValidator(game);
     }
 
     /**
@@ -36,7 +48,7 @@ public class MoveValidatorTest {
     public void noJump() {
         board.getSpace(1, 1).setPiece(new Piece(Color.RED));
         Move m = new Move(new Position(1, 1), new Position(2, 2));
-        assertEquals(mv.validateMove(m), TurnResult.COMPLETE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
     }
 
     /**
@@ -45,7 +57,7 @@ public class MoveValidatorTest {
     @Test
     public void invalidJumpNoPiece() {
         Move m = new Move(new Position(1, 1), new Position(3, 3));
-        assertEquals(mv.validateMove(m), TurnResult.FAIL);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
 
     /**
@@ -62,7 +74,7 @@ public class MoveValidatorTest {
         board.getSpace(2, 2).setPiece(j);
         board.getSpace(3, 3).setPiece(null);
 
-        assertEquals(mv.validateMove(m), TurnResult.FAIL);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
 
     @Test
@@ -76,7 +88,7 @@ public class MoveValidatorTest {
         board.getSpace(2, 2).setPiece(j);
         board.getSpace(3, 3).setPiece(null);
 
-        assertEquals(mv.validateMove(m), TurnResult.COMPLETE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
     }
 
     @Test
@@ -92,7 +104,7 @@ public class MoveValidatorTest {
         board.getSpace(3, 3).setPiece(null);
         board.getSpace(4, 4).setPiece(j2);
 
-        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
     @Test
@@ -108,7 +120,7 @@ public class MoveValidatorTest {
         board.getSpace(3, 3).setPiece(null);
         board.getSpace(4, 2).setPiece(j2);
 
-        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
     @Test
@@ -125,7 +137,7 @@ public class MoveValidatorTest {
         board.getSpace(2, 2).setPiece(null);
         board.getSpace(1, 3).setPiece(j2);
 
-        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
     @Test
@@ -142,7 +154,7 @@ public class MoveValidatorTest {
         board.getSpace(2, 2).setPiece(null);
         board.getSpace(1, 1).setPiece(j2);
 
-        assertEquals(mv.validateMove(m), TurnResult.CONTINUE);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
     @Test
@@ -150,7 +162,7 @@ public class MoveValidatorTest {
         Piece p = new Piece(Color.RED);
         board.getSpace(6, 6).setPiece(p);
         Move m = new Move(new Position(6, 6), new Position(7, 7));
-        assertEquals(mv.validateMove(m), TurnResult.KING);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
     }
 
     @Test
@@ -161,7 +173,7 @@ public class MoveValidatorTest {
         board.getSpace(5, 5).setPiece(p);
         board.getSpace(6, 6).setPiece(j);
         Move m = new Move(new Position(5, 5), new Position(7, 7));
-        assertEquals(mv.validateMove(m), TurnResult.KING);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
     }
     
     @Test
@@ -179,7 +191,7 @@ public class MoveValidatorTest {
         board.getSpace(2, 2).setPiece(j);
         board.getSpace(3, 3).setPiece(null);
 
-        assertEquals(mv.validateMove(m), TurnResult.FAIL);
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
 
 }
