@@ -17,6 +17,7 @@ public class MoveValidator {
      * KING:      The piece has reached the end of the board
      *                (end of turn is implied)
      * FAIL:      The move was not valid
+     * JUMP:      A jump was performed
      */
     public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL, JUMP };
 
@@ -46,11 +47,12 @@ public class MoveValidator {
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
     public TurnResult validateMove(Move move) {
+        Piece pce = board.getSpace(move.getStart()).getPiece();
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
         if (simpleMove(move)) {
-            if(shouldKing(move)){
-                return TurnResult.KING;
-            }
+            if (shouldMakeJump(pce.getColor())) return TurnResult.FAIL;
+            if(shouldKing(move)) return TurnResult.KING;
+
             return TurnResult.COMPLETE;
         } else if( madeJump(move)) {
             if (isJumpValid(move)) {
@@ -63,7 +65,7 @@ public class MoveValidator {
         }
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
-        if (!isCapturePossible(move.getEnd(), board.getSpace(move.getStart()).getPiece())) {
+        if (!isCapturePossible(move.getEnd(), pce)) {
             if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE;
         } else {  // Turn continues
             return TurnResult.CONTINUE;
@@ -158,6 +160,27 @@ public class MoveValidator {
         return new Position(
             (int) Math.floor((sr + er) / 2),
             (int) Math.floor((sc + ec) / 2));
+    }
+
+    /**
+     * Check if the player should've made a jump, rather than a single move
+     * 
+     * @param color  Color of the piece
+     * @return  True if there was a valid jump
+     */
+    private boolean shouldMakeJump(Color color) {
+        for (int r = 0; r < Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE - 1; c++) {
+                Position pos = new Position(r, c);
+                Piece pce = board.getSpace(pos).getPiece();
+
+                if (pce != null && pce.getColor() == color) {
+                    if (isCapturePossible(pos, pce))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
