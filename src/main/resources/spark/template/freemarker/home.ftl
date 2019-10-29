@@ -22,7 +22,7 @@
       <#if currentUser??>
           <#list allUsers?keys as name>
               <#if name != currentUser && !allUsers[name].isInGame()>
-                  <a href = "/startgame?otherPlayer=${name}"> ${name} </a>
+                  <a href = "/game?otherPlayer=${name}"> ${name} </a>
                   </br>
               </#if>
           </#list>
