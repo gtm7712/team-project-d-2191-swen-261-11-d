@@ -30,7 +30,7 @@ public class PostValidateMoveRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        Map<String, Object> vm = new HashMap<>();
+//        Map<String, Object> vm = new HashMap<>();
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
         Board board = game.getClonedBoard();
@@ -42,39 +42,43 @@ public class PostValidateMoveRoute implements Route {
         int startC = Character.getNumericValue(move.charAt(25));
         int endR = Character.getNumericValue(move.charAt(41));
         int endC = Character.getNumericValue(move.charAt(50));
-        vm.put("title", "Let's Play");
-        vm.put("viewMode", "PLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer", game.getRedPlayer());
-        vm.put("whitePlayer", game.getWhitePlayer());
-        if(currentPlayer.equals(game.getRedPlayer()))
-            vm.put("activeColor", Piece.Color.RED);
-        if(currentPlayer.equals(game.getWhitePlayer()))
-            vm.put("activeColor", Piece.Color.WHITE);
+//        vm.put("title", "Let's Play");
+//        vm.put("viewMode", "PLAY");
+//        vm.put("currentUser", currentPlayer);
+//        vm.put("redPlayer", game.getRedPlayer());
+//        vm.put("whitePlayer", game.getWhitePlayer());
+//        if(currentPlayer.equals(game.getRedPlayer()))
+//            vm.put("activeColor", Piece.Color.RED);
+//        if(currentPlayer.equals(game.getWhitePlayer()))
+//            vm.put("activeColor", Piece.Color.WHITE);
 
         Move madeMove= new Move(new Position(startR, startC), new Position(endR, endC));
         System.out.println(madeMove);
         //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
         if(game.isComplete())
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
-        switch (validate.validateMove(madeMove)) {
+        switch (validate.validateMove(madeMove).getTurnResult()) {
             case COMPLETE:
                 game.makeMove(madeMove);
-                vm.put("board", board);
+//                vm.put("board", board);
                 game.setComplete();
                 break;
             case CONTINUE:
                 game.makeMove(madeMove);
-                vm.put("board", board);
+//                vm.put("board", board);
                 break;
             case KING:
                 game.makeMove(madeMove);
                 board.getSpace(madeMove.getEnd()).kingPiece();
-                vm.put("board", board);
+//                vm.put("board", board);
                 break;
             case FAIL:
-                vm.put("board", board);
+//                vm.put("board", board);
                 return gson.toJson(new Message("Invalid Move", Message.Type.ERROR));
+            case JUMP:
+                game.makeMove(madeMove);
+                game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
+
         }
         return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
