@@ -49,7 +49,11 @@ public class MoveValidator {
             } else {
                 return new ValidationResult(TurnResult.FAIL, false);
             }
+        } else {
+            if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
         }
+
+        if(shouldKing(move)) return new ValidationResult(TurnResult.KING, false);
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
         if (!isCapturePossible(move.getEnd(), pce)) {
@@ -220,13 +224,13 @@ public class MoveValidator {
         if(game.whoseTurn().equals(game.getRedPlayer())) {
 
             if (!p.isKing()) {
-                if (endPos.getRow() == Board.BOARD_SIZE)
+                if (endPos.getRow() == Board.BOARD_SIZE - 1)
                     return true;
             }
         }
         else{//white player
             if(!p.isKing()){
-                if(endPos.getRow()==Board.BOARD_SIZE-1)
+                if(endPos.getRow()==Board.BOARD_SIZE - 1)
                     return true;
             }
         }

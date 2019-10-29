@@ -56,6 +56,7 @@ public class MoveValidatorTest {
      */
     @Test
     public void invalidJumpNoPiece() {
+        board.getSpace(1, 1).setPiece(new Piece(Color.RED));
         Move m = new Move(new Position(1, 1), new Position(3, 3));
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
