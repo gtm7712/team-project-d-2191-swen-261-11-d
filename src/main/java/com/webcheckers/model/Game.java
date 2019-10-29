@@ -59,6 +59,7 @@ public class Game {
      */
     public void setRedPlayer(Player p){
         this.redPlayer = p;
+        this.redPlayer.setBoard(getBoardRed());
         theirTurn=p;
     }
 
@@ -68,6 +69,7 @@ public class Game {
      */
     public void setWhitePlayer(Player p){
         this.whitePlayer = p;
+        this.whitePlayer.setBoard(getBoardWhite());
     }
 
     /**

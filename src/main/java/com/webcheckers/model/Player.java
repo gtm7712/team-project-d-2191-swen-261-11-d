@@ -6,6 +6,7 @@ public class Player {
     private boolean inGame;  //if a user is in a game or not
     private Player opponent;
     private Game game;
+    private Board board;
     //todo
 
     /**
@@ -68,6 +69,23 @@ public class Player {
     public Board getFlippedBoard(){
         return this.game.getBoardWhite();
     }
+
+    /**
+     *
+     * @return the board of the game you are playing
+     */
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    /**
+     *
+     * @return get player board
+     */
+    public Board getPlayerBoard(){
+        return this.board;
+    }
+
 
     /**
      *
