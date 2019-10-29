@@ -164,5 +164,22 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m), TurnResult.KING);
     }
     
+    @Test
+    public void invalidNoJumpWhenJumpPossible() {
+        Piece p = new Piece(Color.RED);
+        Piece p2 = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+        
+        Move m = new Move(new Position(4, 4), new Position(5, 5));
+        
+        board.getSpace(4, 4).setPiece(p2);
+        board.getSpace(5, 5).setPiece(null);
+
+        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(2, 2).setPiece(j);
+        board.getSpace(3, 3).setPiece(null);
+
+        assertEquals(mv.validateMove(m), TurnResult.FAIL);
+    }
 
 }

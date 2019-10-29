@@ -71,7 +71,7 @@ public class PostValidateMoveRoute implements Route {
                 break;
             case FAIL:
                 vm.put("board", board);
-                break;
+                return gson.toJson(new Message("Invalid Move! Please back-up your turn", Message.Type.ERROR));
         }
         return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
