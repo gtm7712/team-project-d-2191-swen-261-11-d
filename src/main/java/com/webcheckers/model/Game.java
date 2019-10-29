@@ -13,6 +13,7 @@ public class Game {
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
     private boolean isComplete=false;
+    private boolean wasKinged=false;
     /**
      * Create a new Game
      */
@@ -111,9 +112,17 @@ public class Game {
         isComplete=false;
 //        this.clonedBoard=new Board(board.getBoard());
         for(int i=0; i<turn.size(); i++){
-            clonedBoard.makeMove(new Move(turn.get(i).getEnd(), turn.get(i).getStart()));
+            Move move=turn.get(i);
+            if(wasKinged) {
+                if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
+                    board.getSpace(move.getEnd()).unKingPiece();
+                } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
+                    board.getSpace(move.getEnd()).unKingPiece();
+                }
+            }
+            clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
         }
-        
+        wasKinged=false;
         try {
             turn=new ArrayList<>();
         } catch (Exception e) {
@@ -130,6 +139,7 @@ public class Game {
         board=clonedBoard;
         turn=new ArrayList<>();
         isComplete=false;
+        wasKinged=false;
         if(theirTurn.equals(redPlayer))
             theirTurn=whitePlayer;
         else

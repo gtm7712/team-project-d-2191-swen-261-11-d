@@ -105,6 +105,12 @@ public class MoveValidator {
 
         } else return false; // No piece to jump
     }
+
+    /**
+     * checks if a move is a simple 1 tile move
+     * @param move
+     * @return if it is or not
+     */
     public boolean simpleMove(Move move){
         if(board.getSpace(move.getStart()).getPiece().isKing()){
             if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
