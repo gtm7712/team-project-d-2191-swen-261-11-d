@@ -18,7 +18,7 @@ public class Game {
      */
     public Game() {
         this.board = new Board();
-        this.clonedBoard=board;
+        this.clonedBoard=new Board(board.getBoard());
     }
 
     /**
@@ -109,8 +109,12 @@ public class Game {
 
     public String revertTurn(){
         isComplete=false;
+//        this.clonedBoard=new Board(board.getBoard());
+        for(int i=0; i<turn.size(); i++){
+            clonedBoard.makeMove(new Move(turn.get(i).getEnd(), turn.get(i).getStart()));
+        }
+        
         try {
-            clonedBoard=board;
             turn=new ArrayList<>();
         } catch (Exception e) {
             return e.getMessage();

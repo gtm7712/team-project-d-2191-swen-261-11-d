@@ -59,16 +59,16 @@ public class PostValidateMoveRoute implements Route {
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
         switch (validate.validateMove(madeMove)) {
             case COMPLETE:
-                board.makeMove(madeMove);
+                game.makeMove(madeMove);
                 vm.put("board", board);
                 game.setComplete();
                 break;
             case CONTINUE:
-                board.makeMove(madeMove);
+                game.makeMove(madeMove);
                 vm.put("board", board);
                 break;
             case KING:
-                board.makeMove(madeMove);
+                game.makeMove(madeMove);
                 board.getSpace(madeMove.getEnd()).kingPiece();
                 vm.put("board", board);
                 break;

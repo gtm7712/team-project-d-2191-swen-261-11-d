@@ -206,13 +206,13 @@ public class MoveValidator {
         if(game.whoseTurn().equals(game.getRedPlayer())) {
 
             if (!p.isKing()) {
-                if (endPos.getRow() == Board.BOARD_SIZE - 1)
+                if (endPos.getRow() == Board.BOARD_SIZE)
                     return true;
             }
         }
         else{//white player
             if(!p.isKing()){
-                if(endPos.getRow()==0)
+                if(endPos.getRow()==Board.BOARD_SIZE-1)
                     return true;
             }
         }
