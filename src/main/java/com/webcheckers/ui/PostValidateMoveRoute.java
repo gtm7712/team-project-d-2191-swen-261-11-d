@@ -34,7 +34,7 @@ public class PostValidateMoveRoute implements Route {
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
         Board board = game.getClonedBoard();
-        MoveValidator validate = new MoveValidator(board);
+        MoveValidator validate = new MoveValidator(game);
         System.out.println(request.queryParams("actionData"));
 
         String move = request.queryParams("actionData");
@@ -54,11 +54,14 @@ public class PostValidateMoveRoute implements Route {
 
         Move madeMove= new Move(new Position(startR, startC), new Position(endR, endC));
         System.out.println(madeMove);
-        Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
+        //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
+        if(game.isComplete())
+            return gson.toJson(new Message("Move already made", Message.Type.ERROR));
         switch (validate.validateMove(madeMove)) {
             case COMPLETE:
                 board.makeMove(madeMove);
                 vm.put("board", board);
+                game.setComplete();
                 break;
             case CONTINUE:
                 board.makeMove(madeMove);
@@ -71,7 +74,7 @@ public class PostValidateMoveRoute implements Route {
                 break;
             case FAIL:
                 vm.put("board", board);
-                break;
+                return gson.toJson(new Message("Invalid Move", Message.Type.ERROR));
         }
         return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));

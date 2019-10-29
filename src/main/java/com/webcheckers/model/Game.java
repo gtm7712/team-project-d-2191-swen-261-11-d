@@ -12,6 +12,7 @@ public class Game {
     private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
+    private boolean isComplete=false;
     /**
      * Create a new Game
      */
@@ -20,6 +21,20 @@ public class Game {
         this.clonedBoard=board;
     }
 
+    /**
+     *
+     * @return if movevalidator has returned complete or not
+     */
+    public boolean isComplete(){
+        return isComplete;
+    }
+
+    /**
+     * called when move validator returns a complete , sets complete to true
+     */
+    public void setComplete(){
+        isComplete=true;
+    }
     /**
      * 
      * @return The white player
@@ -91,6 +106,7 @@ public class Game {
      */
     public void revertTurn(){
         clonedBoard=board;
+        isComplete=false;
         turn=new ArrayList<>();
     }
 
@@ -100,6 +116,7 @@ public class Game {
     public void endTurn(){
         board=clonedBoard;
         turn=new ArrayList<>();
+        isComplete=false;
         if(theirTurn.equals(redPlayer))
             theirTurn=whitePlayer;
         else

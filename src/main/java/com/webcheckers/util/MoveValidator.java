@@ -1,10 +1,6 @@
 package com.webcheckers.util;
 
-import com.webcheckers.model.Board;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Space;
+import com.webcheckers.model.*;
 import com.webcheckers.model.Piece.Color;
 
 /**
@@ -22,19 +18,21 @@ public class MoveValidator {
      *                (end of turn is implied)
      * FAIL:      The move was not valid
      */
-    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL };
+    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL, JUMP };
 
     //
     
     private Board board;
+    private Game game;
 
     /**
      * Initialize the MoveValidator
      * 
-     * @param board Game board for checking moves
+     * @param game for checking moves and getting the board
      */
-    public MoveValidator(Board board) {
-        this.board = board;
+    public MoveValidator(Game game) {
+        this.game=game;
+        this.board = game.getClonedBoard();
     }
 
     /**
@@ -49,10 +47,15 @@ public class MoveValidator {
      */
     public TurnResult validateMove(Move move) {
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
-        if (!madeJump(move)) {
-            if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE; 
-        } else {
+        if (simpleMove(move)) {
+            if(shouldKing(move)){
+
+            }
+            return TurnResult.COMPLETE;
+        } else if( madeJump(move)) {
             if (isJumpValid(move)) {
+
+                return TurnResult.JUMP;
                 /* TODO: TAKE PIECE */ 
             } else {
                 return TurnResult.FAIL; // Not a valid jump
@@ -99,6 +102,43 @@ public class MoveValidator {
             }
 
         } else return false; // No piece to jump
+    }
+    public boolean simpleMove(Move move){
+        if(board.getSpace(move.getStart()).getPiece().isKing()){
+            if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
+                if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+
+        }
+        else{
+            if(game.whoseTurn().equals(game.getRedPlayer())){
+                if(move.getEnd().getRow()==move.getStart().getRow()+1){
+                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+
+            }
+            else{  //white player
+
+                if(move.getEnd().getRow()==move.getStart().getRow()-1){
+                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+        }
     }
 
     /**
@@ -163,12 +203,19 @@ public class MoveValidator {
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
         Piece p = board.getSpace(move.getStart()).getPiece();
+        if(game.whoseTurn().equals(game.getRedPlayer())) {
 
-        if (!p.isKing()) {
-            if (endPos.getRow() == Board.BOARD_SIZE - 1)
-                return true;
+            if (!p.isKing()) {
+                if (endPos.getRow() == Board.BOARD_SIZE - 1)
+                    return true;
+            }
         }
-        
+        else{//white player
+            if(!p.isKing()){
+                if(endPos.getRow()==0)
+                    return true;
+            }
+        }
         return false;
     }
 
