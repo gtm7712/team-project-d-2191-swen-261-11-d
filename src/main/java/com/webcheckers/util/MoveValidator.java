@@ -49,7 +49,7 @@ public class MoveValidator {
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
         if (simpleMove(move)) {
             if(shouldKing(move)){
-
+                return TurnResult.KING;
             }
             return TurnResult.COMPLETE;
         } else if( madeJump(move)) {
@@ -117,7 +117,7 @@ public class MoveValidator {
         }
         else{
             if(game.whoseTurn().equals(game.getRedPlayer())){
-                if(move.getEnd().getRow()==move.getStart().getRow()+1){
+                if(move.getEnd().getRow()==move.getStart().getRow()-1){
                     if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
                         return true;
                     else
@@ -129,7 +129,7 @@ public class MoveValidator {
             }
             else{  //white player
 
-                if(move.getEnd().getRow()==move.getStart().getRow()-1){
+                if(move.getEnd().getRow()==move.getStart().getRow()+1){
                     if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
                         return true;
                     else
