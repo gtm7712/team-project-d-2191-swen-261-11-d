@@ -1,10 +1,6 @@
 package com.webcheckers.util;
 
-import com.webcheckers.model.Board;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Space;
+import com.webcheckers.model.*;
 import com.webcheckers.model.Piece.Color;
 
 /**
@@ -21,20 +17,23 @@ public class MoveValidator {
      * KING:      The piece has reached the end of the board
      *                (end of turn is implied)
      * FAIL:      The move was not valid
+     * JUMP:      A jump was performed
      */
-    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL };
+    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL, JUMP };
 
     //
     
     private Board board;
+    private Game game;
 
     /**
      * Initialize the MoveValidator
      * 
-     * @param board Game board for checking moves
+     * @param game for checking moves and getting the board
      */
-    public MoveValidator(Board board) {
-        this.board = board;
+    public MoveValidator(Game game) {
+        this.game=game;
+        this.board = game.getClonedBoard();
     }
 
     /**
@@ -48,11 +47,17 @@ public class MoveValidator {
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
     public TurnResult validateMove(Move move) {
+        Piece pce = board.getSpace(move.getStart()).getPiece();
         // If the move takes no piece, the turn is over. Otherwise, the piece is taken
-        if (!madeJump(move)) {
-            if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE; 
-        } else {
+        if (simpleMove(move)) {
+            if (shouldMakeJump(pce.getColor())) return TurnResult.FAIL;
+            if(shouldKing(move)) return TurnResult.KING;
+
+            return TurnResult.COMPLETE;
+        } else if( madeJump(move)) {
             if (isJumpValid(move)) {
+
+                return TurnResult.JUMP;
                 /* TODO: TAKE PIECE */ 
             } else {
                 return TurnResult.FAIL; // Not a valid jump
@@ -60,7 +65,7 @@ public class MoveValidator {
         }
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
-        if (!isCapturePossible(move.getEnd(), board.getSpace(move.getStart()).getPiece())) {
+        if (!isCapturePossible(move.getEnd(), pce)) {
             if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE;
         } else {  // Turn continues
             return TurnResult.CONTINUE;
@@ -100,6 +105,43 @@ public class MoveValidator {
 
         } else return false; // No piece to jump
     }
+    public boolean simpleMove(Move move){
+        if(board.getSpace(move.getStart()).getPiece().isKing()){
+            if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
+                if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+
+        }
+        else{
+            if(game.whoseTurn().equals(game.getRedPlayer())){
+                if(move.getEnd().getRow()==move.getStart().getRow()-1){
+                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+
+            }
+            else{  //white player
+
+                if(move.getEnd().getRow()==move.getStart().getRow()+1){
+                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+        }
+    }
 
     /**
      * Get the midpoint of the move
@@ -118,6 +160,27 @@ public class MoveValidator {
         return new Position(
             (int) Math.floor((sr + er) / 2),
             (int) Math.floor((sc + ec) / 2));
+    }
+
+    /**
+     * Check if the player should've made a jump, rather than a single move
+     * 
+     * @param color  Color of the piece
+     * @return  True if there was a valid jump
+     */
+    private boolean shouldMakeJump(Color color) {
+        for (int r = 0; r < Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE - 1; c++) {
+                Position pos = new Position(r, c);
+                Piece pce = board.getSpace(pos).getPiece();
+
+                if (pce != null && pce.getColor() == color) {
+                    if (isCapturePossible(pos, pce))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -163,12 +226,19 @@ public class MoveValidator {
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
         Piece p = board.getSpace(move.getStart()).getPiece();
+        if(game.whoseTurn().equals(game.getRedPlayer())) {
 
-        if (!p.isKing()) {
-            if (endPos.getRow() == Board.BOARD_SIZE - 1)
-                return true;
+            if (!p.isKing()) {
+                if (endPos.getRow() == Board.BOARD_SIZE)
+                    return true;
+            }
         }
-        
+        else{//white player
+            if(!p.isKing()){
+                if(endPos.getRow()==Board.BOARD_SIZE-1)
+                    return true;
+            }
+        }
         return false;
     }
 

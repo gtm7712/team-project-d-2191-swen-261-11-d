@@ -59,7 +59,7 @@ public class WebServer {
   public static final String VALIDATEMOVE_URL = "/validateMove";
   public static final String CHECKTURN_URL = "/checkTurn";
   public static final String SUBMITTURN_URL = "/submitTurn";
-  
+  public static final String BACKUP_URL = "/backupMove";
 
   //
   // Attributes
@@ -153,7 +153,8 @@ public class WebServer {
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
     post(CHECKTURN_URL, new PostCheckTurn(gson));
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
-
+    post(BACKUP_URL, new PostBackupRoute(gson));
+    
     //
     LOG.config("WebServer is initialized.");
   }
