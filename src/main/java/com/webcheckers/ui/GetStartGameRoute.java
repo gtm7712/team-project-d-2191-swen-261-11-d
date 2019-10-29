@@ -96,19 +96,21 @@ public class GetStartGameRoute implements Route {
 
     // Inject game information into template
     vm.put("title", "Let's Play");
-    vm.put("board", game.getBoardRed());
+
     vm.put("viewMode", "PLAY");
     vm.put("currentUser", currentPlayer);
-    vm.put("redPlayer", currentPlayer);
-    vm.put("whitePlayer", opponent);
+    vm.put("redPlayer", game.getRedPlayer());
+    vm.put("whitePlayer", game.getWhitePlayer());
 
     Player playerTurn = game.whoseTurn();
 
     if(playerTurn == game.getRedPlayer()) {
       vm.put("activeColor", Piece.Color.RED);
+      vm.put("board", game.getBoardRed());
     }
     else {
       vm.put("activeColor", Piece.Color.WHITE);
+      vm.put("board", game.getBoardWhite());
     }
 
     // render the View
