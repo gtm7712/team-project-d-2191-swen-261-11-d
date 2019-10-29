@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import com.webcheckers.model.*;
 import com.webcheckers.util.MoveValidator;
+import com.webcheckers.util.ValidationResult;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -57,7 +59,9 @@ public class PostValidateMoveRoute implements Route {
         //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
         if(game.isComplete())
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
-        switch (validate.validateMove(madeMove).getTurnResult()) {
+
+        ValidationResult result = validate.validateMove(madeMove); 
+        switch (result.getTurnResult()) {
             case COMPLETE:
                 game.makeMove(madeMove);
 //                vm.put("board", board);
@@ -75,10 +79,10 @@ public class PostValidateMoveRoute implements Route {
             case FAIL:
 //                vm.put("board", board);
                 return gson.toJson(new Message("Invalid Move", Message.Type.ERROR));
-            case JUMP:
-                game.makeMove(madeMove);
-                game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
-
+        }
+        if (result.wasJump()) {
+            game.makeMove(madeMove);
+            game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
         }
         return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
