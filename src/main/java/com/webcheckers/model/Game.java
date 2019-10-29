@@ -108,6 +108,7 @@ public class Game {
      */
 
     public String revertTurn(){
+        isComplete=false;
         try {
             clonedBoard=board;
             turn=new ArrayList<>();
