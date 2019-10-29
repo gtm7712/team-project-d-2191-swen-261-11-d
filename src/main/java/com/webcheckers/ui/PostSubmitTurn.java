@@ -18,13 +18,15 @@ import com.google.gson.annotations.JsonAdapter;
 import com.webcheckers.util.Message;
 
 /**
- * ui controller for validating moves
+ * ui controller for submitting turn
+ * 
+ * @author Kyle Collins
  */
-public class PostCheckTurn implements Route {
+public class PostSubmitTurn implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
-    public PostCheckTurn(final Gson gson ){
+    public PostSubmitTurn(final Gson gson ){
         this.gson = gson;
     }
 
@@ -39,17 +41,10 @@ public class PostCheckTurn implements Route {
         vm.put("currentUser", currentPlayer);
         vm.put("redPlayer", game.getRedPlayer());
         vm.put("whitePlayer", game.getWhitePlayer());
-        if(currentPlayer.equals(game.getRedPlayer()))
-            vm.put("activeColor", Piece.Color.RED);
-        if(currentPlayer.equals(game.getWhitePlayer()))
-            vm.put("activeColor", Piece.Color.WHITE);
-        if(currentPlayer.equals(game.whoseTurn())){
-            return gson.toJson(new Message("true", Message.Type.INFO));
-        }
-        else{
-            return gson.toJson(new Message("false", Message.Type.INFO));   
-        }
-    
-        //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+
+        // End the current player's turn
+        game.endTurn();
+        return gson.toJson(new Message("Valid move", Message.Type.INFO));
+
     }
 }

@@ -133,4 +133,10 @@ public class Space {
             return false;
         return true;
     }
+
+    public void unKingPiece() {
+        if(piece.isKing()){
+            piece.unKing();
+        }
+    }
 }

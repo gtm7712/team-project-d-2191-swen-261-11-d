@@ -17,6 +17,8 @@ import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
 
+import org.eclipse.jetty.util.security.Credential;
+
 /**
  * The UI Controller for start game.
  *
@@ -66,34 +68,53 @@ public class GetStartGameRoute implements Route {
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
-      if(lobby.getPlayer(otherPlayer).isInGame()){
-          vm.put("title", "Welcome!");
-          vm.put("allUsers",lobby.getUsernames());
-          vm.put("error", "Player is already in a game!");
-          return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-      }
+      // check to see if player is in game
+      if(!currentPlayer.isInGame()) {
 
-      currentPlayer.setOpponent(opponent);
-      opponent.setOpponent(currentPlayer);
+        if(opponent.isInGame()){
+            vm.put("title", "Welcome!");
+            vm.put("allUsers",lobby.getUsernames());
+            vm.put("error", "Player is already in a game!");
+            return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        }
 
-      lobby.getPlayer(currentPlayer.name).inGame(true);
-      lobby.getPlayer(otherPlayer).inGame(true);
+        currentPlayer.setOpponent(opponent);
+        opponent.setOpponent(currentPlayer);
 
-      game.setRedPlayer(currentPlayer);
-      game.setWhitePlayer(opponent);
+        lobby.getPlayer(currentPlayer.name).inGame(true);
+        lobby.getPlayer(otherPlayer).inGame(true);
 
-      currentPlayer.setGame(game);
-      opponent.setGame(game);
-      // Inject game information into template
-      vm.put("title", "Let's Play");
-      vm.put("board", game.getBoardRed());
-      vm.put("viewMode", "PLAY");
-      vm.put("currentUser", currentPlayer);
-      vm.put("redPlayer", currentPlayer);
-      vm.put("whitePlayer", opponent);
+        game.setRedPlayer(currentPlayer);
+        game.setWhitePlayer(opponent);
+
+        currentPlayer.setGame(game);
+        opponent.setGame(game);
+
+    }
+
+    opponent = currentPlayer.getOpponent();
+
+    // Inject game information into template
+    vm.put("title", "Let's Play");
+
+    vm.put("viewMode", "PLAY");
+    vm.put("currentUser", currentPlayer);
+    vm.put("redPlayer", game.getRedPlayer());
+    vm.put("whitePlayer", game.getWhitePlayer());
+
+    Player playerTurn = game.whoseTurn();
+
+    if(playerTurn == game.getRedPlayer()) {
       vm.put("activeColor", Piece.Color.RED);
-      // render the View
-      return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+      vm.put("board", game.getBoardRed());
+    }
+    else {
+      vm.put("activeColor", Piece.Color.WHITE);
+      vm.put("board", game.getBoardWhite());
+    }
+
+    // render the View
+    return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
   }
 

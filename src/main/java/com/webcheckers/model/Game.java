@@ -13,12 +13,14 @@ public class Game {
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
     private boolean isComplete=false;
+    private boolean wasKinged=false;
+    private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
     /**
      * Create a new Game
      */
     public Game() {
         this.board = new Board();
-        this.clonedBoard=board;
+        this.clonedBoard=new Board(board.getBoard());
     }
 
     /**
@@ -97,6 +99,11 @@ public class Game {
      * @param madeMove move that went through validation
      */
     public void makeMove(Move madeMove){
+
+        if(madeMove.getEnd().getRow()==-1 && madeMove.getEnd().getCell()==-1) {
+            graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
+            turn.add(0, madeMove);
+        }
         turn.add(madeMove);
         clonedBoard.makeMove(madeMove);
     }
@@ -109,8 +116,25 @@ public class Game {
 
     public String revertTurn(){
         isComplete=false;
+//        this.clonedBoard=new Board(board.getBoard());
+        for(int i=0; i<turn.size(); i++){
+            Move move=turn.get(i);
+            if(move.getEnd().getCell()==-1 && move.getEnd().getRow()==-1){
+                clonedBoard.getSpace(move.getStart()).setPiece(graveyard.get(graveyard.size()-1));
+                graveyard.remove(graveyard.size()-1);
+            }
+            if(wasKinged) {
+                if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
+                    clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
+                    clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                }
+            }
+            clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
+        }
+        graveyard=new ArrayList<>();
+        wasKinged=false;
         try {
-            clonedBoard=board;
             turn=new ArrayList<>();
         } catch (Exception e) {
             return e.getMessage();
@@ -123,9 +147,11 @@ public class Game {
      * handles when End Turn button is clicked.
      */
     public void endTurn(){
+        graveyard=new ArrayList<>();
         board=clonedBoard;
         turn=new ArrayList<>();
         isComplete=false;
+        wasKinged=false;
         if(theirTurn.equals(redPlayer))
             theirTurn=whitePlayer;
         else

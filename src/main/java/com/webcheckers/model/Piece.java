@@ -68,4 +68,11 @@ public class Piece {
     public Type getType() {
         return type;
     }
+
+    /**
+     * un kings a piece
+     */
+    public void unKing() {
+        type=Type.SINGLE;
+    }
 }

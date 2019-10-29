@@ -94,7 +94,12 @@ public class MoveValidator {
         } else return false; // No piece to jump
     }
 
-    public boolean simpleMove(Move move){
+    /**
+     * checks if a move is a simple 1 tile move
+     * @param move
+     * @return if it is or not
+     */
+    private boolean simpleMove(Move move){
         if(board.getSpace(move.getStart()).getPiece().isKing()){
             if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
                 if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
@@ -135,7 +140,7 @@ public class MoveValidator {
      * @param move Move to check
      * @return The midpoint of the move
      */
-    private Position getMidpoint(Move move) {
+    public Position getMidpoint(Move move) {
         // Extract coordinates of the move
         int sr = move.getStart().getRow();
         int sc = move.getStart().getCell();
@@ -215,13 +220,13 @@ public class MoveValidator {
         if(game.whoseTurn().equals(game.getRedPlayer())) {
 
             if (!p.isKing()) {
-                if (endPos.getRow() == Board.BOARD_SIZE - 1)
+                if (endPos.getRow() == Board.BOARD_SIZE)
                     return true;
             }
         }
         else{//white player
             if(!p.isKing()){
-                if(endPos.getRow()==0)
+                if(endPos.getRow()==Board.BOARD_SIZE-1)
                     return true;
             }
         }
