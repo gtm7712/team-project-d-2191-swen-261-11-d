@@ -53,8 +53,13 @@ public class PostValidateMoveRoute implements Route {
 //            vm.put("activeColor", Piece.Color.RED);
 //        if(currentPlayer.equals(game.getWhitePlayer()))
 //            vm.put("activeColor", Piece.Color.WHITE);
-
-        Move madeMove= new Move(new Position(startR, startC), new Position(endR, endC));
+        Move madeMove;
+        if(currentPlayer.equals(game.getWhitePlayer())){
+            madeMove= new Move(new Position(7-startR, startC), new Position(7-endR, endC));
+        }
+        else {
+            madeMove = new Move(new Position(startR, startC), new Position(endR, endC));
+        }
         System.out.println(madeMove);
         //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
         if(game.isComplete())
