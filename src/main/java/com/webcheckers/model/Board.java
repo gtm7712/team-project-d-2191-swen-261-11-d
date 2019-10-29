@@ -106,8 +106,10 @@ public class Board implements Iterable<Row> {
         if(move.getEnd().getCell()==-1 && move.getEnd().getRow()==-1){
             getSpace(move.getStart()).removePiece();
         }
-        getSpace(move.getEnd()).setPiece(getSpace(move.getStart()).getPiece());
-        getSpace(move.getStart()).removePiece();
+        else {
+            getSpace(move.getEnd()).setPiece(getSpace(move.getStart()).getPiece());
+            getSpace(move.getStart()).removePiece();
+        }
     }
     @Override
     public boolean equals (Object o) {

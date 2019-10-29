@@ -103,11 +103,14 @@ public class Game {
     public void makeMove(Move madeMove){
 
         if(madeMove.getEnd().getRow()==-1 && madeMove.getEnd().getCell()==-1) {
+            System.out.println("Grave Yard");
             graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
             turn.add(0, madeMove);
+            board.getSpace(madeMove.getStart()).removePiece();
+        }else {
+            turn.add(madeMove);
+            clonedBoard.makeMove(madeMove);
         }
-        turn.add(madeMove);
-        clonedBoard.makeMove(madeMove);
     }
 
     /**
@@ -125,6 +128,9 @@ public class Game {
                 clonedBoard.getSpace(move.getStart()).setPiece(graveyard.get(graveyard.size()-1));
                 graveyard.remove(graveyard.size()-1);
             }
+            else{
+                clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
+            }
             if(wasKinged) {
                 if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
                     clonedBoard.getSpace(move.getEnd()).unKingPiece();
@@ -132,7 +138,7 @@ public class Game {
                     clonedBoard.getSpace(move.getEnd()).unKingPiece();
                 }
             }
-            clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
+
         }
         graveyard=new ArrayList<>();
         wasKinged=false;
