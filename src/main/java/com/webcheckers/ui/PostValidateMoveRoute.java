@@ -86,7 +86,7 @@ public class PostValidateMoveRoute implements Route {
                 return gson.toJson(new Message("Invalid Move", Message.Type.ERROR));
         }
         if (result.wasJump()) {
-            game.makeMove(madeMove);
+            //game.makeMove(madeMove);
             game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
         }
         return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
