@@ -35,30 +35,29 @@ public class MoveValidator {
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
     public ValidationResult validateMove(Move move) {
-        Piece pce = board.getSpace(move.getStart()).getPiece();
+        Piece   pce     = board.getSpace(move.getStart()).getPiece();
         boolean didJump = false;
-        // If the move takes no piece, the turn is over. Otherwise, the piece is taken
-        if (simpleMove(move)) {
-            if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
-            if(shouldKing(move)) return new ValidationResult(TurnResult.KING, false);
 
-            return new ValidationResult(TurnResult.COMPLETE, false);
-        } else if (madeJump(move)) {
-            if (isJumpValid(move)) {
-                didJump = true;
-            } else {
-                return new ValidationResult(TurnResult.FAIL, false);
-            }
-        } else {
+        if (simpleMove(move)) { // Simple move (no jump)
+            if      (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL,     false);
+            else if (shouldKing(move))               return new ValidationResult(TurnResult.KING,     false);
+            else                                     return new ValidationResult(TurnResult.COMPLETE, false);
+
+        } else if (madeJump(move)) {  // Jump made, is it valid?
+            if   (isJumpValid(move)) didJump = true;
+            else                     return new ValidationResult(TurnResult.FAIL, false);
+
+        } else {  // Need to make a jump
             if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
         }
 
-        if(shouldKing(move)) return new ValidationResult(TurnResult.KING, false);
+        if(shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump);
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
         if (!isCapturePossible(move.getEnd(), pce)) {
-            if (shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump); 
-            else return new ValidationResult(TurnResult.COMPLETE, didJump);
+            if   (shouldKing(move)) return new ValidationResult(TurnResult.KING,     didJump); 
+            else                    return new ValidationResult(TurnResult.COMPLETE, didJump);
+
         } else {  // Turn continues
             return new ValidationResult(TurnResult.CONTINUE, didJump);
         }
@@ -84,9 +83,8 @@ public class MoveValidator {
      * @return True if the jump was valid
      */
     private boolean isJumpValid(Move move) {        
-        Position jump = getMidpoint(move);
-
-        Space jumpSpace = board.getSpace(jump);
+        Position jump      = getMidpoint(move);
+        Space    jumpSpace = board.getSpace(jump);
 
         if (jumpSpace.hasPiece()) { // Cannot jump own piece
             if (jumpSpace.getPiece().getColor() != board.getSpace(move.getStart()).getPiece().getColor()) {
@@ -96,46 +94,6 @@ public class MoveValidator {
             }
 
         } else return false; // No piece to jump
-    }
-
-    /**
-     * checks if a move is a simple 1 tile move
-     * @param move
-     * @return if it is or not
-     */
-    private boolean simpleMove(Move move){
-        if(board.getSpace(move.getStart()).getPiece().isKing()){
-            if(move.getEnd().getRow()==move.getStart().getRow()+1 || move.getEnd().getRow()==move.getStart().getRow()-1){
-                if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
-
-        } else {
-            if(game.whoseTurn().equals(game.getRedPlayer())){
-                if(move.getEnd().getRow()==move.getStart().getRow()-1){
-                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-
-            } else {  //white player
-
-                if(move.getEnd().getRow()==move.getStart().getRow()+1){
-                    if(move.getEnd().getCell()==move.getStart().getCell()+1||move.getEnd().getCell()==move.getStart().getCell()-1)
-                        return true;
-                    else
-                        return false;
-                } else
-                    return false;
-            }
-        }
     }
 
     /**
@@ -186,7 +144,7 @@ public class MoveValidator {
      * @return True if another capture is possible
      */
     private boolean isCapturePossible(Position pos, Piece piece) {
-        Color c = piece.getColor();
+        Color   c    = piece.getColor();
         boolean king = piece.isKing();
 
         Space upRight = board.getSpace(new Position(
@@ -220,21 +178,104 @@ public class MoveValidator {
      */
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
-        Piece p = board.getSpace(move.getStart()).getPiece();
-        if(game.whoseTurn().equals(game.getRedPlayer())) {
+        Piece    p      = board.getSpace(move.getStart()).getPiece();
 
+        if(game.whoseTurn().equals(game.getRedPlayer())) {
             if (!p.isKing()) {
                 if (endPos.getRow() == Board.BOARD_SIZE - 1)
                     return true;
             }
-        }
-        else{//white player
+        } else {//white player
             if(!p.isKing()){
                 if(endPos.getRow()==Board.BOARD_SIZE - 1)
                     return true;
             }
         }
         return false;
+    }
+
+    /**
+     * checks if a move is a simple 1 tile move
+     * @param move
+     * @return if it is or not
+     */
+    private boolean simpleMove(Move move){
+        if(board.getSpace(move.getStart()).getPiece().isKing()) {
+            return _simpleMove_king(move);
+        } else {
+            if(game.whoseTurn().equals(game.getRedPlayer())) {
+                return _simpleMove_red(move);
+            } else { //white player
+                return _simpleMove_white(move);
+            }
+        }
+    }
+
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_king(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() + 1 || 
+        move.getEnd().getRow() == move.getStart().getRow() - 1) 
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1) 
+            {
+                return true;
+            } else 
+            {
+                return false;
+            }
+        } else 
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_red(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() - 1)
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_white(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() + 1)
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } else 
+        {
+            return false;
+        }
     }
 
 }
