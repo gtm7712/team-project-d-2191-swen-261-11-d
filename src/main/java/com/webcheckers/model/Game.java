@@ -103,11 +103,19 @@ public class Game {
 
     /**
      * handles if revert turn button is clicked.
+     * 
+     * @return Error message, if applicaple, or Null if successful 
      */
-    public void revertTurn(){
-        clonedBoard=board;
-        isComplete=false;
-        turn=new ArrayList<>();
+
+    public String revertTurn(){
+        try {
+            clonedBoard=board;
+            turn=new ArrayList<>();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return null;
+
     }
 
     /**
