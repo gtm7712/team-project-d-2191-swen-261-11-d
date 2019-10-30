@@ -64,6 +64,10 @@ public class PostSubmitTurn implements Route {
             game.setGameOver(true);
             Player winner = game.getWinner();
         }
+        if(game.hasNoMoves()){
+            game.setGameOver(true);
+            Player winner=game.getWinner();
+        }
         return gson.toJson(new Message("Good move!", Message.Type.INFO));
 
     }

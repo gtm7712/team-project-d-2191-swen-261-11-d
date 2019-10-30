@@ -1,5 +1,9 @@
 package com.webcheckers.model;
 
+import com.webcheckers.ui.PostValidateMoveRoute;
+import com.webcheckers.util.MoveValidator;
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 
 /**
@@ -260,6 +264,85 @@ public class Game {
     public void kingPiece(Position p){
         board.getSpace(p).kingPiece();
         wasKinged=true;
+    }
+
+    /**
+     * determines if a player has moves or not
+     * @return true if player has no moves
+     */
+    public boolean hasNoMoves() {
+        MoveValidator validate = new MoveValidator(this);
+        if(theirTurn.equals(redPlayer)) {
+            for (int i = 0; i < Board.BOARD_SIZE; i++) {
+                for (int j = 0; j < Board.BOARD_SIZE; j++) {
+                    Space space = board.getSpace(i, j);
+                    if (space.hasPiece()) {
+                        Piece piece = space.getPiece();
+                        if (piece.getColor() == Piece.Color.RED) {
+                            if (!validate.shouldMakeJump(Piece.Color.RED) && checkAllSimpleMoves(new Position(i,j), piece)) {
+                                this.winner=whitePlayer;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {//white player
+            for (int i = 0; i < Board.BOARD_SIZE; i++) {
+                for (int j = 0; j < Board.BOARD_SIZE; j++) {
+                    Space space = board.getSpace(i, j);
+                    if (space.hasPiece()){
+                        Piece piece=space.getPiece();
+                        if (piece.getColor() == Piece.Color.WHITE) {
+                            if (!validate.shouldMakeJump(Piece.Color.WHITE) && checkAllSimpleMoves(new Position(i, j), piece)) {
+                                this.winner=redPlayer;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * helper method for hasNoMoves that checks all simple moves of a specific piece
+     * @return true if a move can NOT happen
+     */
+    public boolean checkAllSimpleMoves(Position pos, Piece piece){
+        Position upL=null, upR=null, downL=null, downR=null;
+        if(pos.getRow()!=0 && pos.getCell()!=0) {
+            upL = new Position(pos.getRow() - 1, pos.getCell() - 1);
+        }
+        if(pos.getRow()!=0 && pos.getCell()!=7) {
+            upR=new Position(pos.getRow()-1, pos.getCell()+1);
+        }
+        if(pos.getRow()!=7 && pos.getCell()!=0) {
+            downL = new Position(pos.getRow() + 1, pos.getCell() - 1);
+        }
+        if(pos.getRow()!=7 && pos.getCell()!=7) {
+            downR = new Position(pos.getRow() + 1, pos.getCell() - 1);
+        }
+        if(piece.getColor()== Piece.Color.RED) {
+            if (!piece.isKing()) {
+                if ((upL == null || board.getSpace(upL).hasPiece()) && (upR == null || board.getSpace(upR).hasPiece())) {
+                    return true;
+                }
+            }
+        }
+        else {
+            if((downR==null || board.getSpace(downR).hasPiece()) && (downL==null ||board.getSpace(downL).hasPiece())){
+                return true;
+            }
+        }
+        if((upL==null || board.getSpace(upL).hasPiece()) && (upR==null ||board.getSpace(upR).hasPiece())&&
+                (downR==null || board.getSpace(downR).hasPiece()) && (downL==null ||board.getSpace(downL).hasPiece())){
+         //king pieces
+               return true;
+        }
+        return false;
     }
 
     /**
