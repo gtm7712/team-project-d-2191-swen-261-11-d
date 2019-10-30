@@ -36,6 +36,7 @@ public class MoveValidatorTest {
         game = new Game();
         game.setRedPlayer(player1);
         game.setWhitePlayer(player2);
+        // game.__test_set_white_turn();
 
         board = game.getClonedBoard();
         mv = new MoveValidator(game);
@@ -46,8 +47,8 @@ public class MoveValidatorTest {
      */
     @Test
     public void noJump() {
-        board.getSpace(1, 1).setPiece(new Piece(Color.RED));
-        Move m = new Move(new Position(1, 1), new Position(2, 2));
+        board.getSpace(5, 1).setPiece(new Piece(Color.WHITE));
+        Move m = new Move(new Position(5, 1), new Position(4, 2));
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
     }
 
@@ -69,11 +70,11 @@ public class MoveValidatorTest {
         Piece p = new Piece(Color.RED);
         Piece j = new Piece(Color.RED);
 
-        Move m = new Move(new Position(1, 1), new Position(3, 3));
+        Move m = new Move(new Position(3, 3), new Position(1, 1));
         
-        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(3, 3).setPiece(p);
         board.getSpace(2, 2).setPiece(j);
-        board.getSpace(3, 3).setPiece(null);
+        board.getSpace(1, 1).setPiece(null);
 
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
@@ -83,20 +84,22 @@ public class MoveValidatorTest {
         Piece p = new Piece(Color.RED);
         Piece j = new Piece(Color.WHITE);
 
-        Move m = new Move(new Position(1, 1), new Position(3, 3));
+        Move m = new Move(new Position(3, 3), new Position(1, 1));
         
-        board.getSpace(1, 1).setPiece(p);
+        board.getSpace(3, 3).setPiece(p);
         board.getSpace(2, 2).setPiece(j);
-        board.getSpace(3, 3).setPiece(null);
+        board.getSpace(1, 1).setPiece(null);
 
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
     }
 
     @Test
     public void upRight() {
-        Piece p = new Piece(Color.RED);
-        Piece j = new Piece(Color.WHITE);
-        Piece j2 = new Piece(Color.WHITE);
+        Piece p = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
+        Piece j2 = new Piece(Color.RED);
+
+        game.__test_set_white_turn();
 
         Move m = new Move(new Position(1, 1), new Position(3, 3));
         
@@ -110,9 +113,11 @@ public class MoveValidatorTest {
 
     @Test
     public void upLeft() {
-        Piece p = new Piece(Color.RED);
-        Piece j = new Piece(Color.WHITE);
-        Piece j2 = new Piece(Color.WHITE);
+        Piece p = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
+        Piece j2 = new Piece(Color.RED);
+
+        game.__test_set_white_turn();
 
         Move m = new Move(new Position(1, 1), new Position(3, 3));
         
@@ -126,10 +131,12 @@ public class MoveValidatorTest {
 
     @Test
     public void downRight() {
-        Piece p = new Piece(Color.RED);
+        Piece p = new Piece(Color.WHITE);
         p.king();
-        Piece j = new Piece(Color.WHITE);
-        Piece j2 = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
+        Piece j2 = new Piece(Color.RED);
+
+        game.__test_set_white_turn();
 
         Move m = new Move(new Position(4, 4), new Position(2, 2));
         
@@ -143,10 +150,12 @@ public class MoveValidatorTest {
 
     @Test
     public void downLeft() {
-        Piece p = new Piece(Color.RED);
+        Piece p = new Piece(Color.WHITE);
         p.king();
-        Piece j = new Piece(Color.WHITE);
-        Piece j2 = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
+        Piece j2 = new Piece(Color.RED);
+
+        game.__test_set_white_turn();
 
         Move m = new Move(new Position(4, 4), new Position(2, 2));
         
@@ -160,7 +169,8 @@ public class MoveValidatorTest {
 
     @Test
     public void king() {
-        Piece p = new Piece(Color.RED);
+        game.__test_set_white_turn();
+        Piece p = new Piece(Color.WHITE);
         board.getSpace(6, 6).setPiece(p);
         Move m = new Move(new Position(6, 6), new Position(7, 7));
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
@@ -168,8 +178,9 @@ public class MoveValidatorTest {
 
     @Test
     public void kingOnJump() {
-        Piece p = new Piece(Color.RED);
-        Piece j = new Piece(Color.WHITE);
+        game.__test_set_white_turn();
+        Piece p = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
         
         board.getSpace(5, 5).setPiece(p);
         board.getSpace(6, 6).setPiece(j);
@@ -179,9 +190,10 @@ public class MoveValidatorTest {
     
     @Test
     public void invalidNoJumpWhenJumpPossible() {
-        Piece p = new Piece(Color.RED);
-        Piece p2 = new Piece(Color.RED);
-        Piece j = new Piece(Color.WHITE);
+        game.__test_set_white_turn();
+        Piece p = new Piece(Color.WHITE);
+        Piece p2 = new Piece(Color.WHITE);
+        Piece j = new Piece(Color.RED);
         
         Move m = new Move(new Position(4, 4), new Position(5, 5));
         

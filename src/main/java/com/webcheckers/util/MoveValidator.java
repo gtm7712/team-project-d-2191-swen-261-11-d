@@ -37,7 +37,7 @@ public class MoveValidator {
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
     public ValidationResult validateMove(Move move) {
-        Piece   pce     = board.getSpace(move.getStart()).getPiece();
+        Piece pce = board.getSpace(move.getStart()).getPiece();
         didJump = false;
 
         if (simpleMove(move)) { // Simple move (no jump)
@@ -48,13 +48,13 @@ public class MoveValidator {
             else if (shouldKing(move)){
                 return new ValidationResult(TurnResult.KING, false);
             }               
-            else{
+            else {
                 return new ValidationResult(TurnResult.COMPLETE, false);
             }   
 
         } else if (madeJump(move)) {  // Jump made, is it valid?
-            if   (isJumpValid(move)) didJump = true;
-            else{
+            if (isJumpValid(move)) { didJump = true; }
+            else {
                 msg = "That is an illegal jump!";              
                 return new ValidationResult(TurnResult.FAIL, false);
             }
@@ -192,7 +192,7 @@ public class MoveValidator {
     private boolean isCapturePossible(Position pos, Piece piece) {
         Color   c    = piece.getColor();
         boolean king = piece.isKing();
-        if(c == Color.WHITE){
+        if(c == Color.WHITE) {
             Space upRight = board.getSpace(new Position(
             pos.getRow() + 1, pos.getCell() - 1));
             Space upRightRight = board.getSpace(new Position(

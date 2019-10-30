@@ -210,6 +210,10 @@ public class Game {
         wasKinged=true;
     }
 
+    public void __test_set_white_turn() {
+        theirTurn = whitePlayer;
+    }
+
     /**
      * Main entry point for the Game
      * @param args
