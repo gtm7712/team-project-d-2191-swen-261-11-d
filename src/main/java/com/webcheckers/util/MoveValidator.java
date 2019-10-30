@@ -49,18 +49,27 @@ public class MoveValidator {
                 return new ValidationResult(TurnResult.KING, false);
             }               
             else{
+                System.out.println("here");
                 return new ValidationResult(TurnResult.COMPLETE, false);
             }   
 
         } else if (madeJump(move)) {  // Jump made, is it valid?
-            if   (isJumpValid(move)) didJump = true;
+            if(isJumpValid(move)){
+                didJump = true;
+            }
             else{
                 msg = "That is an illegal jump!";              
                 return new ValidationResult(TurnResult.FAIL, false);
             }
-        } else {  // Need to make a jump
-            msg = "You must make the jump!";
-            if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
+        } else {  
+            if (shouldMakeJump(pce.getColor())){    // Need to make a jump
+                msg = "You must make the jump!";
+                return new ValidationResult(TurnResult.FAIL, false);
+            }
+            else{
+                msg = "Invalid move!";
+                return new ValidationResult(TurnResult.FAIL, false);
+            }
         }
 
         if(shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump);
@@ -83,7 +92,13 @@ public class MoveValidator {
      */
     private boolean madeJump(Move move) {
         Position jump = getMidpoint(move);
-
+        System.out.println(jump.getRow() + " " + jump.getCell());
+        System.out.println(move.getStart().getRow() + " " + move.getStart().getCell());
+        System.out.println(move.getEnd().getRow() + " " + move.getEnd().getCell());
+        if (move.getEnd().getCell() - move.getStart().getCell() != 2 && 
+            move.getEnd().getCell() - move.getStart().getCell() != -2){
+            return false;
+        }
         if (jump.equals(move.getStart()) || jump.equals(move.getEnd())) return false; 
         else return true;
     }
@@ -113,7 +128,7 @@ public class MoveValidator {
                 }
             }
             else{
-                if(endRow-origRow > 2){
+                if(endRow-origRow > 2 || endRow-origRow < 0){
                     return false;
                 }
             }
@@ -125,7 +140,7 @@ public class MoveValidator {
                 }
             }
             else{
-                if(endRow-origRow > -2){
+                if(endRow-origRow < -2 || endRow-origRow > 0){
                     return false;
                 }
             }
