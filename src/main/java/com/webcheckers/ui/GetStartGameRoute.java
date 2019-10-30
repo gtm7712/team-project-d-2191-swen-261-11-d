@@ -110,7 +110,13 @@ public class GetStartGameRoute implements Route {
       
       final Map<String, Object> modeOptions = new HashMap<>(2);
       modeOptions.put("isGameOver", true);
-      modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+      if(game.noMorePieces()){    
+          modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
+      }
+      else{
+          game.setWinner(currentPlayer.getOpponent());
+          modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+      }
       vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
 
       Player playerTurn = game.whoseTurn();

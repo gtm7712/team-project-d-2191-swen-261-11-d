@@ -197,6 +197,35 @@ public class Game {
         return gameOver;
     }
 
+    public boolean noMorePieces(){
+        int countRed = 0;
+        int countWhite = 0;
+                
+        for (int r = 0; r <= Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c <= Board.BOARD_SIZE - 1; c++) {
+                Position pos = new Position(r, c);
+                Piece pce = board.getSpace(pos).getPiece();
+                if(pce != null){
+                    if(pce.getColor() == Piece.Color.RED){
+                        countRed++;
+                    }
+                    if(pce.getColor() == Piece.Color.WHITE){
+                        countWhite++;
+                    }
+                }
+            }
+        }
+        if(countRed == 0){
+            this.winner = this.whitePlayer;
+            return true;
+        }
+        if(countWhite == 0){
+            this.winner = this.redPlayer;
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @return The board represented in String format
      */

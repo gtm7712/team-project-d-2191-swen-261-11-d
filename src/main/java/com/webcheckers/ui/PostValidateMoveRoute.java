@@ -41,13 +41,6 @@ public class PostValidateMoveRoute implements Route {
         MoveValidator validate = new MoveValidator(game);
         System.out.println(request.queryParams("actionData"));
 
-        if(game.getGameStatus()){
-            final Map<String, Object> modeOptions = new HashMap<>(2);
-            modeOptions.put("isGameOver", true);
-            modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
-            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-        }
-
         String move = request.queryParams("actionData");
         int startR = Character.getNumericValue(move.charAt(16));
         int startC = Character.getNumericValue(move.charAt(25));

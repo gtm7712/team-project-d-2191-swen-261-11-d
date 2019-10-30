@@ -105,7 +105,6 @@ public class Player {
 
     public void resign(){
         this.game.setGameOver(true);
-        this.game.setWinner(opponent);
         this.inGame = false;
         this.game = null;
     }
