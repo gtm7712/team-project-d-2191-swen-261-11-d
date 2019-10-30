@@ -99,32 +99,33 @@ public class MoveValidator {
         Space    jumpSpace = board.getSpace(jump);
         
         Space space = board.getSpace(move.getStart());
+        Space endSpace = board.getSpace(move.getEnd());
 
         int origRow = space.getRow();
         int origCol = space.getCellIdx();
-        int jumpRow = jumpSpace.getRow();
-        int jumpCol = jumpSpace.getCellIdx();
+        int endRow = endSpace.getRow();
+        int endCol = endSpace.getCellIdx();
 
         if(space.getPiece().getColor() == Color.WHITE){
             if(space.getPiece().isKing()){
-                if(jumpRow-origRow > 1 && jumpRow-origRow < -1){
+                if(endRow-origRow > 2 && endRow-origRow < -2){
                     return false;
                 }
             }
             else{
-                if(jumpRow-origRow > 1){
+                if(endRow-origRow > 2){
                     return false;
                 }
             }
         }
         else{
             if(space.getPiece().isKing()){
-                if(jumpRow-origRow > 1 && jumpRow-origRow < -1){
+                if(endRow-origRow > 2 && endRow-origRow < -2){
                     return false;
                 }
             }
             else{
-                if(jumpRow-origRow > -1){
+                if(endRow-origRow > -2){
                     return false;
                 }
             }

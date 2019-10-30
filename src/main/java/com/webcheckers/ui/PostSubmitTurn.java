@@ -54,6 +54,7 @@ public class PostSubmitTurn implements Route {
             boolean jumped = request.session().attribute("jumped");
         
             if(validate.shouldMakeJump(currentColor) && jumped){
+                jumped = false;
                 request.session().removeAttribute("jumped");
                 return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
             }
