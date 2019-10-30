@@ -122,28 +122,29 @@ public class Game {
     public String revertTurn(){
         isComplete=false;
 //        this.clonedBoard=new Board(board.getBoard());
-        for(int i=0; i<turn.size(); i++){
-            Move move=turn.get(i);
-            if(move.getEnd().getCell()==-1 && move.getEnd().getRow()==-1){
-                clonedBoard.getSpace(move.getStart()).setPiece(graveyard.get(graveyard.size()-1));
+        int i=turn.size()-1;
+        System.out.println(turn.size());
+        Move move=turn.get(i);
+        clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
+            if(turn.get(0).getEnd().getCell()==-1 && turn.get(0).getEnd().getRow()==-1){
+                clonedBoard.getSpace(turn.get(0).getStart()).setPiece(graveyard.get(graveyard.size()-1));
                 graveyard.remove(graveyard.size()-1);
+                turn.remove(0);
+                        i--;
             }
-            else{
-                clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
-            }
+
             if(wasKinged) {
                 if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
                     clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                    wasKinged=false;
                 } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
                     clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                    wasKinged=false;
                 }
             }
-
-        }
-        graveyard=new ArrayList<>();
-        wasKinged=false;
+        turn.remove(i);
+        System.out.println(turn);
         try {
-            turn=new ArrayList<>();
         } catch (Exception e) {
             return e.getMessage();
         }
