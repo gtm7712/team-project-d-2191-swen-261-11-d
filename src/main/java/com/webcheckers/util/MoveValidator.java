@@ -106,13 +106,27 @@ public class MoveValidator {
         int jumpCol = jumpSpace.getCellIdx();
 
         if(space.getPiece().getColor() == Color.WHITE){
-            if(jumpRow-origRow != 1){
-                return false;
+            if(space.getPiece().isKing()){
+                if(jumpRow-origRow > 1 && jumpRow-origRow < -1){
+                    return false;
+                }
+            }
+            else{
+                if(jumpRow-origRow > 1){
+                    return false;
+                }
             }
         }
         else{
-            if(jumpRow-origRow != -1){
-                return false;
+            if(space.getPiece().isKing()){
+                if(jumpRow-origRow > 1 && jumpRow-origRow < -1){
+                    return false;
+                }
+            }
+            else{
+                if(jumpRow-origRow > -1){
+                    return false;
+                }
             }
         }
 
@@ -254,6 +268,7 @@ public class MoveValidator {
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
         Piece    p      = board.getSpace(move.getStart()).getPiece();
+        System.out.println(endPos.getRow());
 
         if(game.whoseTurn().equals(game.getRedPlayer())) {
             if (!p.isKing()) {
