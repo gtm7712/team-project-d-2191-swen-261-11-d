@@ -125,6 +125,15 @@ public class Game {
         int i=turn.size()-1;
         System.out.println(turn.size());
         Move move=turn.get(i);
+        if(wasKinged) {
+            if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
+                clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                wasKinged=false;
+            } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
+                clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                wasKinged=false;
+            }
+        }
         clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
             if(turn.get(0).getEnd().getCell()==-1 && turn.get(0).getEnd().getRow()==-1){
                 clonedBoard.getSpace(turn.get(0).getStart()).setPiece(graveyard.get(graveyard.size()-1));
@@ -133,15 +142,7 @@ public class Game {
                         i--;
             }
 
-            if(wasKinged) {
-                if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
-                    clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                    wasKinged=false;
-                } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
-                    clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                    wasKinged=false;
-                }
-            }
+
         turn.remove(i);
         System.out.println(turn);
         try {
@@ -204,7 +205,10 @@ public class Game {
         }
         return toReturn;
     }
-
+    public void kingPiece(Position p){
+        board.getSpace(p).kingPiece();
+        wasKinged=true;
+    }
 
     /**
      * Main entry point for the Game
