@@ -1,11 +1,8 @@
 package com.webcheckers.util;
 
-import com.webcheckers.model.Board;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Space;
+import com.webcheckers.model.*;
 import com.webcheckers.model.Piece.Color;
+import com.webcheckers.util.ValidationResult.TurnResult;
 
 /**
  * Utility class to validate @link{Move}s
@@ -13,28 +10,20 @@ import com.webcheckers.model.Piece.Color;
  * @author Giovanni Melchionne
  */
 public class MoveValidator {
-
-    /**
-     * Result of the move
-     * COMPLETE:  The turn is over
-     * CONTINUE:  The player must make another move
-     * KING:      The piece has reached the end of the board
-     *                (end of turn is implied)
-     * FAIL:      The move was not valid
-     */
-    public enum TurnResult { COMPLETE, CONTINUE, KING, FAIL };
-
-    //
     
     private Board board;
+    private Game game;
+    public String msg;
+    public boolean didJump;
 
     /**
      * Initialize the MoveValidator
      * 
-     * @param board Game board for checking moves
+     * @param game for checking moves and getting the board
      */
-    public MoveValidator(Board board) {
-        this.board = board;
+    public MoveValidator(Game game) {
+        this.game=game;
+        this.board = game.getClonedBoard();
     }
 
     /**
@@ -47,23 +36,42 @@ public class MoveValidator {
      * @param move Move to validate
      * @return @link {MoveValidator.TurnResult} representing the state of the turn
      */
-    public TurnResult validateMove(Move move) {
-        // If the move takes no piece, the turn is over. Otherwise, the piece is taken
-        if (!madeJump(move)) {
-            if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE; 
-        } else {
-            if (isJumpValid(move)) {
-                /* TODO: TAKE PIECE */ 
-            } else {
-                return TurnResult.FAIL; // Not a valid jump
+    public ValidationResult validateMove(Move move) {
+        Piece   pce     = board.getSpace(move.getStart()).getPiece();
+        didJump = false;
+
+        if (simpleMove(move)) { // Simple move (no jump)
+            if(shouldMakeJump(pce.getColor())){
+                msg = "You must make the jump!";
+                return new ValidationResult(TurnResult.FAIL, false);
             }
+            else if (shouldKing(move)){
+                return new ValidationResult(TurnResult.KING, false);
+            }               
+            else{
+                return new ValidationResult(TurnResult.COMPLETE, false);
+            }   
+
+        } else if (madeJump(move)) {  // Jump made, is it valid?
+            if   (isJumpValid(move)) didJump = true;
+            else{
+                msg = "That is an illegal jump!";              
+                return new ValidationResult(TurnResult.FAIL, false);
+            }
+        } else {  // Need to make a jump
+            msg = "You must make the jump!";
+            if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
         }
+
+        if(shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump);
         
         // If no more pieces can be taken, the turn ends. Otherwise, the turn continues
-        if (!isCapturePossible(move.getEnd(), board.getSpace(move.getStart()).getPiece())) {
-            if (shouldKing(move)) return TurnResult.KING; else return TurnResult.COMPLETE;
+        if (!isCapturePossible(move.getEnd(), pce)) {
+            if   (shouldKing(move)) return new ValidationResult(TurnResult.KING,     didJump); 
+            else                    return new ValidationResult(TurnResult.COMPLETE, didJump);
+
         } else {  // Turn continues
-            return TurnResult.CONTINUE;
+            return new ValidationResult(TurnResult.CONTINUE, didJump);
         }
     }
     
@@ -81,18 +89,50 @@ public class MoveValidator {
     }
 
     /**
-     * Check if the jump made was valic
+     * Check if the jump made was valid
      * 
      * @param move Move to check
      * @return True if the jump was valid
      */
     private boolean isJumpValid(Move move) {        
-        Position jump = getMidpoint(move);
+        Position jump      = getMidpoint(move);
+        Space    jumpSpace = board.getSpace(jump);
+        
+        Space space = board.getSpace(move.getStart());
+        Space endSpace = board.getSpace(move.getEnd());
 
-        Space jumpSpace = board.getSpace(jump);
+        int origRow = space.getRow();
+        int origCol = space.getCellIdx();
+        int endRow = endSpace.getRow();
+        int endCol = endSpace.getCellIdx();
+
+        if(space.getPiece().getColor() == Color.WHITE){
+            if(space.getPiece().isKing()){
+                if(endRow-origRow > 2 && endRow-origRow < -2){
+                    return false;
+                }
+            }
+            else{
+                if(endRow-origRow > 2){
+                    return false;
+                }
+            }
+        }
+        else{
+            if(space.getPiece().isKing()){
+                if(endRow-origRow > 2 && endRow-origRow < -2){
+                    return false;
+                }
+            }
+            else{
+                if(endRow-origRow > -2){
+                    return false;
+                }
+            }
+        }
 
         if (jumpSpace.hasPiece()) { // Cannot jump own piece
-            if (jumpSpace.getPiece().getColor() != board.getSpace(move.getStart()).getPiece().getColor()) {
+            if (jumpSpace.getPiece().getColor() != space.getPiece().getColor()) {
                 return true;
             } else {
                 return false;
@@ -107,7 +147,7 @@ public class MoveValidator {
      * @param move Move to check
      * @return The midpoint of the move
      */
-    private Position getMidpoint(Move move) {
+    public Position getMidpoint(Move move) {
         // Extract coordinates of the move
         int sr = move.getStart().getRow();
         int sc = move.getStart().getCell();
@@ -121,6 +161,28 @@ public class MoveValidator {
     }
 
     /**
+     * Check if the player should've made a jump, rather than a single move
+     * 
+     * @param color  Color of the piece
+     * @return  True if there was a valid jump
+     */
+    public boolean shouldMakeJump(Color color) {
+        for (int r = 0; r <= Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c <= Board.BOARD_SIZE - 1; c++) {
+                Position pos = new Position(r, c);
+                Piece pce = board.getSpace(pos).getPiece();
+
+                if (pce != null && pce.getColor() == color) {
+                    if (isCapturePossible(pos, pce)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check if another capture is possible
      * 
      * @param pos Position to check from
@@ -128,28 +190,72 @@ public class MoveValidator {
      * @return True if another capture is possible
      */
     private boolean isCapturePossible(Position pos, Piece piece) {
-        Color c = piece.getColor();
+        Color   c    = piece.getColor();
         boolean king = piece.isKing();
-
-        Space upRight = board.getSpace(new Position(
-            pos.getRow() + 1, pos.getCell() + 1));
-        Space upLeft = board.getSpace(new Position(
+        if(c == Color.WHITE){
+            Space upRight = board.getSpace(new Position(
             pos.getRow() + 1, pos.getCell() - 1));
-        Space dnRight = board.getSpace(new Position(
-            pos.getRow() - 1, pos.getCell() + 1));
-        Space dnLeft = board.getSpace(new Position(
-            pos.getRow() - 1, pos.getCell() + 1));
+            Space upRightRight = board.getSpace(new Position(
+                pos.getRow() + 2, pos.getCell() - 2));
+            Space upLeft = board.getSpace(new Position(
+                pos.getRow() + 1, pos.getCell() + 1));
+            Space upLeftLeft = board.getSpace(new Position(
+                pos.getRow() + 2, pos.getCell() + 2));
+            Space dnRight = board.getSpace(new Position(
+                pos.getRow() - 1, pos.getCell() - 1));
+            Space dnRightRight = board.getSpace(new Position(
+                pos.getRow() - 2, pos.getCell() - 2));
+            Space dnLeft = board.getSpace(new Position(
+                pos.getRow() - 1, pos.getCell() + 1));
+            Space dnLeftLeft = board.getSpace(new Position(
+                pos.getRow() - 2, pos.getCell() + 2));
 
-        if (upRight != null)
-            if (upRight.hasPiece() && upRight.getPiece().getColor() != c) return true;
-        if (upLeft != null)
-            if (upLeft.hasPiece() && upLeft.getPiece().getColor() != c) return true;
-        
+            if (upRight != null && upRightRight != null)
+                if (upRight.hasPiece() && upRight.getPiece().getColor() != c && !upRightRight.hasPiece()){
+                    return true;
+                }
+            if (upLeft != null && upLeftLeft != null)
+                if (upLeft.hasPiece() && upLeft.getPiece().getColor() != c && !upLeftLeft.hasPiece()){
+                    return true;
+                }
+            if (king) { // No need to check down if the piece is not a king
+                if (dnRight != null && dnRightRight != null)
+                    if (dnRight.hasPiece() && dnRight.getPiece().getColor() != c && !dnRightRight.hasPiece()) return true;
+                if (dnLeft != null && dnLeftLeft != null)
+                    if (dnLeft.hasPiece() && dnLeft.getPiece().getColor() != c && !dnLeftLeft.hasPiece()) return true;
+            }
+            return false;
+        }
+        Space upRight = board.getSpace(new Position(
+            pos.getRow() - 1, pos.getCell() + 1));
+        Space upRightRight = board.getSpace(new Position(
+            pos.getRow() - 2, pos.getCell() + 2));
+        Space upLeft = board.getSpace(new Position(
+            pos.getRow() - 1, pos.getCell() - 1));
+        Space upLeftLeft = board.getSpace(new Position(
+            pos.getRow() - 2, pos.getCell() - 2));
+        Space dnRight = board.getSpace(new Position(
+            pos.getRow() + 1, pos.getCell() + 1));
+        Space dnRightRight = board.getSpace(new Position(
+            pos.getRow() + 2, pos.getCell() + 2));
+        Space dnLeft = board.getSpace(new Position(
+            pos.getRow() + 1, pos.getCell() - 1));
+        Space dnLeftLeft = board.getSpace(new Position(
+            pos.getRow() + 2, pos.getCell() - 2));
+
+        if (upRight != null && upRightRight != null)
+            if (upRight.hasPiece() && upRight.getPiece().getColor() != c && !upRightRight.hasPiece()){
+                return true;
+            }
+        if (upLeft != null && upLeftLeft != null)
+            if (upLeft.hasPiece() && upLeft.getPiece().getColor() != c && !upLeftLeft.hasPiece()){
+                return true;
+            }
         if (king) { // No need to check down if the piece is not a king
-            if (dnRight != null)
-                if (dnRight.hasPiece() && dnRight.getPiece().getColor() != c) return true;
-            if (dnLeft != null)
-                if (dnLeft.hasPiece() && dnLeft.getPiece().getColor() != c) return true;
+            if (dnRight != null && dnRightRight != null)
+                if (dnRight.hasPiece() && dnRight.getPiece().getColor() != c && !dnRightRight.hasPiece()) return true;
+            if (dnLeft != null && dnLeftLeft != null)
+                if (dnLeft.hasPiece() && dnLeft.getPiece().getColor() != c && !dnLeftLeft.hasPiece()) return true;
         }
         return false;
     }
@@ -162,14 +268,105 @@ public class MoveValidator {
      */
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
-        Piece p = board.getSpace(move.getStart()).getPiece();
+        Piece    p      = board.getSpace(move.getStart()).getPiece();
+        System.out.println(endPos.getRow());
 
-        if (!p.isKing()) {
-            if (endPos.getRow() == Board.BOARD_SIZE - 1)
-                return true;
+        if(game.whoseTurn().equals(game.getRedPlayer())) {
+            if (!p.isKing()) {
+                if (endPos.getRow() == 0)
+                    return true;
+            }
+        } else {//white player
+            if(!p.isKing()){
+                if(endPos.getRow()==Board.BOARD_SIZE - 1)
+                    return true;
+            }
         }
-        
         return false;
+    }
+
+    /**
+     * checks if a move is a simple 1 tile move
+     * @param move
+     * @return if it is or not
+     */
+    private boolean simpleMove(Move move){
+        if(board.getSpace(move.getStart()).getPiece().isKing()) {
+            return _simpleMove_king(move);
+        } else {
+            if(game.whoseTurn().equals(game.getRedPlayer())) {
+                return _simpleMove_red(move);
+            } else { //white player
+                return _simpleMove_white(move);
+            }
+        }
+    }
+
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_king(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() + 1 || 
+        move.getEnd().getRow() == move.getStart().getRow() - 1) 
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1) 
+            {
+                return true;
+            } else 
+            {
+                return false;
+            }
+        } else 
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_red(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() - 1)
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Helper function for SimpleMove
+     * 
+     * (Irregular formatting is for readibility purposes)
+     */
+    private boolean _simpleMove_white(Move move) {
+        if(move.getEnd().getRow() == move.getStart().getRow() + 1)
+        {
+            if(move.getEnd().getCell() == move.getStart().getCell() + 1 ||
+            move.getEnd().getCell() == move.getStart().getCell() - 1)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } else 
+        {
+            return false;
+        }
     }
 
 }

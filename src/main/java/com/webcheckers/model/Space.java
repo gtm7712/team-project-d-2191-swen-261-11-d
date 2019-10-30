@@ -102,10 +102,20 @@ public class Space {
     }
 
     /**
+     * checks if this space has a king
+     * @return
+     */
+    public boolean hasKing(){
+        if(hasPiece())
+            return piece.isKing();
+        return false;
+    }
+    /**
      * Kings the piece on this space
      */
     public void kingPiece(){
-        piece.king();
+        if(hasPiece())
+            piece.king();
     }
     /**
      *
@@ -122,5 +132,11 @@ public class Space {
         if(getRow()!=other.getRow())
             return false;
         return true;
+    }
+
+    public void unKingPiece() {
+        if(piece.isKing()){
+            piece.unKing();
+        }
     }
 }
