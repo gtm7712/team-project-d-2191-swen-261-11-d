@@ -66,6 +66,9 @@ public class PostValidateMoveRoute implements Route {
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
 
         ValidationResult result = validate.validateMove(madeMove); 
+        if(validate.didJump){
+            request.session().attribute("jumped", validate.didJump);
+        }
         switch (result.getTurnResult()) {
             case COMPLETE:
                 game.makeMove(madeMove);
@@ -83,13 +86,13 @@ public class PostValidateMoveRoute implements Route {
                 break;
             case FAIL:
 //                vm.put("board", board);
-                return gson.toJson(new Message("Invalid Move", Message.Type.ERROR));
+                return gson.toJson(new Message(validate.msg, Message.Type.ERROR));
         }
         if (result.wasJump()) {
             //game.makeMove(madeMove);
             game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
         }
-        return gson.toJson(new Message("Valid Move!", Message.Type.INFO));
+        return gson.toJson(new Message("Nice Move!", Message.Type.INFO));
         //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

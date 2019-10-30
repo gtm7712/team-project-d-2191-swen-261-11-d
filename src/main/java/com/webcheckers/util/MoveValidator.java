@@ -13,6 +13,8 @@ public class MoveValidator {
     
     private Board board;
     private Game game;
+    public String msg;
+    public boolean didJump;
 
     /**
      * Initialize the MoveValidator
@@ -36,10 +38,11 @@ public class MoveValidator {
      */
     public ValidationResult validateMove(Move move) {
         Piece   pce     = board.getSpace(move.getStart()).getPiece();
-        boolean didJump = false;
+        didJump = false;
 
         if (simpleMove(move)) { // Simple move (no jump)
             if(shouldMakeJump(pce.getColor())){
+                msg = "You must make the jump!";
                 return new ValidationResult(TurnResult.FAIL, false);
             }
             else if (shouldKing(move)){
@@ -51,9 +54,12 @@ public class MoveValidator {
 
         } else if (madeJump(move)) {  // Jump made, is it valid?
             if   (isJumpValid(move)) didJump = true;
-            else                     return new ValidationResult(TurnResult.FAIL, false);
-
+            else{
+                msg = "That is an illegal jump!";              
+                return new ValidationResult(TurnResult.FAIL, false);
+            }
         } else {  // Need to make a jump
+            msg = "You must make the jump!";
             if (shouldMakeJump(pce.getColor())) return new ValidationResult(TurnResult.FAIL, false);
         }
 
@@ -91,9 +97,27 @@ public class MoveValidator {
     private boolean isJumpValid(Move move) {        
         Position jump      = getMidpoint(move);
         Space    jumpSpace = board.getSpace(jump);
+        
+        Space space = board.getSpace(move.getStart());
+
+        int origRow = space.getRow();
+        int origCol = space.getCellIdx();
+        int jumpRow = jumpSpace.getRow();
+        int jumpCol = jumpSpace.getCellIdx();
+
+        if(space.getPiece().getColor() == Color.WHITE){
+            if(jumpRow-origRow != 1){
+                return false;
+            }
+        }
+        else{
+            if(jumpRow-origRow != -1){
+                return false;
+            }
+        }
 
         if (jumpSpace.hasPiece()) { // Cannot jump own piece
-            if (jumpSpace.getPiece().getColor() != board.getSpace(move.getStart()).getPiece().getColor()) {
+            if (jumpSpace.getPiece().getColor() != space.getPiece().getColor()) {
                 return true;
             } else {
                 return false;
@@ -127,7 +151,7 @@ public class MoveValidator {
      * @param color  Color of the piece
      * @return  True if there was a valid jump
      */
-    private boolean shouldMakeJump(Color color) {
+    public boolean shouldMakeJump(Color color) {
         for (int r = 0; r <= Board.BOARD_SIZE - 1; r++) {
             for (int c = 0; c <= Board.BOARD_SIZE - 1; c++) {
                 Position pos = new Position(r, c);
