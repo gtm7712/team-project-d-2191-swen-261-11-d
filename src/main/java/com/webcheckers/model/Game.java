@@ -145,7 +145,6 @@ public class Game {
         turn.remove(i);
         System.out.println(turn);
         try {
-            turn=new ArrayList<>();
         } catch (Exception e) {
             return e.getMessage();
         }
