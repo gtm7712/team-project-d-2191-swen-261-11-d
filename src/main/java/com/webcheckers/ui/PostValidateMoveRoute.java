@@ -72,6 +72,7 @@ public class PostValidateMoveRoute implements Route {
         switch (result.getTurnResult()) {
             case COMPLETE:
                 game.makeMove(madeMove);
+                request.session().attribute("jumped", false);
 //                vm.put("board", board);
                 game.setComplete();
                 break;
