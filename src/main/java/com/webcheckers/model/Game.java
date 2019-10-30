@@ -12,26 +12,20 @@ public class Game {
     private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
-<<<<<<< HEAD
     private Player winner;
     private boolean gameOver;
 
-=======
     private boolean isComplete=false;
     private boolean wasKinged=false;
     private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
->>>>>>> validatemove
     /**
      * Create a new Game
      */
     public Game() {
         this.board = new Board();
-<<<<<<< HEAD
         this.clonedBoard=board;
         this.gameOver = false;
-=======
         this.clonedBoard=new Board(board.getBoard());
->>>>>>> validatemove
     }
 
     /**
