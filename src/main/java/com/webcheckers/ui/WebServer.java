@@ -150,7 +150,7 @@ public class WebServer {
     get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
-    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby));
+    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
     post(CHECKTURN_URL, new PostCheckTurn(gson));
     post(RESIGNGAME_URL, new PostResignGame(gson));

@@ -32,12 +32,21 @@ public class PostValidateMoveRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-//        Map<String, Object> vm = new HashMap<>();
+        Map<String, Object> vm = new HashMap<>();
+
+
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
         Board board = game.getClonedBoard();
         MoveValidator validate = new MoveValidator(game);
         System.out.println(request.queryParams("actionData"));
+
+        if(game.getGameStatus()){
+            final Map<String, Object> modeOptions = new HashMap<>(2);
+            modeOptions.put("isGameOver", true);
+            modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        }
 
         String move = request.queryParams("actionData");
         int startR = Character.getNumericValue(move.charAt(16));

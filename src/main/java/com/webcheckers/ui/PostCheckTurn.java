@@ -39,6 +39,14 @@ public class PostCheckTurn implements Route {
         vm.put("currentUser", currentPlayer);
         vm.put("redPlayer", game.getRedPlayer());
         vm.put("whitePlayer", game.getWhitePlayer());
+        if(game.getGameStatus()){
+
+            final Map<String, Object> modeOptions = new HashMap<>(2);
+            modeOptions.put("isGameOver", true);
+            modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+            return gson.toJson(new Message("true", Message.Type.INFO));
+        }
         if(currentPlayer.equals(game.getRedPlayer()))
             vm.put("activeColor", Piece.Color.RED);
         if(currentPlayer.equals(game.getWhitePlayer()))
