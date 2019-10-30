@@ -34,7 +34,7 @@ public class GetStartGameRoute implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;
     private final Gson gson;
-    private final Game game;
+    private Game game;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -47,6 +47,7 @@ public class GetStartGameRoute implements Route {
       this.lobby = lobby;
       this.gson = gson;
       game = new Game();
+      System.out.println("here");
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -72,9 +73,10 @@ public class GetStartGameRoute implements Route {
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
+
       // check to see if player is in game
       if(!currentPlayer.isInGame()) {
-        
+        game = new Game();
         if(opponent.isInGame()){
             vm.put("title", "Welcome!");
             vm.put("allUsers",lobby.getUsernames());
@@ -121,6 +123,7 @@ public class GetStartGameRoute implements Route {
         vm.put("activeColor", Piece.Color.WHITE);
       }
       currentPlayer.inGame(false);
+      currentPlayer.setBoard(null);
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 

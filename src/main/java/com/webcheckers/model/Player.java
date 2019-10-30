@@ -107,6 +107,7 @@ public class Player {
         this.game.setGameOver(true);
         this.game.setWinner(opponent);
         this.inGame = false;
+        this.game = null;
     }
 
     @Override
