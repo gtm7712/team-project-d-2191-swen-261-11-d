@@ -113,7 +113,9 @@ public class GetStartGameRoute implements Route {
       if(game.noMorePieces()){    
           modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
       }
-      else{
+      else if (game.hasNoMoves()) {
+          modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
+      }else{
           game.setWinner(currentPlayer.getOpponent());
           modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
       }

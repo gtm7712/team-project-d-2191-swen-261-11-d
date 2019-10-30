@@ -345,6 +345,13 @@ public class Game {
         return false;
     }
 
+    public Player getLoser() {
+        if(winner.equals(redPlayer))
+            return whitePlayer;
+        else
+            return redPlayer;
+    }
+
     /**
      * Main entry point for the Game
      * @param args
