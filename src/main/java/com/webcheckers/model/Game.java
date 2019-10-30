@@ -168,6 +168,10 @@ public class Game {
             theirTurn=redPlayer;
     }
 
+    /**
+     * Get whose turn it is
+     * @return whose turn it is
+     */
     public Player whoseTurn(){
         return theirTurn;
     }

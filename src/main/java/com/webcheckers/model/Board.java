@@ -3,6 +3,8 @@ package com.webcheckers.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.webcheckers.util.MoveValidator;
+
 public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
     //private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
@@ -111,6 +113,7 @@ public class Board implements Iterable<Row> {
             getSpace(move.getStart()).removePiece();
         }
     }
+
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof Board)) return false;

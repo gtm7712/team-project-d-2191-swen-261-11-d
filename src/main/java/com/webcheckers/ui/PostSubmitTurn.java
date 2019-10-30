@@ -42,9 +42,25 @@ public class PostSubmitTurn implements Route {
         vm.put("redPlayer", game.getRedPlayer());
         vm.put("whitePlayer", game.getWhitePlayer());
 
+        MoveValidator validate = new MoveValidator(game);
+        Piece.Color currentColor;
+        if(currentPlayer == game.getRedPlayer()) {
+            currentColor = Piece.Color.RED;
+        }
+        else {
+            currentColor = Piece.Color.WHITE;
+        }
+        if(request.session().attribute("jumped") != null){
+            boolean jumped = request.session().attribute("jumped");
+        
+            if(validate.shouldMakeJump(currentColor) && jumped){
+                request.session().removeAttribute("jumped");
+                return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
+            }
+        }
         // End the current player's turn
         game.endTurn();
-        return gson.toJson(new Message("Valid move", Message.Type.INFO));
+        return gson.toJson(new Message("Good move!", Message.Type.INFO));
 
     }
 }
