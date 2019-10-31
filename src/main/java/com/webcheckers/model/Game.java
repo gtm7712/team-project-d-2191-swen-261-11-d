@@ -279,13 +279,15 @@ public class Game {
                     if (space.hasPiece()) {
                         Piece piece = space.getPiece();
                         if (piece.getColor() == Piece.Color.RED) {
-                            if (!validate.shouldMakeJump(Piece.Color.RED) && checkAllSimpleMoves(new Position(i,j), piece)) {
-                                this.winner=whitePlayer;
-                                return true;
-                            }
+                            if(!checkAllSimpleMoves(new Position(i,j), piece))
+                                return false;
                         }
                     }
                 }
+            }
+            if (!validate.shouldMakeJump(Piece.Color.RED)) {
+                this.winner=whitePlayer;
+                return true;
             }
         }
         else {//white player
@@ -295,15 +297,19 @@ public class Game {
                     if (space.hasPiece()){
                         Piece piece=space.getPiece();
                         if (piece.getColor() == Piece.Color.WHITE) {
-                            if (!validate.shouldMakeJump(Piece.Color.WHITE) && checkAllSimpleMoves(new Position(i, j), piece)) {
-                                this.winner=redPlayer;
-                                return true;
+                            if(!checkAllSimpleMoves(new Position(i, j), piece)) {
+                                return false;
                             }
                         }
                     }
                 }
             }
+            if (!validate.shouldMakeJump(Piece.Color.WHITE)) {
+                this.winner=redPlayer;
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -311,38 +317,70 @@ public class Game {
      * helper method for hasNoMoves that checks all simple moves of a specific piece
      * @return true if a move can NOT happen
      */
-    public boolean checkAllSimpleMoves(Position pos, Piece piece){
-        Position upL=null, upR=null, downL=null, downR=null;
-        if(pos.getRow()!=0 && pos.getCell()!=0) {
+    public boolean checkAllSimpleMoves(Position pos, Piece piece) {
+
+        Position upL = null, upR = null, downL = null, downR = null;
+        if (pos.getRow() != 0 && pos.getCell() != 0) {
             upL = new Position(pos.getRow() - 1, pos.getCell() - 1);
         }
-        if(pos.getRow()!=0 && pos.getCell()!=7) {
-            upR=new Position(pos.getRow()-1, pos.getCell()+1);
+        if (pos.getRow() != 0 && pos.getCell() != 7) {
+            upR = new Position(pos.getRow() - 1, pos.getCell() + 1);
         }
-        if(pos.getRow()!=7 && pos.getCell()!=0) {
+        if (pos.getRow() != 7 && pos.getCell() != 0) {
             downL = new Position(pos.getRow() + 1, pos.getCell() - 1);
         }
-        if(pos.getRow()!=7 && pos.getCell()!=7) {
-            downR = new Position(pos.getRow() + 1, pos.getCell() - 1);
+        if (pos.getRow() != 7 && pos.getCell() != 7) {
+            downR = new Position(pos.getRow() + 1, pos.getCell() + 1);
         }
-        if(piece.getColor()== Piece.Color.RED) {
+        if (piece.getColor() == Piece.Color.RED) {
             if (!piece.isKing()) {
-                if ((upL == null || board.getSpace(upL).hasPiece()) && (upR == null || board.getSpace(upR).hasPiece())) {
-                    return true;
+                if (upL != null) {
+                    if (!board.getSpace(upL).hasPiece()) {
+                        return false;
+                    }
+                }
+                if (upR != null) {
+                    if (!board.getSpace(upR).hasPiece()) {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            if (!piece.isKing()) {
+                if (downL != null) {
+                    if (!board.getSpace(downL).hasPiece()) {
+                        return false;
+                    }
+                }
+                if (downR != null) {
+
+                    if (!board.getSpace(downR).hasPiece()) {
+                        return false;
+                    }
                 }
             }
         }
-        else {
-            if((downR==null || board.getSpace(downR).hasPiece()) && (downL==null ||board.getSpace(downL).hasPiece())){
-                return true;
+        if (downL != null) {
+            if (!board.getSpace(downL).hasPiece()) {
+                return false;
             }
         }
-        if((upL==null || board.getSpace(upL).hasPiece()) && (upR==null ||board.getSpace(upR).hasPiece())&&
-                (downR==null || board.getSpace(downR).hasPiece()) && (downL==null ||board.getSpace(downL).hasPiece())){
-         //king pieces
-               return true;
+        if (downR != null) {
+            if (!board.getSpace(downR).hasPiece()) {
+                return false;
+            }
         }
-        return false;
+        if (upL != null) {
+            if (!board.getSpace(upL).hasPiece()) {
+                return false;
+            }
+        }
+        if (upR != null) {
+            if (!board.getSpace(upR).hasPiece()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Player getLoser() {
