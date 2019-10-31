@@ -360,6 +360,9 @@ public class Game {
                 }
             }
         }
+        if(!piece.isKing()) {
+            return true;
+        }
         if (downL != null) {
             if (!board.getSpace(downL).hasPiece()) {
                 return false;
