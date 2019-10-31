@@ -18,16 +18,32 @@ import com.google.gson.annotations.JsonAdapter;
 import com.webcheckers.util.Message;
 
 /**
- * ui controller for validating moves
+ * ui controller for checkturn
  */
 public class PostCheckTurn implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
+    /**
+     * checkturn constructor
+     * @param gson the gson to used in the route
+     */
     public PostCheckTurn(final Gson gson ){
         this.gson = gson;
     }
 
+    /**
+     * Send checkturn ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether it is your turn
+     */
+    
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
@@ -40,16 +56,6 @@ public class PostCheckTurn implements Route {
         vm.put("redPlayer", game.getRedPlayer());
         vm.put("whitePlayer", game.getWhitePlayer());
         if(game.getGameStatus()){
-            // final Map<String, Object> modeOptions = new HashMap<>(2);
-            // modeOptions.put("isGameOver", true);
-            // if(game.getWinner() != null){    
-            //     modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
-            // }
-            // else{
-            //     game.setWinner(currentPlayer.getOpponent());
-            //     modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
-            // }
-            // vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
             return gson.toJson(new Message("true", Message.Type.INFO));
         }
         if(currentPlayer.equals(game.getRedPlayer()))

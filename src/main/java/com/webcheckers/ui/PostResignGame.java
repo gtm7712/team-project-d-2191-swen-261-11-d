@@ -18,16 +18,32 @@ import com.google.gson.annotations.JsonAdapter;
 import com.webcheckers.util.Message;
 
 /**
- * ui controller for validating moves
+ * ui controller for resigning a game
  */
 public class PostResignGame implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
+    /**
+     * constructor for the PostResignGame
+     * @param gson the gson used to send ajax
+     */
     public PostResignGame(final Gson gson ){
         this.gson = gson;
     }
 
+    /**
+     * Send resignGame ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether the resignGame successful
+     */
+    
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
@@ -49,6 +65,5 @@ public class PostResignGame implements Route {
             return gson.toJson(new Message("You resigned!", Message.Type.INFO));   
         }
         return gson.toJson(new Message("Failed to resign", Message.Type.ERROR));
-        //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

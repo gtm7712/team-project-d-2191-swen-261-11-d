@@ -26,6 +26,10 @@ public class PostValidateMoveRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
+    /**
+     * Constructor that initializes the gson
+     * @param gson gson to be used by route
+     */
     public PostValidateMoveRoute(final Gson gson ){
         this.gson = gson;
     }
@@ -46,15 +50,6 @@ public class PostValidateMoveRoute implements Route {
         int startC = Character.getNumericValue(move.charAt(25));
         int endR = Character.getNumericValue(move.charAt(41));
         int endC = Character.getNumericValue(move.charAt(50));
-//        vm.put("title", "Let's Play");
-//        vm.put("viewMode", "PLAY");
-//        vm.put("currentUser", currentPlayer);
-//        vm.put("redPlayer", game.getRedPlayer());
-//        vm.put("whitePlayer", game.getWhitePlayer());
-//        if(currentPlayer.equals(game.getRedPlayer()))
-//            vm.put("activeColor", Piece.Color.RED);
-//        if(currentPlayer.equals(game.getWhitePlayer()))
-//            vm.put("activeColor", Piece.Color.WHITE);
         Move madeMove;
         if(currentPlayer.equals(game.getWhitePlayer())){
             madeMove= new Move(new Position(7-startR, startC), new Position(7-endR, endC));
@@ -96,6 +91,5 @@ public class PostValidateMoveRoute implements Route {
             game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
         }
         return gson.toJson(new Message("Nice Move!", Message.Type.INFO));
-        //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

@@ -30,6 +30,18 @@ public class PostSubmitTurn implements Route {
         this.gson = gson;
     }
 
+    /**
+     * Send submitTurn ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether the submitTurn was successful
+     */
+    
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();

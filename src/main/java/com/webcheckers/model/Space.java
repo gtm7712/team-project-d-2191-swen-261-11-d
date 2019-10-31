@@ -69,6 +69,10 @@ public class Space {
         return isValid && !hasPiece();
     }
 
+    /**
+     * Check if the space is a valid spot
+     * @return true if a piece can be there, false otherwise
+     */
     public boolean isSpaceValid() {
         return isValid;
     }
@@ -134,6 +138,9 @@ public class Space {
         return true;
     }
 
+    /**
+     * unking a piece
+     */
     public void unKingPiece() {
         if(piece.isKing()){
             piece.unKing();

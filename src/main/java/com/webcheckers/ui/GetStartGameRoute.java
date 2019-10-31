@@ -37,7 +37,7 @@ public class GetStartGameRoute implements Route {
     private Game game;
 
     /**
-     * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
+     * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
      *
      * @param templateEngine
      *   the HTML template rendering engine

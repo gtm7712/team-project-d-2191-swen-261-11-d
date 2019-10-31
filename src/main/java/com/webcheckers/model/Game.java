@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 
@@ -22,6 +21,7 @@ public class Game {
     private boolean isComplete=false;
     private boolean wasKinged=false;
     private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
+
     /**
      * Create a new Game
      */
@@ -185,22 +185,42 @@ public class Game {
         return theirTurn;
     }
 
+    /**
+     * Gets the winner of the game
+     * @return the player who won
+     */
     public Player getWinner(){
         return winner;
     }
 
+    /**
+     * sets the winner
+     * @param a the player who won
+     */
     public void setWinner(Player a){
         winner = a;
     }
 
+    /**
+     * changes the boolean of the gamestatus
+     * @param a true or false depending on if the game is over
+     */
     public void setGameOver(boolean a){
         gameOver = a;
     }
 
+    /**
+     * gets the status of the game
+     * @return true if the game is over else, false
+     */
     public boolean getGameStatus(){
         return gameOver;
     }
 
+    /**
+     * check if there are any more pieces in the game for a color
+     * @return true if any color has no more pieces
+     */
     public boolean noMorePieces(){
         int countRed = 0;
         int countWhite = 0;
@@ -261,6 +281,10 @@ public class Game {
     }
     */
     
+    /**
+     * Sets a piece to king
+     * @param p the position of where the piece is
+     */
     public void kingPiece(Position p){
         board.getSpace(p).kingPiece();
         wasKinged=true;
@@ -386,6 +410,10 @@ public class Game {
         return true;
     }
 
+    /**
+     * return the loser of the game
+     * @return the loser of the game
+     */
     public Player getLoser() {
         if(winner.equals(redPlayer))
             return whitePlayer;

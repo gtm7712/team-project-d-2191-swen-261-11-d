@@ -42,6 +42,10 @@ public class Player {
         this.inGame = inGame;
     }
 
+    /**
+     * Get the opponent of the player
+     * @return the player's opponent
+     */
     public Player getOpponent(){
         return opponent;
     }
@@ -103,17 +107,28 @@ public class Player {
         this.game = game;
     }
 
+    /**
+     * Resign the game by setting the game to over
+     */
     public void resign(){
         this.game.setGameOver(true);
         this.inGame = false;
         this.game = null;
     }
 
+    /**
+     * hash function for players
+     * @return the hashed value
+     */
     @Override
     public int hashCode() {
         return name.hashCode();
     }
 
+    /**
+     * equals method for two players
+     * @return true if the players are equal, else false
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this){
@@ -126,6 +141,10 @@ public class Player {
         return temp.name.equals(this.name);
     }
 
+    /**
+     * toString method for a player
+     * @return the string representation of a player
+     */
     @Override
     public String toString() {
         return name;

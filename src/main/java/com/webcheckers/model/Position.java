@@ -35,6 +35,10 @@ public class Position {
         return cell;
     }
 
+    /**
+     * equals method for a position
+     * @return true if the positions are equal and false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Position)) return false;

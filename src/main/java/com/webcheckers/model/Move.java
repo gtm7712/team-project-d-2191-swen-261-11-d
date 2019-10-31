@@ -20,7 +20,7 @@ public class Move {
     }
 
     /**
-     * 
+     * Get the start position
      * @return  The start position
      */
     public Position getStart() {
@@ -28,13 +28,18 @@ public class Move {
     }
 
     /**
-     * 
+     * Get the end position
      * @return  The end position
      */
     public Position getEnd() {
         return end;
     }
 
+    /**
+     * Check for equality of two moves
+     * @param o the move that is checked
+     * @return true if equal, else false
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Move)) return false;
@@ -46,6 +51,11 @@ public class Move {
 
         return true;
     }
+
+    /**
+     * string method for a move
+     * @return the string representation of a move
+     */
     @Override
     public String toString(){
         return "Start : " + getStart() + " End : " + getEnd();

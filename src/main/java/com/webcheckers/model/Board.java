@@ -114,6 +114,10 @@ public class Board implements Iterable<Row> {
         }
     }
 
+    /**
+     * Equals method for Boards to check if they are the same.
+     * @param o The board that is hecked
+     */
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof Board)) return false;
@@ -127,6 +131,10 @@ public class Board implements Iterable<Row> {
         return true;
     }
 
+    /**
+     * Overide the iterator function
+     * @param void
+     */
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();

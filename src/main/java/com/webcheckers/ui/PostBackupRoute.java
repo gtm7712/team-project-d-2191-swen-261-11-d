@@ -28,6 +28,17 @@ public class PostBackupRoute implements Route {
         this.gson = gson;
     }
 
+    /**
+     * Send backup ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether the backup was successful
+     */
     @Override
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
