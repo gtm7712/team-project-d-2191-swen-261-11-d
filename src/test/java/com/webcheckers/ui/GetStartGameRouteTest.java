@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
@@ -41,6 +42,7 @@ public class GetStartGameRouteTest{
     private Player player;
     private Player opponent;
     private Game game;
+    private Gson gson;
 
     @BeforeEach
     public void setup(){
@@ -56,7 +58,7 @@ public class GetStartGameRouteTest{
         lobby.addUsername(PLAYER_2);
 
         game = new Game();
-
+        gson = new Gson();
 
         player = lobby.getPlayer(PLAYER_1);
         opponent = lobby.getPlayer(PLAYER_2);
@@ -72,7 +74,7 @@ public class GetStartGameRouteTest{
         opponent.setGame(game);
         player.inGame(true);
 
-        CuT = new GetStartGameRoute(engine, lobby);
+        CuT = new GetStartGameRoute(engine, lobby, gson);
     }
 
     /**
