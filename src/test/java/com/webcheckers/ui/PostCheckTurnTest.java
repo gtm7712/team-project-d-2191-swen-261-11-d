@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -28,7 +30,8 @@ public class PostCheckTurnTest {
     private Response response;
     private Session session;
     private PostCheckTurn CuT;
-    private final Gson gson;
+    private Gson gson;
+    private Player player;
 
     @BeforeEach
     public void setup() {
@@ -39,9 +42,10 @@ public class PostCheckTurnTest {
         when(session.attribute("Player")).thenReturn(player);
 
         gson = new Gson();
+        
         CuT = new PostCheckTurn(gson);
     }
-    @test
+    @Test
     public void checkTurn(){
         
     }
