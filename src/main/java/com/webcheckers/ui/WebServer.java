@@ -1,13 +1,15 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static spark.Spark.staticFileLocation;
 
 import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
-
 import com.webcheckers.appl.PlayerLobby;
+
 import spark.TemplateEngine;
 
 
@@ -61,6 +63,7 @@ public class WebServer {
   public static final String RESIGNGAME_URL = "/resignGame";
   public static final String SUBMITTURN_URL = "/submitTurn";
   public static final String BACKUP_URL = "/backupMove";
+  public static final String SIGNOUT_URL = "/signout";
 
   //
   // Attributes
@@ -149,6 +152,7 @@ public class WebServer {
     // Shows the Checkers game Home page.
     get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
+    get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
     get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
@@ -156,7 +160,7 @@ public class WebServer {
     post(RESIGNGAME_URL, new PostResignGame(gson));
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
-    
+    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
     //
     LOG.config("WebServer is initialized.");
   }
