@@ -63,17 +63,6 @@ public class GetStartGameRouteTest{
         player = lobby.getPlayer(PLAYER_1);
         opponent = lobby.getPlayer(PLAYER_2);
 
-        player.setOpponent(opponent);
-        opponent.setOpponent(player);
-
-        game.setRedPlayer(player);
-        game.setWhitePlayer(opponent);
-
-        player.setGame(game);
-        player.inGame(true);
-        opponent.setGame(game);
-        player.inGame(true);
-
         CuT = new GetStartGameRoute(engine, lobby, gson);
     }
 
