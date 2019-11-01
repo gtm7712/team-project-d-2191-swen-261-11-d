@@ -290,6 +290,10 @@ public class Game {
         wasKinged=true;
     }
 
+    public void __test_set_white_turn() {
+        theirTurn = whitePlayer;
+    }
+
     /**
      * determines if a player has moves or not
      * @return true if player has no moves

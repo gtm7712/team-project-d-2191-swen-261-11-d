@@ -63,8 +63,8 @@ public class PostValidateMoveRoute implements Route {
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
 
         ValidationResult result = validate.validateMove(madeMove); 
-        if(validate.didJump){
-            request.session().attribute("jumped", validate.didJump);
+        if(result.wasJump()){
+            request.session().attribute("jumped", result.wasJump());
         }
         switch (result.getTurnResult()) {
             case COMPLETE:
