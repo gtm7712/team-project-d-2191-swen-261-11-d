@@ -24,19 +24,25 @@ import spark.TemplateEngine;
  */
 @Tag("UI-tier")
 public class PostCheckTurnTest {
-
+    private Request request;
+    private Response response;
+    private Session session;
     private PostCheckTurn CuT;
+    private final Gson gson;
 
-
-    private PlayerLobby lobby;
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
-        engine = mock(TemplateEngine.class);
         response = mock(Response.class);
+        when(session.attribute("Player")).thenReturn(player);
 
-
-        CuT = new PostSignInRoute(engine, lobby);
+        gson = new Gson();
+        CuT = new PostCheckTurn(gson);
     }
+    @test
+    public void checkTurn(){
+        
+    }
+}
