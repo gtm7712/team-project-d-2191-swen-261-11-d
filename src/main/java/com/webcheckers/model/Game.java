@@ -154,14 +154,9 @@ public class Game {
 
         turn.remove(i);
         System.out.println(turn);
-        try {
-        } catch (Exception e) {
-            return e.getMessage();
-        }
         return null;
-
     }
-
+        
     /**
      * handles when End Turn button is clicked.
      */
