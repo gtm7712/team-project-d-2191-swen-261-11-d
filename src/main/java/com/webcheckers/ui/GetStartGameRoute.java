@@ -15,7 +15,11 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import com.google.gson.Gson;
+
 import com.webcheckers.util.Message;
+
+import org.eclipse.jetty.util.security.Credential;
 
 /**
  * The UI Controller for start game.
@@ -29,18 +33,21 @@ public class GetStartGameRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;
-    private final Game game;
+    private final Gson gson;
+    private Game game;
 
     /**
-     * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
+     * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
      *
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby) {
+    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
       this.lobby = lobby;
+      this.gson = gson;
       game = new Game();
+      System.out.println("here");
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -66,34 +73,92 @@ public class GetStartGameRoute implements Route {
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
-      if(lobby.getPlayer(otherPlayer).isInGame()){
-          vm.put("title", "Welcome!");
-          vm.put("allUsers",lobby.getUsernames());
-          vm.put("error", "Player is already in a game!");
-          return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-      }
 
-      currentPlayer.setOpponent(opponent);
-      opponent.setOpponent(currentPlayer);
+      // check to see if player is in game
+      if(!currentPlayer.isInGame()) {
+        game = new Game();
+        if(opponent.isInGame()){
+            vm.put("title", "Welcome!");
+            vm.put("allUsers",lobby.getUsernames());
+            vm.put("error", "Player is already in a game!");
+            return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+        }
 
-      lobby.getPlayer(currentPlayer.name).inGame(true);
-      lobby.getPlayer(otherPlayer).inGame(true);
+        currentPlayer.setOpponent(opponent);
+        opponent.setOpponent(currentPlayer);
 
-      game.setRedPlayer(currentPlayer);
-      game.setWhitePlayer(opponent);
+        lobby.getPlayer(currentPlayer.name).inGame(true);
+        lobby.getPlayer(otherPlayer).inGame(true);
 
-      currentPlayer.setGame(game);
-      opponent.setGame(game);
-      // Inject game information into template
+        game.setRedPlayer(currentPlayer);
+        game.setWhitePlayer(opponent);
+
+        currentPlayer.setGame(game);
+        opponent.setGame(game);
+
+    }
+
+    if(game.getGameStatus()){
       vm.put("title", "Let's Play");
-      vm.put("board", game.getBoardRed());
+  
       vm.put("viewMode", "PLAY");
       vm.put("currentUser", currentPlayer);
-      vm.put("redPlayer", currentPlayer);
-      vm.put("whitePlayer", opponent);
-      vm.put("activeColor", Piece.Color.RED);
-      // render the View
+      vm.put("redPlayer", game.getRedPlayer());
+      vm.put("whitePlayer", game.getWhitePlayer());
+
+      vm.put("board", currentPlayer.getPlayerBoard());
+      
+      final Map<String, Object> modeOptions = new HashMap<>(2);
+      modeOptions.put("isGameOver", true);
+      if(game.noMorePieces()){    
+          modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
+      }
+      else if (game.hasNoMoves()) {
+          modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
+      }else{
+          game.setWinner(currentPlayer.getOpponent());
+          modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+      }
+      vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+
+      Player playerTurn = game.whoseTurn();
+
+      if(playerTurn == game.getRedPlayer()) {
+        vm.put("activeColor", Piece.Color.RED);
+        
+      }
+      else {
+        vm.put("activeColor", Piece.Color.WHITE);
+      }
+      currentPlayer.inGame(false);
+      currentPlayer.setBoard(null);
       return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+    }
+
+    opponent = currentPlayer.getOpponent();
+
+    // Inject game information into template
+    vm.put("title", "Let's Play");
+
+    vm.put("viewMode", "PLAY");
+    vm.put("currentUser", currentPlayer);
+    vm.put("redPlayer", game.getRedPlayer());
+    vm.put("whitePlayer", game.getWhitePlayer());
+    
+    vm.put("board", currentPlayer.getPlayerBoard());
+
+    Player playerTurn = game.whoseTurn();
+
+    if(playerTurn == game.getRedPlayer()) {
+      vm.put("activeColor", Piece.Color.RED);
+      
+    }
+    else {
+      vm.put("activeColor", Piece.Color.WHITE);
+    }
+
+    // render the View
+    return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
   }
 

@@ -67,11 +67,12 @@ public class GetHomeRoute implements Route {
       vm.put("currentUser", currentPlayer);
       request.session().attribute("Player",currentPlayer);
       currentPlayer = lobby.getPlayer(currentPlayer.name);
+      request.session().attribute("Player",currentPlayer);
       if(currentPlayer.isInGame()){
         // Inject game information into template
 
         Game currentGame = currentPlayer.getGame();
-
+        
         vm.put("title", "Let's Play");
         vm.put("board", currentPlayer.getFlippedBoard());
         vm.put("viewMode", "PLAY");

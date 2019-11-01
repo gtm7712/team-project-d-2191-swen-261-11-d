@@ -57,8 +57,12 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
   public static final String SIGNIN_URL = "/signin";
-  public static final String SIGNOUT_URL = "/signout";
-  public static final String STARTGAME_URL = "/startgame";
+  public static final String GAME_URL = "/game";
+  public static final String VALIDATEMOVE_URL = "/validateMove";
+  public static final String CHECKTURN_URL = "/checkTurn";
+  public static final String RESIGNGAME_URL = "/resignGame";
+  public static final String SUBMITTURN_URL = "/submitTurn";
+  public static final String BACKUP_URL = "/backupMove";
 
   //
   // Attributes
@@ -149,8 +153,13 @@ public class WebServer {
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
-    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
-    get(STARTGAME_URL, new GetStartGameRoute(templateEngine, lobby));
+    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson));
+    post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
+    post(CHECKTURN_URL, new PostCheckTurn(gson));
+    post(RESIGNGAME_URL, new PostResignGame(gson));
+    post(SUBMITTURN_URL, new PostSubmitTurn(gson));
+    post(BACKUP_URL, new PostBackupRoute(gson));
+    
     //
     LOG.config("WebServer is initialized.");
   }

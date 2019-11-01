@@ -63,6 +63,12 @@ public class Row implements Iterable<Space>{
     public int getIndex() {
         return index;
     }
+    
+    /**
+     * Equals method for row
+     * @param o row to check if equal
+     * @return true if equal, else false
+     */
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof Row)) return false;
@@ -75,6 +81,11 @@ public class Row implements Iterable<Space>{
                     return false;
         return true;
     }
+
+    /**
+     * iterator for a row
+     * @return the iterator function
+     */
     @Override
     public Iterator<Space> iterator() {
         return row.iterator();

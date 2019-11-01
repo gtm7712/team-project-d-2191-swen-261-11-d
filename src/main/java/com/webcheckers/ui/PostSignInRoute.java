@@ -47,7 +47,7 @@ public class PostSignInRoute implements Route{
     }
 
     /**
-     * Render the WebCheckers Home page.
+     * Render the WebCheckers Sign In page.
      *
      * @param request
      *   the HTTP request
@@ -55,7 +55,7 @@ public class PostSignInRoute implements Route{
      *   the HTTP response
      *
      * @return
-     *   the rendered HTML for the Home page
+     *   the rendered HTML for the Sign In page
      */
     @Override
     public Object handle(Request request, Response response) {

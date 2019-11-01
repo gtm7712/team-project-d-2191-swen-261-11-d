@@ -69,6 +69,10 @@ public class Space {
         return isValid && !hasPiece();
     }
 
+    /**
+     * Check if the space is a valid spot
+     * @return true if a piece can be there, false otherwise
+     */
     public boolean isSpaceValid() {
         return isValid;
     }
@@ -102,6 +106,22 @@ public class Space {
     }
 
     /**
+     * checks if this space has a king
+     * @return
+     */
+    public boolean hasKing(){
+        if(hasPiece())
+            return piece.isKing();
+        return false;
+    }
+    /**
+     * Kings the piece on this space
+     */
+    public void kingPiece(){
+        if(hasPiece())
+            piece.king();
+    }
+    /**
      *
      * @return The column the space is in
      */
@@ -116,5 +136,14 @@ public class Space {
         if(getRow()!=other.getRow())
             return false;
         return true;
+    }
+
+    /**
+     * unking a piece
+     */
+    public void unKingPiece() {
+        if(piece.isKing()){
+            piece.unKing();
+        }
     }
 }

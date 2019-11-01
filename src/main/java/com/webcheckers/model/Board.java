@@ -3,6 +3,8 @@ package com.webcheckers.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.webcheckers.util.MoveValidator;
+
 public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
     //private Space[][] board = new Space[BOARD_SIZE][BOARD_SIZE];
@@ -63,8 +65,6 @@ public class Board implements Iterable<Row> {
         return new Board(flipped);
     }
 
-
-
     /**
      *
      * @return the board of spaces
@@ -74,15 +74,50 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     *  gets the piece at a certain space
+     * Get the Space at the position specified
+     * @param p Position to get
+     * @return The space
+     */
+    public Space getSpace(Position p) {
+        try {
+            return board.get(p.getRow()).get(p.getCell());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     *  Get the Space at the position specified
      * @param row spot in board array
      * @param col spot in row array
-     * @return
+     * @return The space
      */
     public Space getSpace(int row, int col){
-        Space s = board.get(row).get(col);
-        return s;
+        try {
+            return board.get(row).get(col);
+        } catch (Exception e) {
+            return null;
+        }
     }
+
+    /**
+     * updates the board with the move that was made
+     * @param move validated move
+     */
+    public void makeMove(Move move){
+        if(move.getEnd().getCell()==-1 && move.getEnd().getRow()==-1){
+            getSpace(move.getStart()).removePiece();
+        }
+        else {
+            getSpace(move.getEnd()).setPiece(getSpace(move.getStart()).getPiece());
+            getSpace(move.getStart()).removePiece();
+        }
+    }
+
+    /**
+     * Equals method for Boards to check if they are the same.
+     * @param o The board that is hecked
+     */
     @Override
     public boolean equals (Object o) {
         if (!(o instanceof Board)) return false;
@@ -95,6 +130,11 @@ public class Board implements Iterable<Row> {
 
         return true;
     }
+
+    /**
+     * Overide the iterator function
+     * @param void
+     */
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();
