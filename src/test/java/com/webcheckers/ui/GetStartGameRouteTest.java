@@ -123,8 +123,41 @@ public class GetStartGameRouteTest{
         testHelper.assertViewModelAttribute("allUsers", lobby.getUsernames());
         testHelper.assertViewModelAttribute("error", "Player is already in a game!");
 
-        testHelper.assertViewName("home.ftl");
-               
+        testHelper.assertViewName("home.ftl");          
     }
+
+    /**
+     * Test for start game route
+     * Check for if the game has started
+     */
+    @Test
+    public void gameStarted(){
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(opponent.getName());
+        when(session.attribute("Player")).thenReturn(player);        
+        
+        player.inGame(true);
+        game.setGameOver(true);
+
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewModelAttribute("title", "Let's Play");
+        testHelper.assertViewModelAttribute("viewMode", "PLAY");
+        testHelper.assertViewModelAttribute("currentUser", player);
+        testHelper.assertViewModelAttribute("redPlayer", player);
+        testHelper.assertViewModelAttribute("whitePlayer", opponent);
+        testHelper.assertViewModelAttribute("board", player.getPlayerBoard());
+        
+        
+        
+        testHelper.assertViewName("game.ftl");          
+    }
+
 
 }
