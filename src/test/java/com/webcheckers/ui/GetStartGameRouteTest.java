@@ -137,13 +137,8 @@ public class GetStartGameRouteTest{
      * Test for start game route
      * Check for if the game has ended for a red player
      */
-<<<<<<< HEAD
-    // @Test
-    public void gameStarted(){
-=======
     @Test
     public void gameOver(){
->>>>>>> 84cbd592de03856144c5280f720935ce486da1a6
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
