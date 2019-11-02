@@ -19,6 +19,7 @@ import com.webcheckers.util.Message;
 
 /**
  * ui controller for resigning a game
+ * @author Brandon Chen
  */
 public class PostResignGame implements Route {
     private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
