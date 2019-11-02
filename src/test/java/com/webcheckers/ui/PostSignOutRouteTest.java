@@ -76,4 +76,32 @@ public class PostSignOutRouteTest {
         assertTrue(lobby.countPlayers() == 0);
         assertTrue(lobby.checkUsername("test1") == 2);
     }
-}
+
+
+
+    /**
+     * Test for signout
+     * Checks if the lobby is not null at first and when the request is handled, check if the lobby is empty
+     * Checks the correct VM variables
+     * Checks if the correct view is loaded
+     */
+    @Test
+    public void signOutMultipleUsers(){
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        lobby.addUsername("test3");
+        when(session.attribute("Player")).thenReturn(testPlayer);     
+        assertNotNull(lobby.getPlayer("test1"), "lobby should not be null!");
+        CuT.handle(request, response);
+        
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewModelAttribute("title", "Welcome!");
+        testHelper.assertViewModelAttribute("allUsers", lobby.getUsernames());
+        
+        testHelper.assertViewName("home.ftl");            
+    
+        assertTrue(lobby.countPlayers() == 1);
+        assertTrue(lobby.checkUsername("test1") == 2);
+    }}
