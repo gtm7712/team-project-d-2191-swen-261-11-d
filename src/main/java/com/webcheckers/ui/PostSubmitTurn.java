@@ -48,11 +48,11 @@ public class PostSubmitTurn implements Route {
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
         
-        vm.put("title", "Let's Play");
-        vm.put("viewMode", "PLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer", game.getRedPlayer());
-        vm.put("whitePlayer", game.getWhitePlayer());
+        // vm.put("title", "Let's Play");
+        // vm.put("viewMode", "PLAY");
+        // vm.put("currentUser", currentPlayer);
+        // vm.put("redPlayer", game.getRedPlayer());
+        // vm.put("whitePlayer", game.getWhitePlayer());
 
         MoveValidator validate = new MoveValidator(game);
         Piece.Color currentColor;
@@ -64,9 +64,9 @@ public class PostSubmitTurn implements Route {
         }
         if(request.session().attribute("jumped") != null){
             boolean jumped = request.session().attribute("jumped");
-        
+            boolean f = validate.shouldMakeJump(currentColor);
+
             if(validate.shouldMakeJump(currentColor) && jumped){
-                request.session().attribute("Jumped", false);
                 return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
             }
         }
