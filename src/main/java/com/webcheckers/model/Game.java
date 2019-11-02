@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.model.Piece.Color;
 import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
 
@@ -285,8 +286,29 @@ public class Game {
         wasKinged=true;
     }
 
+    /**
+     * Test method to force WHITE's turn
+     */
     public void __test_set_white_turn() {
         theirTurn = whitePlayer;
+    }
+
+    /**
+     * Test method to remove all color pieces
+     * @param color Color to remove
+     */
+    public void __test_remove_all_pieces(Color color) {
+        for (int r = 0; r < Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c < Board.BOARD_SIZE - 1; r++) {
+                Space space = board.getSpace(r, c);
+                
+                if (space.hasPiece()) {
+                    if (space.getPiece().getColor() == color) {
+                        space.removePiece();
+                    }
+                }
+            }
+        }
     }
 
     /**
