@@ -36,8 +36,6 @@ public class PostValidateMoveRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        Map<String, Object> vm = new HashMap<>();
-
 
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
