@@ -14,6 +14,7 @@ import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
+import com.webcheckers.util.Message;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -75,10 +76,10 @@ public class PostBackupRouteTest {
         game.makeMove(m);
         player.setGame(game);
 
-        CuT.handle(request, response);
-
-        assertEquals(response.body(), null);
-
+        Object json = CuT.handle(request, response);
+        assertEquals(gson.toJson(new Message("Backup Successful!", Message.Type.INFO)), json);
+        assertEquals(Message.Type.INFO, gson.fromJson(json.toString(), Message.class).getType());
+        assertTrue(gson.fromJson(json.toString(), Message.class).isSuccessful());
     }
 
 }

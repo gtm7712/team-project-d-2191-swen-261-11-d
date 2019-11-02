@@ -72,15 +72,18 @@ public class PostResignGameTest {
      * resign test
      */
     @Test
-    public void resignGood(){
+    public void resign(){
         player.setGame(game);
         when(session.attribute("Player")).thenReturn(player);
 
-        CuT.handle(request, response);
+        Object json = CuT.handle(request, response);
 
         assertTrue(!player.isInGame());
         assertNull(player.getOpponent());
         assertTrue(game.getGameStatus());
+        assertEquals(gson.toJson(new Message("You resigned!", Message.Type.INFO)), json);
+        assertEquals(Message.Type.INFO, gson.fromJson(json.toString(), Message.class).getType());
+        assertTrue(gson.fromJson(json.toString(), Message.class).isSuccessful());
     }
     
 
