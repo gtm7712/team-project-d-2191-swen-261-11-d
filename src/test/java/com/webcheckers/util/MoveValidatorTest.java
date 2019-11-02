@@ -53,6 +53,28 @@ public class MoveValidatorTest {
     }
 
     /**
+     * Test a backwards jump, not kinged
+     */
+    @Test
+    public void backwards() {
+        board.getSpace(4, 2).setPiece(new Piece(Color.WHITE));
+        Move m = new Move(new Position(4, 2), new Position(5, 1));
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
+    }
+
+    /**
+     * Test a backwards jump, kinged
+     */
+    @Test
+    public void backwardsKing() {
+        Piece p = new Piece(Color.WHITE);
+        p.king();
+        board.getSpace(4, 2).setPiece(p);
+        Move m = new Move(new Position(4, 2), new Position(5, 1));
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
+    }
+
+    /**
      * Test a move where an invalid jump is made (nothing to jump)
      */
     @Test
@@ -79,6 +101,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
 
+    /**
+     * Test a valid 1-jump move
+     */
     @Test
     public void validSingleJump() {
         Piece p = new Piece(Color.RED);
@@ -93,6 +118,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
     }
 
+    /**
+     * Test a valid jump to the up-right direction
+     */
     @Test
     public void upRight() {
         Piece p = new Piece(Color.WHITE);
@@ -111,6 +139,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
+    /**
+     * Test a valid jump to the up-left direction
+     */
     @Test
     public void upLeft() {
         Piece p = new Piece(Color.WHITE);
@@ -129,6 +160,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
+    /**
+     * Test a valid jump to the down-right direction
+     */
     @Test
     public void downRight() {
         Piece p = new Piece(Color.WHITE);
@@ -148,6 +182,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
+    /**
+     * Test a valid jump to the down-left direction
+     */
     @Test
     public void downLeft() {
         Piece p = new Piece(Color.WHITE);
@@ -167,6 +204,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.CONTINUE);
     }
 
+    /**
+     * Test kinging on a simple move
+     */
     @Test
     public void king() {
         game.__test_set_white_turn();
@@ -176,6 +216,29 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
     }
 
+    /**
+     * Test the kinging of a red piece
+     */
+    @Test
+    public void kingRed() {
+        Piece p = new Piece(Color.RED);
+        board.getSpace(1, 1).setPiece(p);
+        Move m = new Move(new Position(1, 1), new Position(0, 2));
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
+    }
+
+    @Test
+    public void kingKing() {
+        Piece p = new Piece(Color.RED);
+        p.king();
+        board.getSpace(1, 1).setPiece(p);
+        Move m = new Move(new Position(1, 1), new Position(0, 2));
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.COMPLETE);
+    }
+
+    /**
+     * Test kinging on a jump
+     */
     @Test
     public void kingOnJump() {
         game.__test_set_white_turn();
@@ -188,6 +251,9 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.KING);
     }
     
+    /**
+     * Test the case where the user tries to make a simple move when a jump is possible
+     */
     @Test
     public void invalidNoJumpWhenJumpPossible() {
         game.__test_set_white_turn();
@@ -207,4 +273,20 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
     }
 
+    @Test
+    public void jumpValidEdgeCases() {
+        Piece p = new Piece(Color.RED);
+        Piece j = new Piece(Color.WHITE);
+
+        Move m = new Move(new Position(4, 4), new Position(1, 1));
+        Move m2 = new Move(new Position(4, 4), new Position(4, 4));
+
+        
+        board.getSpace(4, 4).setPiece(p);
+        board.getSpace(2, 2).setPiece(j);
+        board.getSpace(1, 1).setPiece(null);
+
+        assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
+        assertEquals(mv.validateMove(m2).getTurnResult(), TurnResult.FAIL);
+    }
 }
