@@ -14,6 +14,7 @@ import com.webcheckers.model.Move;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
+import com.webcheckers.model.Piece.Color;
 import com.webcheckers.util.Message;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -69,6 +70,7 @@ public class PostSubmitTurnTest {
 
         game.setRedPlayer(player);
         game.setWhitePlayer(opponent);
+
 
         CuT = new PostSubmitTurn(gson);
     }
@@ -138,7 +140,7 @@ public class PostSubmitTurnTest {
         assertFalse(gson.fromJson(json.toString(), Message.class).isSuccessful());
     }
 
-        /**
+    /**
      * submitTurn white test
      */
     @Test
@@ -156,6 +158,23 @@ public class PostSubmitTurnTest {
 
         Object json = CuT.handle(request, response);
 
+        assertEquals(json, gson.toJson(new Message("Good move!", Message.Type.INFO)));
+    }
+    
+    /**
+     * submitTurn white test
+     */
+    @Test
+    public void noPieces(){
+        
+        when(session.attribute("Player")).thenReturn(player);
+        when(session.attribute("jumped")).thenReturn(null);
+        game.__test_remove_all_pieces(Color.WHITE);
+
+        Object json = CuT.handle(request, response);
+
+        assertTrue(game.getGameStatus());
+        assertEquals(player, game.getWinner());
         assertEquals(json, gson.toJson(new Message("Good move!", Message.Type.INFO)));
     }
 }

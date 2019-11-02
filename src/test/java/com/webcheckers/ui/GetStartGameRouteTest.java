@@ -6,11 +6,15 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Piece.Color;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -197,6 +201,42 @@ public class GetStartGameRouteTest{
         testHelper.assertViewModelAttribute("board", game.getBoardWhite());     
         testHelper.assertViewModelAttribute("activeColor", Piece.Color.WHITE);     
                 
+        testHelper.assertViewName("game.ftl");          
+    }
+
+    
+    /**
+     * Test for start game route
+     * Check for if the game has ended for a white player
+     */
+    @Test
+    public void gameOverNoMoreMoves(){
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        
+        final Map<String, Object> modeOptions = new HashMap<>(2);
+        modeOptions.put("isGameOver", true);
+        CuT.getGame().__test_remove_all_pieces(Color.WHITE);
+
+        opponent.inGame(true);
+        opponent.setBoard(CuT.getGame().getBoardWhite());
+        CuT.getGame().endTurn();
+        modeOptions.put("gameOverMessage", player + " has captured all the pieces!");
+       
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(player.getName());
+        when(session.attribute("Player")).thenReturn(opponent);
+
+        CuT.handle(request, response);
+        
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        assertTrue(CuT.getGame().getGameStatus());
+        assertFalse(player.isInGame());
+        testHelper.assertViewModelAttribute("modeOptionsAsJSON", gson.toJson(modeOptions));     
+        
+
         testHelper.assertViewName("game.ftl");          
     }
 

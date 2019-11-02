@@ -64,14 +64,14 @@ public class PostSubmitTurn implements Route {
         }
         if(request.session().attribute("jumped") != null){
             boolean jumped = request.session().attribute("jumped");
-            boolean f = validate.shouldMakeJump(currentColor);
-
+            
             if(validate.shouldMakeJump(currentColor) && jumped){
                 return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
             }
         }
         // End the current player's turn
         game.endTurn();
+        boolean f = game.noMorePieces();
         if(game.noMorePieces()){
             game.setGameOver(true);
             Player winner = game.getWinner();

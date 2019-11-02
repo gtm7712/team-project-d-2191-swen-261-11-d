@@ -298,8 +298,8 @@ public class Game {
      * @param color Color to remove
      */
     public void __test_remove_all_pieces(Color color) {
-        for (int r = 0; r < Board.BOARD_SIZE - 1; r++) {
-            for (int c = 0; c < Board.BOARD_SIZE - 1; r++) {
+        for (int r = 0; r <= Board.BOARD_SIZE - 1; r++) {
+            for (int c = 0; c <= Board.BOARD_SIZE - 1; c++) {
                 Space space = board.getSpace(r, c);
                 
                 if (space.hasPiece()) {
