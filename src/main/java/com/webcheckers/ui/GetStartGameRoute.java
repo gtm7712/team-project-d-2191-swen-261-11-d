@@ -47,7 +47,6 @@ public class GetStartGameRoute implements Route {
       this.lobby = lobby;
       this.gson = gson;
       game = new Game();
-      System.out.println("here");
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -159,6 +158,10 @@ public class GetStartGameRoute implements Route {
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+    }
+
+    public Game getGame(){
+      return game;
     }
   }
 

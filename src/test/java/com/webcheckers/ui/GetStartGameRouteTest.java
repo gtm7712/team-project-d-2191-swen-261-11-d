@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +64,13 @@ public class GetStartGameRouteTest{
         player = lobby.getPlayer(PLAYER_1);
         opponent = lobby.getPlayer(PLAYER_2);
 
-        CuT = new GetStartGameRoute(engine, lobby, gson);
+        player.setOpponent(opponent);
+        opponent.setOpponent(player);
+
+        CuT = new GetStartGameRoute(engine, lobby, gson); 
+        CuT.getGame().setGameOver(true);
+        CuT.getGame().setRedPlayer(player);
+        CuT.getGame().setWhitePlayer(opponent);
     }
 
     /**
@@ -128,36 +135,74 @@ public class GetStartGameRouteTest{
 
     /**
      * Test for start game route
-     * Check for if the game has started
+     * Check for if the game has ended for a red player
      */
+<<<<<<< HEAD
     // @Test
     public void gameStarted(){
+=======
+    @Test
+    public void gameOver(){
+>>>>>>> 84cbd592de03856144c5280f720935ce486da1a6
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         
-        when(request.queryParams(eq("otherPlayer"))).thenReturn(opponent.getName());
-        when(session.attribute("Player")).thenReturn(player);        
-        
         player.inGame(true);
-        game.setGameOver(true);
+        player.setBoard(CuT.getGame().getBoardRed());
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(opponent.getName());
+        when(session.attribute("Player")).thenReturn(player);
 
         CuT.handle(request, response);
-
+        
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
 
+        assertTrue(CuT.getGame().getGameStatus());
+        assertFalse(player.isInGame());
         testHelper.assertViewModelAttribute("title", "Let's Play");
         testHelper.assertViewModelAttribute("viewMode", "PLAY");
         testHelper.assertViewModelAttribute("currentUser", player);
         testHelper.assertViewModelAttribute("redPlayer", player);
         testHelper.assertViewModelAttribute("whitePlayer", opponent);
-        testHelper.assertViewModelAttribute("board", player.getPlayerBoard());
-        
-        
-        
+        testHelper.assertViewModelAttribute("board", game.getBoardRed());     
+        testHelper.assertViewModelAttribute("activeColor", Piece.Color.RED);     
+                
         testHelper.assertViewName("game.ftl");          
     }
 
+    /**
+     * Test for start game route
+     * Check for if the game has ended for a white player
+     */
+    @Test
+    public void gameOverWhite(){
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        
+        opponent.inGame(true);
+        opponent.setBoard(CuT.getGame().getBoardWhite());
+        CuT.getGame().endTurn();
+        when(request.queryParams(eq("otherPlayer"))).thenReturn(player.getName());
+        when(session.attribute("Player")).thenReturn(opponent);
+
+        CuT.handle(request, response);
+        
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        assertTrue(CuT.getGame().getGameStatus());
+        assertFalse(player.isInGame());
+        testHelper.assertViewModelAttribute("title", "Let's Play");
+        testHelper.assertViewModelAttribute("viewMode", "PLAY");
+        testHelper.assertViewModelAttribute("currentUser", opponent);
+        testHelper.assertViewModelAttribute("redPlayer", player);
+        testHelper.assertViewModelAttribute("whitePlayer", opponent);
+        testHelper.assertViewModelAttribute("board", game.getBoardWhite());     
+        testHelper.assertViewModelAttribute("activeColor", Piece.Color.WHITE);     
+                
+        testHelper.assertViewName("game.ftl");          
+    }
 
 }

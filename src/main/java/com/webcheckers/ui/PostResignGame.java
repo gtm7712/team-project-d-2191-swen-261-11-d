@@ -50,20 +50,20 @@ public class PostResignGame implements Route {
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
 
-        vm.put("title", "Let's Play");
-        vm.put("viewMode", "PLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer", game.getRedPlayer());
-        vm.put("whitePlayer", game.getWhitePlayer());
+        // vm.put("title", "Let's Play");
+        // vm.put("viewMode", "PLAY");
+        // vm.put("currentUser", currentPlayer);
+        // vm.put("redPlayer", game.getRedPlayer());
+        // vm.put("whitePlayer", game.getWhitePlayer());
+
         currentPlayer.resign();
-        if(game.getGameStatus()){
-            final Map<String, Object> modeOptions = new HashMap<>(2);
-            modeOptions.put("isGameOver", true);
-            modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
-            vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
-            currentPlayer.setOpponent(null);
-            return gson.toJson(new Message("You resigned!", Message.Type.INFO));   
-        }
-        return gson.toJson(new Message("Failed to resign", Message.Type.ERROR));
+        // final Map<String, Object> modeOptions = new HashMap<>(2);
+        // modeOptions.put("isGameOver", true);
+        // modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
+        // vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
+        currentPlayer.setOpponent(null);
+        return gson.toJson(new Message("You resigned!", Message.Type.INFO));   
+
+        // return gson.toJson(new Message("Failed to resign", Message.Type.ERROR));
     }
 }

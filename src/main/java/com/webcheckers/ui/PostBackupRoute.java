@@ -1,4 +1,5 @@
 package com.webcheckers.ui;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,21 +48,16 @@ public class PostBackupRoute implements Route {
 
         String message = game.revertTurn();
         
-        vm.put("title", "Let's Play");
-        vm.put("viewMode", "PLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer", game.getRedPlayer());
-        vm.put("whitePlayer", game.getWhitePlayer());
-        if(currentPlayer.equals(game.getRedPlayer()))
-            vm.put("activeColor", Piece.Color.RED);
-        if(currentPlayer.equals(game.getWhitePlayer()))
-            vm.put("activeColor", Piece.Color.WHITE);
+        // vm.put("title", "Let's Play");
+        // vm.put("viewMode", "PLAY");
+        // vm.put("currentUser", currentPlayer);
+        // vm.put("redPlayer", game.getRedPlayer());
+        // vm.put("whitePlayer", game.getWhitePlayer());
+        // if(currentPlayer.equals(game.getRedPlayer()))
+        //     vm.put("activeColor", Piece.Color.RED);
+        // if(currentPlayer.equals(game.getWhitePlayer()))
+        //     vm.put("activeColor", Piece.Color.WHITE);
 
-        if(message == null){
-            return gson.toJson(new Message("Backup Successful!", Message.Type.INFO));
-        }
-        else{
-            return gson.toJson(new Message(message, Message.Type.ERROR));   
-        }
+        return gson.toJson(new Message("Backup Successful!", Message.Type.INFO));
     }
 }
