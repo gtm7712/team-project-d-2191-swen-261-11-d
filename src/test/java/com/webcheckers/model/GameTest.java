@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
  * The unit testing suite for {@link Game}
  * 
  * @author Giovanni Melchionne
+ * @author Kyle Collins
  */
 @Tag ("Model-tier")
 public class GameTest {
@@ -74,4 +75,21 @@ public class GameTest {
             "White player should be null");
     }
 
+    /**
+     * Test isComplete 
+     */
+    @Test
+    public void isCompleteTest() {
+        assertTrue(game.isComplete() == false);
+    }
+
+    /**
+     * Test setComplete 
+     */
+    @Test
+    public void setCompleteTest() {
+        game.setComplete();
+        assertTrue(game.isComplete() == true);
+    }
+    
 }
