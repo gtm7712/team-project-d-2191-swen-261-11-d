@@ -59,14 +59,8 @@ public class MoveValidator {
                 return new ValidationResult(TurnResult.FAIL, false);
             }
         } else {  
-            if (shouldMakeJump(pce.getColor())){    // Need to make a jump
-                msg = "You must make the jump!";
-                return new ValidationResult(TurnResult.FAIL, false);
-            }
-            else{
-                msg = "Invalid move!";
-                return new ValidationResult(TurnResult.FAIL, false);
-            }
+            msg = "Invalid move!";
+            return new ValidationResult(TurnResult.FAIL, false);
         }
 
         if(shouldKing(move)) return new ValidationResult(TurnResult.KING, didJump);
@@ -120,7 +114,7 @@ public class MoveValidator {
 
         if(space.getPiece().getColor() == Color.WHITE){
             if(space.getPiece().isKing()){
-                if(endRow-origRow > 2 && endRow-origRow < -2){
+                if(endRow-origRow > 2 || endRow-origRow < -2){
                     return false;
                 }
             }
