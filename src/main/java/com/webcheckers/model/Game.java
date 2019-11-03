@@ -113,7 +113,6 @@ public class Game {
     public void makeMove(Move madeMove){
 
         if(madeMove.getEnd().getRow()==-1 && madeMove.getEnd().getCell()==-1) {
-            System.out.println("Grave Yard");
             graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
             turn.add(0, madeMove);
             board.getSpace(madeMove.getStart()).removePiece();
@@ -133,7 +132,6 @@ public class Game {
         isComplete=false;
 //        this.clonedBoard=new Board(board.getBoard());
         int i=turn.size()-1;
-        System.out.println(turn.size());
         Move move=turn.get(i);
         if(wasKinged) {
             if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
@@ -154,7 +152,6 @@ public class Game {
 
 
         turn.remove(i);
-        System.out.println(turn);
         return null;
     }
         
@@ -441,15 +438,4 @@ public class Game {
         else
             return redPlayer;
     }
-
-    /**
-     * Main entry point for the Game
-     * @param args
-     */
-/*    public static void main(String[] args) {
-        // Stuff for testing
-        Game game = new Game();
-
-        System.out.println(game);
-    }*/
 }

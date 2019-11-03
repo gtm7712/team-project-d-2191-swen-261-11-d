@@ -51,13 +51,4 @@ public class Move {
 
         return true;
     }
-
-    /**
-     * string method for a move
-     * @return the string representation of a move
-     */
-    @Override
-    public String toString(){
-        return "Start : " + getStart() + " End : " + getEnd();
-    }
 }

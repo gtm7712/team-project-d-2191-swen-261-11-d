@@ -41,7 +41,6 @@ public class PostValidateMoveRoute implements Route {
         Game game = currentPlayer.getGame();
         Board board = game.getClonedBoard();
         MoveValidator validate = new MoveValidator(game);
-        System.out.println(request.queryParams("actionData"));
 
         String move = request.queryParams("actionData");
         int startR = Character.getNumericValue(move.charAt(16));
@@ -55,7 +54,6 @@ public class PostValidateMoveRoute implements Route {
         else {
             madeMove = new Move(new Position(startR, startC), new Position(endR, endC));
         }
-        System.out.println(madeMove);
         //Enum<MoveValidator.TurnResult> result = validate.validateMove(madeMove);
         if(game.isComplete())
             return gson.toJson(new Message("Move already made", Message.Type.ERROR));
