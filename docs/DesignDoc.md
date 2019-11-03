@@ -19,11 +19,10 @@ Users can sign in with a desired username and play against friends or strangers.
 Provide a way for users to play checkers with their friends. The target user base would be all checkers lovers.
 
 ### Glossary and Acronyms
-> _Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
-| VO | Value Object |
+| MVP | Minimum Viable Product |
 
 
 ## Requirements
@@ -86,11 +85,12 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
+![The WebCheckers Web Interface Statechart](web-interface-placeholder.jpg)
 
-After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game".
+After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game". In a game, the user 
 
 ### UI Tier
+
 > _Provide a summary of the Server-side UI tier of your architecture.
 > Describe the types of components in the tier and describe their
 > responsibilities.  This should be a narrative description, i.e. it has
@@ -136,19 +136,19 @@ After the user connects, the user sees the home page with route "/". After, if h
 > suggested design improvements to address those hot spots._
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
+The tests that we performed involved unit testing to see if our code would return the 
+expected outcome given any input. Also, acceptance testing was done manually to see if 
+the logic of the game was correct and to catch any bugs that could occur. 
 
 ### Acceptance Testing
-> _Report on the number of user stories that have passed all their
-> acceptance criteria tests, the number that have some acceptance
-> criteria tests failing, and the number of user stories that
-> have not had any testing yet. Highlight the issues found during
-> acceptance testing and if there are any concerns._
+Acceptance testing was done manually by someone who did not write the code to test the logic of the 
+program. All of our user stories have passed the suite of acceptance criteria tests. We have nto yet tested 
+any of the enhancement user stories. Some of the issues we found included random bugs in the game logic such 
+as moving backwards when the piece was not a king and being able to end your turn even with an available capture.
 
 ### Unit Testing and Code Coverage
-> _Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets. If there are any anomalies, discuss
-> those._
+Our overall code... 
+Some of our unit tests were purposely not tested as they required tedious checks. For exmaple, we 
+did not check the case where the game would end if a user no longer had any places to move with his pieces. We thought that 
+this was an extreme condition that was hard to test with a unit test, but instead tested it manually for the expected outcome.
+
