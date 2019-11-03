@@ -180,6 +180,8 @@ public class GameTest {
         game.endTurn(); 
         Move m9 = new Move(new Position(4,5), new Position(2,7));
         game.makeMove(m9);
+        Move m10 = new Move(new Position(4,5), new Position(2,7));
+        game.makeMove(m10);
 
         String move = game.revertTurn();
         assertEquals(null, move);
