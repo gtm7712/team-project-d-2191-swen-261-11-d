@@ -84,35 +84,36 @@ with the WebCheckers application.
 
 ![The WebCheckers Web Interface Statechart](web-interface-placeholder.jpg)
 
-After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game". In a game, the user 
+After the user connects, the user sees the home page with route "/". After, if he chooses to sign in, he gets sent to the "/signin", seeing the signin.ftl page. After he signs in, he is redirected to the homepage if he inputs a valid name, and if not, he stays on the "/signin" route. If he is signed in, he can choose to start a game which would load the "/game". In a game, the user whose turn it is can move a piece and if it is a valid move, he can submit his turn or backup his turn. Both of these options will make the state stay in "/game". However, the user can resign a game which will send the user back to the "/", home page with the game ending. On the other hand, the user who is waiting for his turn will keep posting "/checkTurn" which will leave the user in the "/game" route, but checks if the it is his turn. Alos, the user can resign the game which will send the user to the "/", home page and his opponent to the "/game" with a new view.
 
 ### UI Tier
+GetHomeRoute: This route is used to load the home page. The different times this route is called is when the user first connects to the web application, after he signs in and also after his game ends. Renders the "/" route.<br>
 
-> _Provide a summary of the Server-side UI tier of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
+GetSignInRoute: The GetSignInRoute is meant to allow users to choose a username to play as. The route renders the "/signin" route.<br>
 
-> _At appropriate places as part of this narrative provide one or more
-> static models (UML class structure or object diagrams) with some
-> details such as critical attributes and methods._
+PostSignInRoute: The PostSignInRoute is called from the GetSignInRoute when the user submits a name. The route handles all the invalid user inputs and redirects the user back to home if the name is valid. Upon valid username, the playerLobby is updated. The route renders the "/" home route. <br>
 
-> _You must also provide any dynamic models, such as statechart and
-> sequence diagrams, as is relevant to a particular aspect of the design
-> that you are describing.  For example, in WebCheckers you might create
-> a sequence diagram of the `POST /validateMove` HTTP request processing
-> or you might show a statechart diagram if the Game component uses a
-> state machine to manage the game._
+GetStartGameRoute: GetStartGame is more generally the GetGame Route which allows users to load the game. It can be called when users are on the home page and click on another user's name, or it can be called automatically on refresh when the game has started to update the game as it is played. The route renders the "/game" route.
+![The GetGameRoute sequence diagram](GetGame.jpg)
 
-> _If a dynamic model, such as a statechart describes a feature that is
-> not mostly in this tier and cuts across multiple tiers, you can
-> consider placing the narrative description of that feature in a
-> separate section for describing significant features. Place this after
-> you describe the design of the three tiers._
+PostValidateMove: The PostValidateMove Route is used to check if a move a user has made is valid. It checks if a move is a simple move, or if it was a capture move. Based on what the user is done, checks are done to see if the user's turn is over or if there are still pieces the user can capture. The return is an ajax call with a message to the user and whether or not the move was valid or an error.<br>
+
+PostBackupRoute: The route handles when users try to press the backup button which reverts the board back to the starting state of the user's turn. The return is an ajax call with a message to the user and whether or not the backup was valid.<br>
+
+PostResignGame: PostResignGame handles the resign game button which should resign the game for the user. The return is an ajax call with a message to the user and whether or not the resign was valid.<br>
+
+PostSubmitTurn: PostSubmitTurn allows users to submit their turn to the other player. The submit turn should return an ajax call. The ajax call is either a Message.Type.INFO if the turn was able to be submitted and if it is not a valid turn, a Message.Type.ERROR is passed. <br>
+
+PostCheckTurn: The PostCheckTurn route handles the user who is waiting for his turn. It checks if the game is over and if it is his turn. If it is his turn or the game has ended, it returns a successful ajax call. If he is still waiting for his turn, it returns an error ajax call.<br>
+
+PostSignOutRoute: The PostSignOutRoute allows the user to signout of the web application and removes him from the lobby. This route renders the home page.<br>
+![The PostSignOutRoute sequence diagram](SignOut.jpg)
+
+WebServer: The WebServer handles all of the HTTP requests and creates the appropriate route with the correct parameters for each.<br>
 
 
 ### Application Tier_
-   Our application has the PlayerLobby and Game.  <br>
+ Our application has the PlayerLobby and Game.  <br>
  PlayerLobby holds all the Players that are currently logged in and is changed by SignIn and SignOut. <br>
  Game holds the game of checkers 2 players are playing and other necessary information like what happened during a specific turn <br>
 
