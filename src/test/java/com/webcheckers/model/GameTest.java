@@ -145,4 +145,46 @@ public class GameTest {
         pWhite.resign();
         assertEquals(game.getLoser(), pWhite);
     }
+
+    /**
+     * Check simplemove failed
+     */
+    @Test
+    public void kingRevert(){
+        pRed.setGame(game);
+        pWhite.setGame(game);
+        
+        Move m = new Move(new Position(5,4), new Position(4,5));
+        game.makeMove(m);
+        game.endTurn();
+        Move m2 = new Move(new Position(2,5), new Position(3,4));
+        game.makeMove(m2);
+        game.endTurn(); 
+        Move m3 = new Move(new Position(5,0), new Position(4,1));
+        game.makeMove(m3);
+        game.endTurn();
+        Move m4 = new Move(new Position(1,4), new Position(2,5));
+        game.makeMove(m4);
+        game.endTurn(); 
+        Move m5 = new Move(new Position(6,1), new Position(5,0));
+        game.makeMove(m5);
+        game.endTurn();
+        Move m6 = new Move(new Position(0,5), new Position(1,4));
+        game.makeMove(m6);
+        game.endTurn(); 
+        Move m7 = new Move(new Position(7,2), new Position(6,1));
+        game.makeMove(m7);
+        game.endTurn();
+        Move m8 = new Move(new Position(2,7), new Position(3,6));
+        game.makeMove(m8);
+        game.endTurn(); 
+        Move m9 = new Move(new Position(4,5), new Position(2,7));
+        game.makeMove(m9);
+
+        String move = game.revertTurn();
+        assertEquals(null, move);
+    }
+
+    
+    
 }
