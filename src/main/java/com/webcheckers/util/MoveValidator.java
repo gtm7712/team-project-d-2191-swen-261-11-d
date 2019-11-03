@@ -83,9 +83,6 @@ public class MoveValidator {
      */
     private boolean madeJump(Move move) {
         Position jump = getMidpoint(move);
-        System.out.println(jump.getRow() + " " + jump.getCell());
-        System.out.println(move.getStart().getRow() + " " + move.getStart().getCell());
-        System.out.println(move.getEnd().getRow() + " " + move.getEnd().getCell());
         if (move.getEnd().getCell() - move.getStart().getCell() != 2 && 
             move.getEnd().getCell() - move.getStart().getCell() != -2){
             return false;
@@ -275,7 +272,6 @@ public class MoveValidator {
     private boolean shouldKing(Move move) {
         Position endPos = move.getEnd();
         Piece    p      = board.getSpace(move.getStart()).getPiece();
-        System.out.println(endPos.getRow());
 
         if(game.whoseTurn().equals(game.getRedPlayer())) {
             if (!p.isKing()) {
