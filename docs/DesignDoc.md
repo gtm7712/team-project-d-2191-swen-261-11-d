@@ -47,9 +47,6 @@ Allow users to ask for help about available moves.<br>
 Allow users to record the moves in the game and replay them.<br>
 
 ## Application Domain
-
-This section describes the application domain.
-
 ![The WebCheckers Domain Model](domain-model-placeholder.png)
 
 The main entities are the board, player, piece, moves, and square.<br>
@@ -114,17 +111,21 @@ After the user connects, the user sees the home page with route "/". After, if h
 > you describe the design of the three tiers._
 
 
-### Application Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+### Application Tier_
+   Our application has the PlayerLobby and Game.  <br>
+ PlayerLobby holds all the Players that are currently logged in and is changed by SignIn and SignOut. <br>
+ Game holds the game of checkers 2 players are playing and other necessary information like what happened during a specific turn <br>
+
 
 
 ### Model Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
-
+Our Model Tier has Board, Move, Piece, Player, Position, Row, and Space<br>
+Board holds the logic for containing a set of Rows and updating specific Spaces with Pieces <br>
+Row holds 8 Spaces <br>
+Space is a square that has a color, and the Black Tiles can have a Piece <br>
+Piece has a Color (Red or White) and a type (Single or King) <br>
+Position is the row and space coordinate of a place on the board <br>
+Move is 2 positions that represent a starting and ending point of a piece during a move <br>
 ### Design Improvements
 > _Discuss design improvements that you would make if the project were
 > to continue. These improvement should be based on your direct
