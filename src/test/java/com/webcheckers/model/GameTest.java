@@ -91,5 +91,58 @@ public class GameTest {
         game.setComplete();
         assertTrue(game.isComplete() == true);
     }
-    
+
+    /**
+     * Check simplemove failed
+     */
+    @Test
+    public void checkSimpleMoves(){
+        Board board = game.getBoardRed();
+        Move m = new Move(new Position(5,4), new Position(4,5));
+        game.makeMove(m);
+        game.endTurn();
+        Move m2 = new Move(new Position(2,5), new Position(3,4));
+        game.makeMove(m2);
+        game.endTurn(); 
+        assertFalse(game.checkAllSimpleMoves(new Position(4,5), board.getSpace(4,5).getPiece()));
+   
+    }
+  
+    /**
+     * Check simplemove failed
+     */
+    @Test
+    public void KingChecks(){
+        Board board = game.getBoardRed();
+        Piece piece = board.getSpace(5,4).getPiece();
+        piece.king();
+        assertFalse(game.checkAllSimpleMoves(new Position(5,4), piece));
+   
+    }  
+
+    /**
+     * Check simplemove failed
+     */
+    @Test
+    public void getLoserRed(){
+        pRed.setGame(game);
+        pWhite.setGame(game);
+        game.setWinner(pWhite);
+
+        pRed.resign();
+        assertEquals(game.getLoser(), pRed);
+    }
+
+    /**
+     * Check simplemove failed
+     */
+    @Test
+    public void getLoserWhite(){
+        pRed.setGame(game);
+        pWhite.setGame(game);
+        game.setWinner(pRed);
+
+        pWhite.resign();
+        assertEquals(game.getLoser(), pWhite);
+    }
 }
