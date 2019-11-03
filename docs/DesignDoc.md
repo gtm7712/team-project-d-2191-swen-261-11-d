@@ -111,7 +111,7 @@ After the user connects, the user sees the home page with route "/". After, if h
 > you describe the design of the three tiers._
 
 
-### Application Tier_
+### Application Tier
    Our application has the PlayerLobby and Game.  <br>
  PlayerLobby holds all the Players that are currently logged in and is changed by SignIn and SignOut. <br>
  Game holds the game of checkers 2 players are playing and other necessary information like what happened during a specific turn <br>
@@ -126,6 +126,12 @@ Space is a square that has a color, and the Black Tiles can have a Piece <br>
 Piece has a Color (Red or White) and a type (Single or King) <br>
 Position is the row and space coordinate of a place on the board <br>
 Move is 2 positions that represent a starting and ending point of a piece during a move <br>
+
+### Utilities Tier
+Our Utilities includes Message, MoveValidator, and ValidationResult
+ValidationResult are the enums that MoveValidator returns <br>
+MoveValidator is something that takes model components and returns a value for the UI to use to determine what to do with the information given <br>
+Message is used to make messages to send to the JavaScript and display on the screen <br>
 ### Design Improvements
 What we Improved: we originally didn't have board hold a list of Rows and instead had it hold a double array of Spaces. <br>
 we updated our Board to hold a list of rows that held a list of spaces to better fit Object-Oriented Design.<br>
