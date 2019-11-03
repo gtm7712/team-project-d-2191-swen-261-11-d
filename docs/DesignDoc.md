@@ -127,15 +127,23 @@ Space is a square that has a color, and the Black Tiles can have a Piece <br>
 Piece has a Color (Red or White) and a type (Single or King) <br>
 Position is the row and space coordinate of a place on the board <br>
 Move is 2 positions that represent a starting and ending point of a piece during a move <br>
+
+### Utilities Tier
+Our Utilities includes Message, MoveValidator, and ValidationResult
+ValidationResult are the enums that MoveValidator returns <br>
+MoveValidator is something that takes model components and returns a value for the UI to use to determine what to do with the information given <br>
+Message is used to make messages to send to the JavaScript and display on the screen <br>
 ### Design Improvements
-> _Discuss design improvements that you would make if the project were
-> to continue. These improvement should be based on your direct
-> analysis of where there are problems in the code base which could be
-> addressed with design changes, and describe those suggested design
-> improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
-> hot spots the metrics identified in your code base, and your
-> suggested design improvements to address those hot spots._
+What we Improved: we originally didn't have board hold a list of Rows and instead had it hold a double array of Spaces. <br>
+we updated our Board to hold a list of rows that held a list of spaces to better fit Object-Oriented Design.<br>
+
+What we could improve on: <br>
+Our code for validating moves is very convoluted and complex and could be nicer and easier to follow.<br>
+More simpler methods- specifically RevertTurn() and SubmitTurn() needs variables we have in game that game doesn't use for anything else<br>
+We could have combined all of those variables into one class called Turn to simplify these methods<br>
+
+Tedious Checks: some of our methods are very tedious and run a ton of lines of code to check if something is valid, or to get the proper information <br>
+These could be simplified so when unit testing they aren't extremely hard to test <br> 
 
 ## Testing
 The tests that we performed involved unit testing to see if our code would return the 
