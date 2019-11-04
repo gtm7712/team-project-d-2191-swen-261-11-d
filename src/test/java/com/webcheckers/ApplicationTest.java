@@ -8,6 +8,7 @@ public class ApplicationTest {
 
     @Test
     public void demoMode() {
+        Application.main(null);
         assertFalse(Application.isInDemoMode());
     }
     
