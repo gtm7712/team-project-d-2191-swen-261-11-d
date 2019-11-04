@@ -159,7 +159,12 @@ any of the enhancement user stories. Some of the issues we found included random
 as moving backwards when the piece was not a king and being able to end your turn even with an available capture.
 
 ### Unit Testing and Code Coverage
-Our overall code... 
+Our overall code coverage is 93%.<br>
+The model tier code coverage is 91%.<br>
+The util code coverage is 94%.<br>
+The UI tier code coverage is 95%.<br>
+Application class code coverage is 70%.<br>
+Application tier code coverage is 100%.<br>
 Some of our unit tests were purposely not tested as they required tedious checks. For exmaple, we 
 did not check the case where the game would end if a user no longer had any places to move with his pieces. We thought that 
 this was an extreme condition that was hard to test with a unit test, but instead tested it manually for the expected outcome.
