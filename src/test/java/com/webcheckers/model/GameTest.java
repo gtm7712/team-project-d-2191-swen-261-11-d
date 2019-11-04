@@ -182,7 +182,7 @@ public class GameTest {
         game.makeMove(m9);
         Move m10 = new Move(new Position(2,7), new Position(0,5));
         game.makeMove(m10);
-
+        game.kingPiece(m10.getEnd());
         String move = game.revertTurn();
         assertEquals(null, move);
     }
