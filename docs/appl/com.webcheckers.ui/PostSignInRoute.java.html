@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostSignInRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">PostSignInRoute.java</span></div><h1>PostSignInRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import com.webcheckers.util.Message;
+
+
+public class PostSignInRoute implements Route{
+
+    static final String USERNAME = &quot;username&quot;;
+
+<span class="fc" id="L23">    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());</span>
+
+<span class="fc" id="L25">    private static final Message SELECT = Message.info(&quot;Please select a username.&quot;);</span>
+<span class="fc" id="L26">    private static final Message WELCOME_MSG = Message.info(&quot;Welcome to the world of online Checkers.&quot;);</span>
+
+    static final String INVALID_USERNAME = &quot;This username is not valid!  Usernames must be alphanumeric and must contain atleast 1 letter.&quot;;
+    static final String USERNAME_IN_USE = &quot;Pick another username, this one is already in use.&quot;;
+    static final String USERNAME_GOOD = &quot;Logged in&quot;;
+
+    private final PlayerLobby lobby;
+    private final TemplateEngine templateEngine;
+
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code POST /signin} HTTP requests.
+     *
+     * @param templateEngine
+     *   the HTML template rendering engine
+     */
+<span class="fc" id="L41">    public PostSignInRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {</span>
+<span class="fc" id="L42">        this.templateEngine = Objects.requireNonNull(templateEngine, &quot;templateEngine is required&quot;);</span>
+<span class="fc" id="L43">        this.lobby = lobby;</span>
+        //
+
+<span class="fc" id="L46">        LOG.config(&quot;PostSignInRoute is initialized.&quot;);</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Render the WebCheckers Sign In page.
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the Sign In page
+     */
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="fc" id="L62">        LOG.finer(&quot;PostSignIn is invoked.&quot;);</span>
+        //
+
+<span class="fc" id="L65">        final String username = request.queryParams(USERNAME);</span>
+        
+        // TODO: Add username checks
+
+
+<span class="fc" id="L70">        Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L72">        Player currentPlayer = new Player(username);</span>
+
+<span class="fc" id="L74">        vm.put(&quot;title&quot;, &quot;Sign In!&quot;);</span>
+
+<span class="fc" id="L76">        vm.put(&quot;message&quot;, SELECT);</span>
+
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        switch(lobby.checkUsername(username)){</span>
+            case 0:
+<span class="fc" id="L80">                vm.put(&quot;logIN&quot;, INVALID_USERNAME);</span>
+<span class="fc" id="L81">                break;</span>
+            case 1:
+<span class="fc" id="L83">                vm.put(&quot;logIN&quot;, USERNAME_IN_USE);</span>
+<span class="fc" id="L84">                break;</span>
+            case 2:
+<span class="fc" id="L86">                vm.put(&quot;logIN&quot;, USERNAME_GOOD);</span>
+<span class="fc" id="L87">                lobby.addUsername(username);</span>
+<span class="fc" id="L88">                request.session().attribute(&quot;Player&quot;, currentPlayer );</span>
+<span class="fc" id="L89">                response.redirect(&quot;/&quot;);</span>
+                break;
+        }
+        // render the View
+<span class="fc" id="L93">        return templateEngine.render(new ModelAndView(vm , &quot;signin.ftl&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Row.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Row.java</span></div><h1>Row.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Represents a Row on the checkers board
+ */
+public class Row implements Iterable&lt;Space&gt;{
+
+    private ArrayList&lt;Space&gt; row;
+    private int index;     //position in board
+
+    /**
+     * Create a new Row
+     */
+<span class="fc" id="L17">    public Row(int index) {</span>
+<span class="fc" id="L18">        this.index=index;</span>
+<span class="fc" id="L19">        row = new ArrayList&lt;&gt;(8);</span>
+<span class="fc" id="L20">    }</span>
+
+    /**
+     * adds a space to the row
+     * @param space space being added
+     * @return
+     */
+    public boolean add(Space space){
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if(row.size()&lt;8) {</span>
+<span class="fc" id="L29">            return row.add(space);</span>
+        }
+        else{
+<span class="fc" id="L32">            return false;</span>
+        }
+    }
+
+    /**
+     *
+     * @param spot x position in row
+     * @param space the piece being put there
+     * @return
+     */
+    public Space set(int spot, Space space){
+<span class="fc bfc" id="L43" title="All 4 branches covered.">        if(spot&lt;8 &amp;&amp; spot&gt;0)</span>
+<span class="fc" id="L44">            return row.set(spot, space);</span>
+<span class="fc" id="L45">        else return null;</span>
+    }
+
+    /**
+     * @param index The index to get
+     * @return The contents at the index
+     */
+    public Space get(int index) {
+<span class="fc bfc" id="L53" title="All 6 branches covered.">        if(index&gt;=0 &amp;&amp; index&lt;8 &amp;&amp; index&lt;row.size())</span>
+<span class="fc" id="L54">            return row.get(index);</span>
+        else
+<span class="fc" id="L56">            return null;</span>
+    }
+
+    /**
+     * 
+     * @return The index of the row
+     */
+    public int getIndex() {
+<span class="fc" id="L64">        return index;</span>
+    }
+    
+    /**
+     * Equals method for row
+     * @param o row to check if equal
+     * @return true if equal, else false
+     */
+    @Override
+    public boolean equals (Object o) {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (!(o instanceof Row)) return false;</span>
+
+<span class="fc" id="L76">        Row other = (Row)o;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if(index!=other.getIndex())</span>
+<span class="fc" id="L78">            return false;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (int i = 0; i &lt;  row.size(); i++)</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                if (!row.get(i).equals(other.get(i)))</span>
+<span class="fc" id="L81">                    return false;</span>
+<span class="fc" id="L82">        return true;</span>
+    }
+
+    /**
+     * iterator for a row
+     * @return the iterator function
+     */
+    @Override
+    public Iterator&lt;Space&gt; iterator() {
+<span class="fc" id="L91">        return row.iterator();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

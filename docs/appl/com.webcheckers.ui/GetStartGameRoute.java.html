@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetStartGameRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">GetStartGameRoute.java</span></div><h1>GetStartGameRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
+import com.webcheckers.model.Player;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import com.google.gson.Gson;
+
+import com.webcheckers.util.Message;
+
+import org.eclipse.jetty.util.security.Credential;
+
+/**
+ * The UI Controller for start game.
+ *
+ * @author Kyle Collins
+ */
+public class GetStartGameRoute implements Route {
+
+<span class="nc" id="L31">    private enum view { PLAY_MODE, SPECTATOR_MODE, REPLAY_MODE;}</span>
+
+<span class="fc" id="L33">    private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());</span>
+    private final TemplateEngine templateEngine;
+    private final PlayerLobby lobby;
+    private final Gson gson;
+    private Game game;
+
+    /**
+     * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
+     *
+     * @param templateEngine
+     *   the HTML template rendering engine
+     */
+<span class="fc" id="L45">    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson) {</span>
+<span class="fc" id="L46">      this.templateEngine = Objects.requireNonNull(templateEngine, &quot;templateEngine is required&quot;);</span>
+<span class="fc" id="L47">      this.lobby = lobby;</span>
+<span class="fc" id="L48">      this.gson = gson;</span>
+<span class="fc" id="L49">      game = new Game();</span>
+      //
+<span class="fc" id="L51">      LOG.config(&quot;GetStartGameRoute is initialized.&quot;);</span>
+<span class="fc" id="L52">    }</span>
+  
+    /**
+     * Render the web checkers start game
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   the rendered HTML for the Home page
+     */
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="fc" id="L67">      LOG.finer(&quot;GetStartGameRoute is invoked.&quot;);</span>
+      //
+<span class="fc" id="L69">      Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L71">      Player currentPlayer = request.session().attribute(&quot;Player&quot;);</span>
+<span class="fc" id="L72">      String otherPlayer = request.queryParams(&quot;otherPlayer&quot;);</span>
+<span class="fc" id="L73">      Player opponent = lobby.getPlayer(otherPlayer);</span>
+
+
+      // check to see if player is in game
+<span class="fc bfc" id="L77" title="All 2 branches covered.">      if(!currentPlayer.isInGame()) {</span>
+<span class="fc" id="L78">        game = new Game();</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if(opponent.isInGame()){</span>
+<span class="fc" id="L80">            vm.put(&quot;title&quot;, &quot;Welcome!&quot;);</span>
+<span class="fc" id="L81">            vm.put(&quot;allUsers&quot;,lobby.getUsernames());</span>
+<span class="fc" id="L82">            vm.put(&quot;error&quot;, &quot;Player is already in a game!&quot;);</span>
+<span class="fc" id="L83">            return templateEngine.render(new ModelAndView(vm , &quot;home.ftl&quot;));</span>
+        }
+
+<span class="fc" id="L86">        currentPlayer.setOpponent(opponent);</span>
+<span class="fc" id="L87">        opponent.setOpponent(currentPlayer);</span>
+
+<span class="fc" id="L89">        lobby.getPlayer(currentPlayer.name).inGame(true);</span>
+<span class="fc" id="L90">        lobby.getPlayer(otherPlayer).inGame(true);</span>
+
+<span class="fc" id="L92">        game.setRedPlayer(currentPlayer);</span>
+<span class="fc" id="L93">        game.setWhitePlayer(opponent);</span>
+
+<span class="fc" id="L95">        currentPlayer.setGame(game);</span>
+<span class="fc" id="L96">        opponent.setGame(game);</span>
+
+    }
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">    if(game.getGameStatus()){</span>
+<span class="fc" id="L101">      vm.put(&quot;title&quot;, &quot;Let's Play&quot;);</span>
+  
+<span class="fc" id="L103">      vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);</span>
+<span class="fc" id="L104">      vm.put(&quot;currentUser&quot;, currentPlayer);</span>
+<span class="fc" id="L105">      vm.put(&quot;redPlayer&quot;, game.getRedPlayer());</span>
+<span class="fc" id="L106">      vm.put(&quot;whitePlayer&quot;, game.getWhitePlayer());</span>
+
+<span class="fc" id="L108">      vm.put(&quot;board&quot;, currentPlayer.getPlayerBoard());</span>
+      
+<span class="fc" id="L110">      final Map&lt;String, Object&gt; modeOptions = new HashMap&lt;&gt;(2);</span>
+<span class="fc" id="L111">      modeOptions.put(&quot;isGameOver&quot;, true);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">      if(game.noMorePieces()){    </span>
+<span class="fc" id="L113">          modeOptions.put(&quot;gameOverMessage&quot;, game.getWinner().getName() + &quot; has captured all the pieces!&quot;);</span>
+      }
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">      else if (game.hasNoMoves()) {</span>
+<span class="nc" id="L116">          modeOptions.put(&quot;gameOverMessage&quot;, game.getLoser().getName() + &quot; has no available moves!&quot;);</span>
+      }else{
+<span class="fc" id="L118">          game.setWinner(currentPlayer.getOpponent());</span>
+<span class="fc" id="L119">          modeOptions.put(&quot;gameOverMessage&quot;, currentPlayer.getOpponent().getName() + &quot; resigned!&quot;);</span>
+      }
+<span class="fc" id="L121">      vm.put(&quot;modeOptionsAsJSON&quot;, gson.toJson(modeOptions));</span>
+
+<span class="fc" id="L123">      Player playerTurn = game.whoseTurn();</span>
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">      if(playerTurn == game.getRedPlayer()) {</span>
+<span class="fc" id="L126">        vm.put(&quot;activeColor&quot;, Piece.Color.RED);</span>
+        
+      }
+      else {
+<span class="fc" id="L130">        vm.put(&quot;activeColor&quot;, Piece.Color.WHITE);</span>
+      }
+<span class="fc" id="L132">      currentPlayer.inGame(false);</span>
+<span class="fc" id="L133">      currentPlayer.setBoard(null);</span>
+<span class="fc" id="L134">      return templateEngine.render(new ModelAndView(vm , &quot;game.ftl&quot;));</span>
+    }
+
+<span class="fc" id="L137">    opponent = currentPlayer.getOpponent();</span>
+
+    // Inject game information into template
+<span class="fc" id="L140">    vm.put(&quot;title&quot;, &quot;Let's Play&quot;);</span>
+
+<span class="fc" id="L142">    vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);</span>
+<span class="fc" id="L143">    vm.put(&quot;currentUser&quot;, currentPlayer);</span>
+<span class="fc" id="L144">    vm.put(&quot;redPlayer&quot;, game.getRedPlayer());</span>
+<span class="fc" id="L145">    vm.put(&quot;whitePlayer&quot;, game.getWhitePlayer());</span>
+    
+<span class="fc" id="L147">    vm.put(&quot;board&quot;, currentPlayer.getPlayerBoard());</span>
+
+<span class="fc" id="L149">    Player playerTurn = game.whoseTurn();</span>
+
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">    if(playerTurn == game.getRedPlayer()) {</span>
+<span class="fc" id="L152">      vm.put(&quot;activeColor&quot;, Piece.Color.RED);</span>
+      
+    }
+    else {
+<span class="nc" id="L156">      vm.put(&quot;activeColor&quot;, Piece.Color.WHITE);</span>
+    }
+
+    // render the View
+<span class="fc" id="L160">    return templateEngine.render(new ModelAndView(vm , &quot;game.ftl&quot;));</span>
+    }
+
+    public Game getGame(){
+<span class="fc" id="L164">      return game;</span>
+    }
+  }
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

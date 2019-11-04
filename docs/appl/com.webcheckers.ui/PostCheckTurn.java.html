@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostCheckTurn.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">PostCheckTurn.java</span></div><h1>PostCheckTurn.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.webcheckers.model.*;
+import com.webcheckers.util.MoveValidator;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
+
+import com.webcheckers.util.Message;
+
+/**
+ * ui controller for checkturn
+ */
+public class PostCheckTurn implements Route {
+<span class="fc" id="L24">    private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());</span>
+    private final Gson gson;
+
+    /**
+     * checkturn constructor
+     * @param gson the gson to used in the route
+     */
+<span class="fc" id="L31">    public PostCheckTurn(final Gson gson ){</span>
+<span class="fc" id="L32">        this.gson = gson;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Send checkturn ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether it is your turn
+     */
+    
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="fc" id="L49">        Player currentPlayer = request.session().attribute(&quot;Player&quot;);</span>
+<span class="fc" id="L50">        Game game = currentPlayer.getGame();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if(game.getGameStatus()){</span>
+<span class="fc" id="L52">            return gson.toJson(new Message(&quot;true&quot;, Message.Type.INFO));</span>
+        }
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if(currentPlayer.equals(game.whoseTurn())){</span>
+<span class="fc" id="L55">            return gson.toJson(new Message(&quot;true&quot;, Message.Type.INFO));</span>
+        }
+        else{
+<span class="fc" id="L58">            return gson.toJson(new Message(&quot;false&quot;, Message.Type.INFO));   </span>
+        }
+    
+        //return templateEngine.render(new ModelAndView(vm , &quot;game.ftl&quot;));
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

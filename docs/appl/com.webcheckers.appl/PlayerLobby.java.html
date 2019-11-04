@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerLobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.appl</a> &gt; <span class="el_source">PlayerLobby.java</span></div><h1>PlayerLobby.java</h1><pre class="source lang-java linenums">package com.webcheckers.appl;
+import java.util.HashMap;
+
+import com.webcheckers.model.Player;
+
+/**
+ * Application tier, controls and holds who is logged in, and if names are valid
+ * to be logged in
+ *
+ */
+<span class="fc" id="L11">public class PlayerLobby {</span>
+<span class="fc" id="L12">    private HashMap&lt;String, Player&gt; loggedIn = new HashMap&lt;&gt;(); // logged in people</span>
+
+
+
+    /**
+     * Checks if a username is valid
+     * 
+     * @param username
+     * @return String that says if your username is good or not and why if it is not
+     *         good
+     */
+    public int checkUsername(String username) {
+<span class="fc bfc" id="L24" title="All 4 branches covered.">        if (username == null || username.isEmpty()) {</span>
+<span class="fc" id="L25">            return 0;</span>
+        }
+<span class="fc" id="L27">        int numChars = 0;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        for (int i = 0; i &lt; username.length(); i++) {</span>
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">            if (!(Character.isLetterOrDigit(username.charAt(i)) || username.charAt(i) == ' ')) {</span>
+<span class="fc" id="L30">                return 0;</span>
+            }
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if(Character.isLetter(username.charAt(i))){</span>
+<span class="fc" id="L33">                numChars++;</span>
+            }
+        }
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if(numChars == 0){</span>
+<span class="fc" id="L37">            return 0;</span>
+        }
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (loggedIn.containsKey(username)) {</span>
+<span class="fc" id="L40">            return 1;</span>
+        } else {
+<span class="fc" id="L42">            return 2;</span>
+        }
+    }
+
+    /**
+     * Takes a username and adds it to the logged in array if it is a valid name
+     * 
+     * @param username to be logged in
+     * @return if username is added or not, and why if it is not added
+     */
+    public void addUsername(String username) {
+<span class="fc" id="L53">        loggedIn.put(username, new Player(username));</span>
+<span class="fc" id="L54">    }</span>
+
+    public void removeUsername(String username) {
+<span class="fc" id="L57">        loggedIn.remove(username);</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     *
+     * @return how many players are logged in
+     */
+    public int countPlayers(){
+<span class="fc" id="L65">        return loggedIn.size();</span>
+    }
+
+    /**
+     *
+     * @param name
+     * @return the logged in Player with that name
+     */
+
+    public Player getPlayer(String name){
+<span class="fc" id="L75">        return loggedIn.get(name);</span>
+    }
+
+    /**
+     *
+     * @return The hashmap of all the logged in users
+     */
+    public HashMap&lt;String, Player&gt; getUsernames() {
+<span class="fc" id="L83">        return loggedIn;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

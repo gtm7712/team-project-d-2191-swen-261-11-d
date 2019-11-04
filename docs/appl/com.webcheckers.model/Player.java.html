@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+public class Player {
+
+    public String name;
+    private boolean inGame;  //if a user is in a game or not
+    private Player opponent;
+    private Game game;
+    private Board board;
+    //todo
+
+    /**
+     * A Player is logged in
+     * @param name of logged in player
+     */
+<span class="fc" id="L16">    public Player(String name) {</span>
+<span class="fc" id="L17">        this.name = name;</span>
+<span class="fc" id="L18">        this.inGame = false;</span>
+<span class="fc" id="L19">    }</span>
+
+    /**
+     *
+     * @return Players username
+     */
+    public String getName() {
+<span class="fc" id="L26">        return name;</span>
+    }
+
+    /**
+     *
+     * @return if a player is in game or not
+     */
+    public boolean isInGame() {
+<span class="fc" id="L34">        return inGame;</span>
+    }
+
+    /**
+     * sets player to be in/ out of  game
+     * @param inGame
+     */
+    public void inGame(boolean inGame){
+<span class="fc" id="L42">        this.inGame = inGame;</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Get the opponent of the player
+     * @return the player's opponent
+     */
+    public Player getOpponent(){
+<span class="fc" id="L50">        return opponent;</span>
+    }
+
+    /**
+     * sets the Players opponent if you are in game
+     * @param opponent a Player that you are playing in checkers
+     */
+    public void setOpponent(Player opponent){
+<span class="fc" id="L58">        this.opponent = opponent;</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     *
+     * @return the board of the game you are playing
+     */
+    public Board getBoard(){
+<span class="fc" id="L66">        return this.game.getBoardRed();</span>
+    }
+ 
+    /**
+     *
+     * @return the board of the game you are playing
+     */
+    public Board getFlippedBoard(){
+<span class="fc" id="L74">        return this.game.getBoardWhite();</span>
+    }
+
+    /**
+     *
+     * @return the board of the game you are playing
+     */
+    public void setBoard(Board board){
+<span class="fc" id="L82">        this.board = board;</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     *
+     * @return get player board
+     */
+    public Board getPlayerBoard(){
+<span class="fc" id="L90">        return this.board;</span>
+    }
+
+
+    /**
+     *
+     * @return the game you are playing
+     */
+    public Game getGame(){
+<span class="fc" id="L99">        return this.game;</span>
+    }
+
+    /**
+     * sets the game you are playing
+     * @param game
+     */
+    public void setGame(Game game){
+<span class="fc" id="L107">        this.game = game;</span>
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * Resign the game by setting the game to over
+     */
+    public void resign(){
+<span class="fc" id="L114">        this.game.setGameOver(true);</span>
+<span class="fc" id="L115">        this.inGame = false;</span>
+<span class="fc" id="L116">        this.game = null;</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * hash function for players
+     * @return the hashed value
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L125">        return name.hashCode();</span>
+    }
+
+    /**
+     * equals method for two players
+     * @return true if the players are equal, else false
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (obj == this){</span>
+<span class="fc" id="L135">            return true;</span>
+        }
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (!(obj instanceof Player)){</span>
+<span class="fc" id="L138">            return false;</span>
+        }
+<span class="fc" id="L140">        final Player temp = (Player) obj;</span>
+<span class="fc" id="L141">        return temp.name.equals(this.name);</span>
+    }
+
+    /**
+     * toString method for a player
+     * @return the string representation of a player
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L150">        return name;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

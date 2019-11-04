@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import com.webcheckers.model.Piece.Color;
+import com.webcheckers.ui.PostValidateMoveRoute;
+import com.webcheckers.util.MoveValidator;
+
+import java.util.ArrayList;
+
+/**
+ * The Game
+ */
+public class Game {
+    private Board board;
+    private Player redPlayer;
+    private Player whitePlayer;
+<span class="fc" id="L16">    private ArrayList&lt;Move&gt;turn= new ArrayList&lt;&gt;();</span>
+    private Player theirTurn;     //says who's turn it is
+    private Board clonedBoard;
+    private Player winner;
+    private boolean gameOver;
+
+<span class="fc" id="L22">    private boolean isComplete=false;</span>
+<span class="fc" id="L23">    private boolean wasKinged=false;</span>
+<span class="fc" id="L24">    private ArrayList&lt;Piece&gt;graveyard=new ArrayList&lt;&gt;();  //pieces removed this turn</span>
+
+    /**
+     * Create a new Game
+     */
+<span class="fc" id="L29">    public Game() {</span>
+<span class="fc" id="L30">        this.board = new Board();</span>
+<span class="fc" id="L31">        this.clonedBoard=board;</span>
+<span class="fc" id="L32">        this.gameOver = false;</span>
+<span class="fc" id="L33">        this.clonedBoard=new Board(board.getBoard());</span>
+<span class="fc" id="L34">    }</span>
+
+    /**
+     *
+     * @return if movevalidator has returned complete or not
+     */
+    public boolean isComplete(){
+<span class="fc" id="L41">        return isComplete;</span>
+    }
+
+    /**
+     * called when move validator returns a complete , sets complete to true
+     */
+    public void setComplete(){
+<span class="fc" id="L48">        isComplete=true;</span>
+<span class="fc" id="L49">    }</span>
+    /**
+     * 
+     * @return The white player
+     */
+    public Player getWhitePlayer(){
+<span class="fc" id="L55">        return whitePlayer;</span>
+    }
+
+    /**
+     * 
+     * @return The red player
+     */
+    public Player getRedPlayer(){
+<span class="fc" id="L63">        return redPlayer;</span>
+    }
+
+    /**
+     * Set the red player
+     * @param p New red player
+     */
+    public void setRedPlayer(Player p){
+<span class="fc" id="L71">        this.redPlayer = p;</span>
+<span class="fc" id="L72">        this.redPlayer.setBoard(getBoardRed());</span>
+<span class="fc" id="L73">        theirTurn=p;</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Set the white player
+     * @param p New white player
+     */
+    public void setWhitePlayer(Player p){
+<span class="fc" id="L81">        this.whitePlayer = p;</span>
+<span class="fc" id="L82">        this.whitePlayer.setBoard(getBoardWhite());</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * 
+     * @return The board oriented for the Red player 
+     */
+    public Board getBoardRed() {
+<span class="fc" id="L90">        return board;</span>
+    }
+
+    /**
+     * get clone board that updates with validated moves
+     * @return the cloned board
+     */
+    public Board getClonedBoard(){
+<span class="fc" id="L98">        return clonedBoard;</span>
+    }
+
+    /**
+     * 
+     * @return The board oriented for the White player
+     */
+    public Board getBoardWhite() {
+<span class="fc" id="L106">        return board.flipped();</span>
+    }
+
+    /**
+     * Adds a move to your turn, to be ready to be submitted when your turn is swapped
+     * @param madeMove move that went through validation
+     */
+    public void makeMove(Move madeMove){
+
+<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if(madeMove.getEnd().getRow()==-1 &amp;&amp; madeMove.getEnd().getCell()==-1) {</span>
+<span class="fc" id="L116">            System.out.println(&quot;Grave Yard&quot;);</span>
+<span class="fc" id="L117">            graveyard.add(board.getSpace(madeMove.getStart()).getPiece());</span>
+<span class="fc" id="L118">            turn.add(0, madeMove);</span>
+<span class="fc" id="L119">            board.getSpace(madeMove.getStart()).removePiece();</span>
+        }else {
+<span class="fc" id="L121">            turn.add(madeMove);</span>
+<span class="fc" id="L122">            clonedBoard.makeMove(madeMove);</span>
+        }
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * handles if revert turn button is clicked.
+     * 
+     * @return Error message, if applicaple, or Null if successful 
+     */
+
+    public String revertTurn(){
+<span class="fc" id="L133">        isComplete=false;</span>
+//        this.clonedBoard=new Board(board.getBoard());
+<span class="fc" id="L135">        int i=turn.size()-1;</span>
+<span class="fc" id="L136">        System.out.println(turn.size());</span>
+<span class="fc" id="L137">        Move move=turn.get(i);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if(wasKinged) {</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">            if (move.getEnd().getRow() == board.BOARD_SIZE - 1 &amp;&amp; theirTurn.equals(whitePlayer)) {</span>
+<span class="nc" id="L140">                clonedBoard.getSpace(move.getEnd()).unKingPiece();</span>
+<span class="nc" id="L141">                wasKinged=false;</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">            } else if (move.getEnd().getRow() == 0 &amp;&amp; theirTurn.equals(redPlayer)) {</span>
+<span class="nc" id="L143">                clonedBoard.getSpace(move.getEnd()).unKingPiece();</span>
+<span class="nc" id="L144">                wasKinged=false;</span>
+            }
+        }
+<span class="fc" id="L147">        clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));</span>
+<span class="pc bpc" id="L148" title="3 of 4 branches missed.">            if(turn.get(0).getEnd().getCell()==-1 &amp;&amp; turn.get(0).getEnd().getRow()==-1){</span>
+<span class="nc" id="L149">                clonedBoard.getSpace(turn.get(0).getStart()).setPiece(graveyard.get(graveyard.size()-1));</span>
+<span class="nc" id="L150">                graveyard.remove(graveyard.size()-1);</span>
+<span class="nc" id="L151">                turn.remove(0);</span>
+<span class="nc" id="L152">                        i--;</span>
+            }
+
+
+<span class="fc" id="L156">        turn.remove(i);</span>
+<span class="fc" id="L157">        System.out.println(turn);</span>
+<span class="fc" id="L158">        return null;</span>
+    }
+        
+    /**
+     * handles when End Turn button is clicked.
+     */
+    public void endTurn(){
+<span class="fc" id="L165">        graveyard=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L166">        board=clonedBoard;</span>
+<span class="fc" id="L167">        turn=new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L168">        isComplete=false;</span>
+<span class="fc" id="L169">        wasKinged=false;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if(theirTurn.equals(redPlayer))</span>
+<span class="fc" id="L171">            theirTurn=whitePlayer;</span>
+        else
+<span class="fc" id="L173">            theirTurn=redPlayer;</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Get whose turn it is
+     * @return whose turn it is
+     */
+    public Player whoseTurn(){
+<span class="fc" id="L181">        return theirTurn;</span>
+    }
+
+    /**
+     * Gets the winner of the game
+     * @return the player who won
+     */
+    public Player getWinner(){
+<span class="fc" id="L189">        return winner;</span>
+    }
+
+    /**
+     * sets the winner
+     * @param a the player who won
+     */
+    public void setWinner(Player a){
+<span class="fc" id="L197">        winner = a;</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * changes the boolean of the gamestatus
+     * @param a true or false depending on if the game is over
+     */
+    public void setGameOver(boolean a){
+<span class="fc" id="L205">        gameOver = a;</span>
+<span class="fc" id="L206">    }</span>
+
+    /**
+     * gets the status of the game
+     * @return true if the game is over else, false
+     */
+    public boolean getGameStatus(){
+<span class="fc" id="L213">        return gameOver;</span>
+    }
+
+    /**
+     * check if there are any more pieces in the game for a color
+     * @return true if any color has no more pieces
+     */
+    public boolean noMorePieces(){
+<span class="fc" id="L221">        int countRed = 0;</span>
+<span class="fc" id="L222">        int countWhite = 0;</span>
+                
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        for (int r = 0; r &lt;= Board.BOARD_SIZE - 1; r++) {</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            for (int c = 0; c &lt;= Board.BOARD_SIZE - 1; c++) {</span>
+<span class="fc" id="L226">                Position pos = new Position(r, c);</span>
+<span class="fc" id="L227">                Piece pce = board.getSpace(pos).getPiece();</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">                if(pce != null){</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">                    if(pce.getColor() == Piece.Color.RED){</span>
+<span class="fc" id="L230">                        countRed++;</span>
+                    }
+<span class="fc bfc" id="L232" title="All 2 branches covered.">                    if(pce.getColor() == Piece.Color.WHITE){</span>
+<span class="fc" id="L233">                        countWhite++;</span>
+                    }
+                }
+            }
+        }
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        if(countRed == 0){</span>
+<span class="nc" id="L239">            this.winner = this.whitePlayer;</span>
+<span class="nc" id="L240">            return true;</span>
+        }
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if(countWhite == 0){</span>
+<span class="fc" id="L243">            this.winner = this.redPlayer;</span>
+<span class="fc" id="L244">            return true;</span>
+        }
+<span class="fc" id="L246">        return false;</span>
+    }
+
+    /**
+     * @return The board represented in String format
+     */
+/*    public String toString() {
+        String toReturn = &quot;&quot;;
+        //ArrayList&lt;Row&gt; boardArray = board.getBoard();
+        for(int i = 0; i &lt; Board.BOARD_SIZE; i++) {
+            for(int j = 0; j &lt; Board.BOARD_SIZE; j++) {
+                if(board.getSpace(i, j).isSpaceValid()) {
+                    if(board.getSpace(i,j).hasPiece()) {
+                        if(board.getSpace(i,j).isPieceRed()) {
+                            toReturn += &quot;[R]&quot;;
+                        }
+                        else {
+                            toReturn += &quot;[W]&quot;;
+                        }
+                    }
+                    else {
+                        toReturn += &quot;[ ]&quot;;
+                    }
+                }
+                else {
+                    toReturn += &quot;{-}&quot;;
+                }
+            }
+            toReturn += &quot;\n&quot;;
+        }
+        return toReturn;
+    }
+    */
+    
+    /**
+     * Sets a piece to king
+     * @param p the position of where the piece is
+     */
+    public void kingPiece(Position p){
+<span class="fc" id="L285">        board.getSpace(p).kingPiece();</span>
+<span class="fc" id="L286">        wasKinged=true;</span>
+<span class="fc" id="L287">    }</span>
+
+    /**
+     * Test method to force WHITE's turn
+     */
+    public void __test_set_white_turn() {
+<span class="fc" id="L293">        theirTurn = whitePlayer;</span>
+<span class="fc" id="L294">    }</span>
+
+    /**
+     * Test method to remove all color pieces
+     * @param color Color to remove
+     */
+    public void __test_remove_all_pieces(Color color) {
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (int r = 0; r &lt;= Board.BOARD_SIZE - 1; r++) {</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            for (int c = 0; c &lt;= Board.BOARD_SIZE - 1; c++) {</span>
+<span class="fc" id="L303">                Space space = board.getSpace(r, c);</span>
+                
+<span class="fc bfc" id="L305" title="All 2 branches covered.">                if (space.hasPiece()) {</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">                    if (space.getPiece().getColor() == color) {</span>
+<span class="fc" id="L307">                        space.removePiece();</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L312">    }</span>
+
+    /**
+     * determines if a player has moves or not
+     * @return true if player has no moves
+     */
+    public boolean hasNoMoves() {
+<span class="fc" id="L319">        MoveValidator validate = new MoveValidator(this);</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        if(theirTurn.equals(redPlayer)) {</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">            for (int i = 0; i &lt; Board.BOARD_SIZE; i++) {</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">                for (int j = 0; j &lt; Board.BOARD_SIZE; j++) {</span>
+<span class="fc" id="L323">                    Space space = board.getSpace(i, j);</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">                    if (space.hasPiece()) {</span>
+<span class="fc" id="L325">                        Piece piece = space.getPiece();</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">                        if (piece.getColor() == Piece.Color.RED) {</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">                            if(!checkAllSimpleMoves(new Position(i,j), piece))</span>
+<span class="fc" id="L328">                                return false;</span>
+                        }
+                    }
+                }
+            }
+<span class="nc bnc" id="L333" title="All 2 branches missed.">            if (!validate.shouldMakeJump(Piece.Color.RED)) {</span>
+<span class="nc" id="L334">                this.winner=whitePlayer;</span>
+<span class="nc" id="L335">                return true;</span>
+            }
+        }
+        else {//white player
+<span class="fc bfc" id="L339" title="All 2 branches covered.">            for (int i = 0; i &lt; Board.BOARD_SIZE; i++) {</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">                for (int j = 0; j &lt; Board.BOARD_SIZE; j++) {</span>
+<span class="fc" id="L341">                    Space space = board.getSpace(i, j);</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                    if (space.hasPiece()){</span>
+<span class="fc" id="L343">                        Piece piece=space.getPiece();</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">                        if (piece.getColor() == Piece.Color.WHITE) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                            if(!checkAllSimpleMoves(new Position(i, j), piece)) {</span>
+<span class="fc" id="L346">                                return false;</span>
+                            }
+                        }
+                    }
+                }
+            }
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">            if (!validate.shouldMakeJump(Piece.Color.WHITE)) {</span>
+<span class="fc" id="L353">                this.winner=redPlayer;</span>
+<span class="fc" id="L354">                return true;</span>
+            }
+        }
+
+<span class="nc" id="L358">        return false;</span>
+    }
+
+    /**
+     * helper method for hasNoMoves that checks all simple moves of a specific piece
+     * @return true if a move can NOT happen
+     */
+    public boolean checkAllSimpleMoves(Position pos, Piece piece) {
+
+<span class="fc" id="L367">        Position upL = null, upR = null, downL = null, downR = null;</span>
+<span class="fc bfc" id="L368" title="All 4 branches covered.">        if (pos.getRow() != 0 &amp;&amp; pos.getCell() != 0) {</span>
+<span class="fc" id="L369">            upL = new Position(pos.getRow() - 1, pos.getCell() - 1);</span>
+        }
+<span class="pc bpc" id="L371" title="1 of 4 branches missed.">        if (pos.getRow() != 0 &amp;&amp; pos.getCell() != 7) {</span>
+<span class="fc" id="L372">            upR = new Position(pos.getRow() - 1, pos.getCell() + 1);</span>
+        }
+<span class="pc bpc" id="L374" title="1 of 4 branches missed.">        if (pos.getRow() != 7 &amp;&amp; pos.getCell() != 0) {</span>
+<span class="fc" id="L375">            downL = new Position(pos.getRow() + 1, pos.getCell() - 1);</span>
+        }
+<span class="pc bpc" id="L377" title="1 of 4 branches missed.">        if (pos.getRow() != 7 &amp;&amp; pos.getCell() != 7) {</span>
+<span class="fc" id="L378">            downR = new Position(pos.getRow() + 1, pos.getCell() + 1);</span>
+        }
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (piece.getColor() == Piece.Color.RED) {</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">            if (!piece.isKing()) {</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">                if (upL != null) {</span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">                    if (!board.getSpace(upL).hasPiece()) {</span>
+<span class="nc" id="L384">                        return false;</span>
+                    }
+                }
+<span class="pc bpc" id="L387" title="1 of 2 branches missed.">                if (upR != null) {</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">                    if (!board.getSpace(upR).hasPiece()) {</span>
+<span class="fc" id="L389">                        return false;</span>
+                    }
+                }
+            }
+        } else {
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">            if (!piece.isKing()) {</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                if (downL != null) {</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">                    if (!board.getSpace(downL).hasPiece()) {</span>
+<span class="fc" id="L397">                        return false;</span>
+                    }
+                }
+<span class="fc bfc" id="L400" title="All 2 branches covered.">                if (downR != null) {</span>
+
+<span class="fc bfc" id="L402" title="All 2 branches covered.">                    if (!board.getSpace(downR).hasPiece()) {</span>
+<span class="fc" id="L403">                        return false;</span>
+                    }
+                }
+            }
+        }
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        if(!piece.isKing()) {</span>
+<span class="fc" id="L409">            return true;</span>
+        }
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">        if (downL != null) {</span>
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">            if (!board.getSpace(downL).hasPiece()) {</span>
+<span class="nc" id="L413">                return false;</span>
+            }
+        }
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">        if (downR != null) {</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">            if (!board.getSpace(downR).hasPiece()) {</span>
+<span class="nc" id="L418">                return false;</span>
+            }
+        }
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">        if (upL != null) {</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">            if (!board.getSpace(upL).hasPiece()) {</span>
+<span class="fc" id="L423">                return false;</span>
+            }
+        }
+<span class="nc bnc" id="L426" title="All 2 branches missed.">        if (upR != null) {</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">            if (!board.getSpace(upR).hasPiece()) {</span>
+<span class="nc" id="L428">                return false;</span>
+            }
+        }
+<span class="nc" id="L431">        return true;</span>
+    }
+
+    /**
+     * return the loser of the game
+     * @return the loser of the game
+     */
+    public Player getLoser() {
+<span class="fc bfc" id="L439" title="All 2 branches covered.">        if(winner.equals(redPlayer))</span>
+<span class="fc" id="L440">            return whitePlayer;</span>
+        else
+<span class="fc" id="L442">            return redPlayer;</span>
+    }
+
+    /**
+     * Main entry point for the Game
+     * @param args
+     */
+/*    public static void main(String[] args) {
+        // Stuff for testing
+        Game game = new Game();
+
+        System.out.println(game);
+    }*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

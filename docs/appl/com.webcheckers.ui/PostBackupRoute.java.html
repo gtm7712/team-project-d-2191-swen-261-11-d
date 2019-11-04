@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostBackupRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">PostBackupRoute.java</span></div><h1>PostBackupRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.webcheckers.model.*;
+import com.webcheckers.util.MoveValidator;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
+
+import com.webcheckers.util.Message;
+
+/**
+ * ui controller for backing up
+ */
+public class PostBackupRoute implements Route {
+<span class="fc" id="L25">    private static final Logger LOG = Logger.getLogger(PostBackupRoute.class.getName());</span>
+    private final Gson gson;
+
+<span class="fc" id="L28">    public PostBackupRoute(final Gson gson ){</span>
+<span class="fc" id="L29">        this.gson = gson;</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * Send backup ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether the backup was successful
+     */
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="fc" id="L45">        Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L46">        Player currentPlayer = request.session().attribute(&quot;Player&quot;);</span>
+<span class="fc" id="L47">        Game game = currentPlayer.getGame();</span>
+
+<span class="fc" id="L49">        String message = game.revertTurn();</span>
+        
+        // vm.put(&quot;title&quot;, &quot;Let's Play&quot;);
+        // vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);
+        // vm.put(&quot;currentUser&quot;, currentPlayer);
+        // vm.put(&quot;redPlayer&quot;, game.getRedPlayer());
+        // vm.put(&quot;whitePlayer&quot;, game.getWhitePlayer());
+        // if(currentPlayer.equals(game.getRedPlayer()))
+        //     vm.put(&quot;activeColor&quot;, Piece.Color.RED);
+        // if(currentPlayer.equals(game.getWhitePlayer()))
+        //     vm.put(&quot;activeColor&quot;, Piece.Color.WHITE);
+
+<span class="fc" id="L61">        return gson.toJson(new Message(&quot;Backup Successful!&quot;, Message.Type.INFO));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>

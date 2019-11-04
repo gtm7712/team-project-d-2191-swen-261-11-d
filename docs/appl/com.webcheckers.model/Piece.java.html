@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Piece.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Piece.java</span></div><h1>Piece.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+/**
+ * Represents a checkers piece
+ * @author Giovanni Melchionne
+ */
+public class Piece {
+
+    /**
+     * Represents the color of a piece
+     */
+<span class="fc" id="L12">    public static enum Color {</span>
+<span class="fc" id="L13">        RED, WHITE</span>
+    }
+
+    /**
+     * Represents the type of a piece
+     */
+<span class="fc" id="L19">    public enum Type {</span>
+<span class="fc" id="L20">        KING, SINGLE</span>
+    }
+
+    private Color color;
+    private Type type;
+
+    /**
+     * Create a new piece
+     * @param color  Color of the piece
+     */
+<span class="fc" id="L30">    public Piece(Color color) {</span>
+<span class="fc" id="L31">        this.color = color;</span>
+<span class="fc" id="L32">        this.type=Type.SINGLE;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * 
+     * @return  true if the piece is a king
+     */
+    public boolean isKing() {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        return type==Type.KING;</span>
+    }
+
+    /**
+     * King the piece
+     */
+    public void king() {
+<span class="fc" id="L47">        type = Type.KING;</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * 
+     * @return  the color of the piece
+     */
+    public Color getColor() {
+<span class="fc" id="L55">        return this.color;</span>
+    }
+
+    /**
+     *
+     * @return  if the color of the piece is red
+     */
+<span class="fc bfc" id="L62" title="All 2 branches covered.">    public boolean isRed() { return this.color == Color.RED; }</span>
+
+    /**
+     *
+     * @return the pieces type
+     */
+    public Type getType() {
+<span class="fc" id="L69">        return type;</span>
+    }
+
+    /**
+     * un kings a piece
+     */
+    public void unKing() {
+<span class="nc" id="L76">        type=Type.SINGLE;</span>
+<span class="nc" id="L77">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Application Tier</div></body></html>
