@@ -23,6 +23,8 @@ public class Game {
     private boolean wasKinged=false;
     private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
+    private Replay replay;
+
     /**
      * Create a new Game
      */
@@ -31,6 +33,7 @@ public class Game {
         this.clonedBoard=board;
         this.gameOver = false;
         this.clonedBoard=new Board(board.getBoard());
+        this.replay = new Replay();
     }
 
     /**
@@ -161,6 +164,7 @@ public class Game {
     public void endTurn(){
         graveyard=new ArrayList<>();
         board=clonedBoard;
+        replay.addTurn(turn);
         turn=new ArrayList<>();
         isComplete=false;
         wasKinged=false;
@@ -168,6 +172,7 @@ public class Game {
             theirTurn=whitePlayer;
         else
             theirTurn=redPlayer;
+        System.out.println("Replay:\n" + replay + "\n");
     }
 
     /**
@@ -208,6 +213,14 @@ public class Game {
      */
     public boolean getGameStatus(){
         return gameOver;
+    }
+
+    /**
+     * Gets replay for game
+     * @return Replay object for game
+     */
+    public Replay getReplay() {
+        return replay;
     }
 
     /**
