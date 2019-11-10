@@ -172,7 +172,6 @@ public class Game {
             theirTurn=whitePlayer;
         else
             theirTurn=redPlayer;
-        System.out.println("Replay:\n" + replay + "\n");
     }
 
     /**
