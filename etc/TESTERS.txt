@@ -1,0 +1,5 @@
+Team D Acceptance Plan Testing Instructions
+1. Run 'mvn compile exec:java' in the root directory to start the server.
+2. Open up two different browsers or an incognito browser to start two instances of the game.
+3. Connect to the server at localhost:4567.
+4. Play the game and test the application against the acceptance test plan spreadsheet.
