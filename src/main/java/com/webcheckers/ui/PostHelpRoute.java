@@ -1,0 +1,68 @@
+package com.webcheckers.ui;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.webcheckers.model.*;
+import com.webcheckers.util.MoveValidator;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
+import com.webcheckers.util.Helper;
+import com.webcheckers.util.Message;
+
+/**
+ * ui controller for help feature
+ * @author Kyle Collins
+ */
+public class PostHelpRoute implements Route {
+
+    private static final Logger LOG = Logger.getLogger(PostHelpRoute.class.getName());
+    private final Gson gson;
+
+    /**
+     * constructor for the PostResignGame
+     * @param gson the gson used to send ajax
+     */
+    public PostHelpRoute(final Gson gson ){
+        this.gson = gson;
+    }
+
+    /**
+     * Send resignGame ajax to client-side
+     *
+     * @param request
+     *   the HTTP request
+     * @param response
+     *   the HTTP response
+     *
+     * @return
+     *   an ajax call saying whether the resignGame successful
+     */
+    
+    @Override
+    public Object handle(Request request, Response response) {
+
+        Map<String, Object> vm = new HashMap<>();
+        Player currentPlayer = request.session().attribute("Player");
+        Helper helper = new Helper(currentPlayer);
+        ArrayList<Space> moveablePieces = helper.validPieces();
+        Space s = moveablePieces.get(0);
+
+        // Test Valid Space
+        int row = s.getRow();
+        int col = s.getCellIdx();
+        String result = "row: " + row + " Col" + col;
+
+        return gson.toJson(new Message(result, Message.Type.INFO));   
+
+    }
+}

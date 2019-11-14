@@ -64,6 +64,7 @@ public class WebServer {
   public static final String SUBMITTURN_URL = "/submitTurn";
   public static final String BACKUP_URL = "/backupMove";
   public static final String SIGNOUT_URL = "/signout";
+  public static final String HELP_URL = "/playerHelp";
 
   //
   // Attributes
@@ -161,6 +162,7 @@ public class WebServer {
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
+    post(HELP_URL, new PostHelpRoute(gson));
     //
     LOG.config("WebServer is initialized.");
   }

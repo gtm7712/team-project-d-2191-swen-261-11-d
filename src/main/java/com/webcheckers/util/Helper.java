@@ -17,7 +17,7 @@ public class Helper {
     private Board board;
     private Color playerColor;
 
-    
+
     /**
      * Create a new helper
      */
@@ -37,23 +37,15 @@ public class Helper {
     }
 
     /**
-     * Highlight Pieces on the board that can make a valid move
-     */
-    public void indicateValidPieces() {
-        System.out.println("Valid piece");
-    }
-
-    /**
      * Find Pieces that can make a valid move
      * @return ArrayList<Piece> pieces
      */
-    public ArrayList<Piece> validPieces(){
+    public ArrayList<Space> validPieces(){
 
-        ArrayList<Piece> pieces = new ArrayList<>();
+        ArrayList<Space> spaces = new ArrayList<>();
         Space space;
         Piece piece;
         int cell;
-        Move move;
 
         /// Iterate through all spaces on the board
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -64,16 +56,22 @@ public class Helper {
                 cell = space.getCellIdx();
 
                 if(piece.getColor() == playerColor) {
-
-                        pieces.add(piece);
-
+                        checkPositions(i, cell);
+                        spaces.add(space);
                 }
-
             }
         }
-        return pieces;
+
+        return spaces;
     }
 
+    /**
+     * Check to see if a valid move exist in the spaces that surrounding 
+     * the position of a given piece
+     * @param row
+     * @param cell
+     * @return boolean
+     */
     private boolean checkPositions(int row, int cell ) {
 
         // Starting position of piece of on board
@@ -95,7 +93,7 @@ public class Helper {
         return false;
     }
 
-        /**
+    /**
      * Check if the jump made was valid
      * 
      * @param move Move to check
