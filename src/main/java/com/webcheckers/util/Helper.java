@@ -1,6 +1,8 @@
 package com.webcheckers.util;
+
 import java.util.ArrayList;
 import com.webcheckers.model.*;
+import com.webcheckers.model.Piece.Color;
 
 /**
  * Utility class for the helper enhancement
@@ -8,13 +10,30 @@ import com.webcheckers.model.*;
  * @author Kyle Collins
  */
 public class Helper {
-    private Game game;
 
+    public final static int BOARD_SIZE = 8;
+    
+    private Player player;
+    private Board board;
+    private Color playerColor;
+
+    
     /**
      * Create a new helper
      */
-    public Helper (Game game) {
-        this.game = game;
+    public Helper (Player player) {
+
+        this.player = player;
+        this.board = player.getBoard();
+
+        Game game = player.getGame();
+
+        if(game.getRedPlayer() == player) {
+            this.playerColor = Color.RED;
+        }
+        else {
+            this.playerColor = Color.WHITE;
+        }
     }
 
     /**
@@ -29,10 +48,133 @@ public class Helper {
      * @return ArrayList<Piece> pieces
      */
     public ArrayList<Piece> validPieces(){
+
         ArrayList<Piece> pieces = new ArrayList<>();
+        Space space;
+        Piece piece;
+        int cell;
+        Move move;
+
+        /// Iterate through all spaces on the board
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for(int j = BOARD_SIZE - 1; j >= 0; j--) {
+
+                space = board.getSpace(i, j);
+                piece = space.getPiece();
+                cell = space.getCellIdx();
+
+                if(piece.getColor() == playerColor) {
+
+                        pieces.add(piece);
+
+                }
+
+            }
+        }
         return pieces;
     }
+
+    private boolean checkPositions(int row, int cell ) {
+
+        // Starting position of piece of on board
+        Position start = new Position(row, cell);
+
+        // Test all possible locations
+        for (int i = -2; i <= row + 2; i++) {
+            for(int j = -2; j <= cell + 2; j++) {
+
+                Position end = new Position(row + i, cell + j);
+                Move move = new Move(start, end);
+
+                if(isJumpValid(move)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+        /**
+     * Check if the jump made was valid
+     * 
+     * @param move Move to check
+     * @return True if the jump was valid
+     */
+    private boolean isJumpValid(Move move) {        
+        Position jump      = getMidpoint(move);
+        Space    jumpSpace = board.getSpace(jump);
+        
+        Space space = board.getSpace(move.getStart());
+        Space endSpace = board.getSpace(move.getEnd());
+
+        int origRow = space.getRow();
+        int origCol = space.getCellIdx();
+        int endRow = endSpace.getRow();
+        int endCol = endSpace.getCellIdx();
+
+        if(space.getPiece().getColor() == Color.WHITE){
+            if(space.getPiece().isKing()){
+                if(endRow-origRow > 2 || endRow-origRow < -2){
+                    return false;
+                }
+            }
+            else{
+                if(endRow-origRow > 2 || endRow-origRow < 0){
+                    return false;
+                }
+            }
+        }
+        else{
+            if(space.getPiece().isKing()){
+                if(endRow-origRow > 2 && endRow-origRow < -2){
+                    return false;
+                }
+            }
+            else{
+                if(endRow-origRow < -2 || endRow-origRow > 0){
+                    return false;
+                }
+            }
+        }
+
+        if (jumpSpace.hasPiece()) { // Cannot jump own piece
+            if (jumpSpace.getPiece().getColor() != space.getPiece().getColor()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else return false; // No piece to jump
+    }
+
+    /**
+     * Get the midpoint of the move
+     * 
+     * @param move Move to check
+     * @return The midpoint of the move
+     */
+    public Position getMidpoint(Move move) {
+        // Extract coordinates of the move
+        int sr = move.getStart().getRow();
+        int sc = move.getStart().getCell();
+        int er = move.getEnd().getRow();
+        int ec = move.getEnd().getCell();
+
+        // Calculate the midpoint
+        return new Position(
+            (int) Math.floor((sr + er) / 2),
+            (int) Math.floor((sc + ec) / 2));
+    }
+
+
+
+
+
+
     
+
+
 
 }
 
