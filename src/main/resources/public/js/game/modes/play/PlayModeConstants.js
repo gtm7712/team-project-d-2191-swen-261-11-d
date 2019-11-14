@@ -35,6 +35,8 @@ define(function () {
     , BACKUP_BUTTON_TOOLTIP: 'Remove the last move with your current turn.'
     , SUBMIT_BUTTON_ID: 'submitBtn'
     , SUBMIT_BUTTON_TOOLTIP: 'Commit your current turn to the server.'
+    , PLAYER_HELP_BUTTON_ID: 'helpBtn'
+    , HELP_BUTTON_TOOLTIP: 'Commit your current turn to the server.'
     , RESIGN_BUTTON_ID: 'resignBtn'
     , RESIGN_BUTTON_TOOLTIP: 'Resign from the game.'
     , EXIT_BUTTON_ID: 'exitBtn'

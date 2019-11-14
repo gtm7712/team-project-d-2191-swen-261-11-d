@@ -66,9 +66,12 @@ define(function(require){
     this.addStateDefinition(PlayModeConstants.STABLE_TURN,
         new StableTurnState(this));
     this.addStateDefinition(PlayModeConstants.WAITING_FOR_TURN_VALIDATION,
-        new WaitingForTurnValidationState(this));
+        new WaitingForBackupValidationState(this));
     this.addStateDefinition(PlayModeConstants.WAITING_FOR_BACKUP_VALIDATION,
         new WaitingForBackupValidationState(this));
+    // Player Help
+    this.addStateDefinition(PlayModeConstants.PLAYER_HELP,
+        new WaitingForTurnValidationState(this));
     // "Waiting for My Turn" composite states
     this.addStateDefinition(PlayModeConstants.WAITING_TO_CHECK_MY_TURN,
         new WaitingForMyTurnState(this));
@@ -85,6 +88,8 @@ define(function(require){
         PlayModeConstants.BACKUP_BUTTON_TOOLTIP, this.backupMove);
     this.addButton(PlayModeConstants.SUBMIT_BUTTON_ID, 'Submit turn', false,
         PlayModeConstants.SUBMIT_BUTTON_TOOLTIP, this.submitTurn);
+    this.addButton(PlayModeConstants.PLAYER_HELP_BUTTON_ID, 'Help', true,
+        PlayModeConstants.HELP_BUTTON_TOOLTIP, this.playerHelp);
     this.addButton(PlayModeConstants.RESIGN_BUTTON_ID, 'Resign', true,
         PlayModeConstants.RESIGN_BUTTON_TOOLTIP, this.resignGame);
     this.addButton(PlayModeConstants.EXIT_BUTTON_ID, 'Exit', true,
@@ -188,6 +193,21 @@ define(function(require){
         this.displayMessage(message);
       }
     }
+  };
+
+    /**
+   * player help.
+   * 
+   * This action gets highlights the pieces that can move 
+   */
+  PlayController.prototype.playerHelp = function playerHelp() {
+    const yes = window.confirm('Are you sure you want help`?');
+    if (!yes) {
+      // if not, the return
+      this.displayMessage( {type: 'INFO', text: 'No help.'} );
+      return;
+    }
+    this.displayMessage( {type: 'INFO', text: 'Help'} );
   };
 
   /**
