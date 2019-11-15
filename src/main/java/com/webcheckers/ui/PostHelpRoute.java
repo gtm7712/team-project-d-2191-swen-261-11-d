@@ -29,7 +29,7 @@ public class PostHelpRoute implements Route {
     private final Gson gson;
 
     /**
-     * constructor for the PostResignGame
+     * constructor for the Posthelp
      * @param gson the gson used to send ajax
      */
     public PostHelpRoute(final Gson gson ){
@@ -37,7 +37,7 @@ public class PostHelpRoute implements Route {
     }
 
     /**
-     * Send resignGame ajax to client-side
+     * Send help ajax to client-side
      *
      * @param request
      *   the HTTP request
@@ -45,7 +45,7 @@ public class PostHelpRoute implements Route {
      *   the HTTP response
      *
      * @return
-     *   an ajax call saying whether the resignGame successful
+     *   an ajax call saying whether help was successful
      */
     
     @Override
@@ -56,6 +56,8 @@ public class PostHelpRoute implements Route {
         Helper helper = new Helper(currentPlayer);
         ArrayList<Space> moveablePieces = helper.validPieces();
         Space s = moveablePieces.get(0);
+
+        System.out.println("Hello World");
 
         // Test Valid Space
         int row = s.getRow();
