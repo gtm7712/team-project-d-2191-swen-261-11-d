@@ -165,14 +165,5 @@ public class Helper {
             (int) Math.floor((sc + ec) / 2));
     }
 
-
-
-
-
-
-    
-
-
-
 }
 

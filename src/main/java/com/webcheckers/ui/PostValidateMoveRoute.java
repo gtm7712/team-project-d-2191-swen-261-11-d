@@ -1,4 +1,5 @@
 package com.webcheckers.ui;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import spark.TemplateEngine;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.JsonAdapter;
-
+import com.webcheckers.util.Helper;
 import com.webcheckers.util.Message;
 
 /**
@@ -48,6 +49,12 @@ public class PostValidateMoveRoute implements Route {
         int endR = Character.getNumericValue(move.charAt(41));
         int endC = Character.getNumericValue(move.charAt(50));
         Move madeMove;
+
+        Helper help = new Helper(currentPlayer);
+        for(int i = 0; i < help.validPieces().size(); i++){
+            System.out.println(help.validPieces().get(i));
+        }
+
         if(currentPlayer.equals(game.getWhitePlayer())){
             madeMove= new Move(new Position(7-startR, startC), new Position(7-endR, endC));
         }
