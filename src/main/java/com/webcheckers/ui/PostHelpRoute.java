@@ -51,20 +51,19 @@ public class PostHelpRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
 
-        Map<String, Object> vm = new HashMap<>();
         Player currentPlayer = request.session().attribute("Player");
-        Helper helper = new Helper(currentPlayer);
-        ArrayList<Space> moveablePieces = helper.validPieces();
-        Space s = moveablePieces.get(0);
+        Helper help = new Helper(currentPlayer);
+        ArrayList<Space> moveablePieces = help.validPieces();
+    
+        for(int i = 0; i < moveablePieces.size(); i++){
+            Space s = moveablePieces.get(i);
+            int row = s.getRow();
+            int col = s.getCellIdx();
+            String result = "row: " + row + " Col" + col;
+            System.out.println(result);
+        }
 
-        System.out.println("Hello World");
-
-        // Test Valid Space
-        int row = s.getRow();
-        int col = s.getCellIdx();
-        String result = "row: " + row + " Col" + col;
-
-        return gson.toJson(new Message(result, Message.Type.INFO));   
+        return gson.toJson(new Message("Hi", Message.Type.INFO));   
 
     }
 }

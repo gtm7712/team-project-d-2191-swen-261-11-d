@@ -51,10 +51,18 @@ define(function(require){
         // disable UI controls
         this._controller.disableButton(PlayModeConstants.BACKUP_BUTTON_ID);
         this._controller.disableButton(PlayModeConstants.SUBMIT_BUTTON_ID);
+        this._controller.enableButton(PlayModeConstants.HELP_BUTTON_ID);
         this._controller.enableButton(PlayModeConstants.RESIGN_BUTTON_ID);
         // re-enable all of my Pieces
         this._controller.enableAllMyPieces();
     };
+    
+   /**
+    * Help
+    */
+   EmptyTurnState.prototype.playerHelp = function playerHelp() {
+     this._controller.setState(PlayModeConstants.PLAYER_HELP);
+   };
 
     /**
      * The player starts her turn by request an initial move.

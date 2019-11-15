@@ -21,6 +21,7 @@ define(function () {
     , STABLE_TURN: 'Stable Turn'
     , WAITING_FOR_TURN_VALIDATION: 'Waiting for Turn Validation'
     , WAITING_FOR_BACKUP_VALIDATION: 'Waiting for Backup Validation'
+    , PLAYER_HELP: 'Waiting for player help Validation'
     // "Waiting for My Turn" composite states
     , WAITING_TO_CHECK_MY_TURN: 'Waiting for My Turn'
     , CHECKING_MY_TURN: 'Checking for My Turn on the Server'
@@ -35,7 +36,7 @@ define(function () {
     , BACKUP_BUTTON_TOOLTIP: 'Remove the last move with your current turn.'
     , SUBMIT_BUTTON_ID: 'submitBtn'
     , SUBMIT_BUTTON_TOOLTIP: 'Commit your current turn to the server.'
-    , PLAYER_HELP_BUTTON_ID: 'helpBtn'
+    , HELP_BUTTON_ID: 'helpBtn'
     , HELP_BUTTON_TOOLTIP: 'Commit your current turn to the server.'
     , RESIGN_BUTTON_ID: 'resignBtn'
     , RESIGN_BUTTON_TOOLTIP: 'Resign from the game.'

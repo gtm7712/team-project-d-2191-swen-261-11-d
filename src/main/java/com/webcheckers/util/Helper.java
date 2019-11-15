@@ -47,6 +47,7 @@ public class Helper {
         Space space;
         Piece piece;
         int cell;
+        int row;
 
         /// Iterate through all spaces on the board
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -54,11 +55,13 @@ public class Helper {
 
                 space = board.getSpace(i, j);
                 piece = space.getPiece();
+                row = space.getRow();
                 cell = space.getCellIdx();
 
                 if(piece != null && piece.getColor() == playerColor) {
-                        checkPositions(i, cell);
-                        spaces.add(space);
+                        if(checkPositions(row, cell)){
+                            spaces.add(space);
+                        }
                 }
             }
         }
@@ -73,91 +76,15 @@ public class Helper {
      * @param cell
      * @return boolean
      */
-    private boolean checkPositions(int row, int cell ) {
+    private boolean checkPositions(int row, int cell) {
 
         // Corresponding position
         Position start = new Position(row, cell);
 
         MoveValidator mv = new MoveValidator(this.game);
 
-        return mv.canMove(start, this.board);
+        return mv.canMove(start);
 
     }
-<<<<<<< HEAD
-=======
-
-    /**
-     * Check if the jump made was valid
-     * 
-     * @param move Move to check
-     * @return True if the jump was valid
-     */
-    private boolean isJumpValid(Move move) {        
-        Position jump      = getMidpoint(move);
-        Space    jumpSpace = board.getSpace(jump);
-        
-        Space space = board.getSpace(move.getStart());
-        Space endSpace = board.getSpace(move.getEnd());
-
-        int origRow = space.getRow();
-        int origCol = space.getCellIdx();
-        int endRow = endSpace.getRow();
-        int endCol = endSpace.getCellIdx();
-
-        if(space.getPiece().getColor() == Color.WHITE){
-            if(space.getPiece().isKing()){
-                if(endRow-origRow > 2 || endRow-origRow < -2){
-                    return false;
-                }
-            }
-            else{
-                if(endRow-origRow > 2 || endRow-origRow < 0){
-                    return false;
-                }
-            }
-        }
-        else{
-            if(space.getPiece().isKing()){
-                if(endRow-origRow > 2 && endRow-origRow < -2){
-                    return false;
-                }
-            }
-            else{
-                if(endRow-origRow < -2 || endRow-origRow > 0){
-                    return false;
-                }
-            }
-        }
-
-        if (jumpSpace.hasPiece()) { // Cannot jump own piece
-            if (jumpSpace.getPiece().getColor() != space.getPiece().getColor()) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } else return false; // No piece to jump
-    }
-
-    /**
-     * Get the midpoint of the move
-     * 
-     * @param move Move to check
-     * @return The midpoint of the move
-     */
-    public Position getMidpoint(Move move) {
-        // Extract coordinates of the move
-        int sr = move.getStart().getRow();
-        int sc = move.getStart().getCell();
-        int er = move.getEnd().getRow();
-        int ec = move.getEnd().getCell();
-
-        // Calculate the midpoint
-        return new Position(
-            (int) Math.floor((sr + er) / 2),
-            (int) Math.floor((sc + ec) / 2));
-    }
-
->>>>>>> 7a5e8daee3952edb1f81868032dd5d2adea5de72
 }
 

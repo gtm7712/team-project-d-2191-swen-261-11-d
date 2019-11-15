@@ -85,12 +85,12 @@ public class MoveValidator {
      * @param brd Board to check on
      * @return True if the piece can move
      */
-    public boolean canMove(Position pos, Board brd) {
-        Piece pce = brd.getSpace(pos).getPiece();
+    public boolean canMove(Position pos) {
+        Piece pce = board.getSpace(pos).getPiece();
         if (pce == null) return false;
 
         // Check if the piece can make a jump
-        if (isCapturePossible(pos, pce, brd)) return true;
+        if (isCapturePossible(pos, pce, board)) return true;
         
         int r = pos.getRow();
         int c = pos.getCell();
@@ -101,32 +101,62 @@ public class MoveValidator {
         Position dnright = new Position(r - 1, c + 1);
         Position dnleft = new Position(r - 1, c - 1);
 
-        // Check if the piece can move to an adjacent square
-        if (brd.getSpace(upright) != null) {
-            if (brd.getSpace(upright).getPiece() == null) {
-                return true;
-            }
-        }
-        if (brd.getSpace(upleft) != null) {
-            if (brd.getSpace(upleft).getPiece() == null) {
-                return true;
-            }
-        }
-
-        // Check if the piece can move to an adjacent square, backwards
-        if (pce.isKing()) {
-            if (brd.getSpace(dnright) != null) {
-                if (brd.getSpace(dnright).getPiece() == null) {
+        if(pce.getColor() == Color.RED){
+            if (board.getSpace(dnright) != null) {
+                if (board.getSpace(dnright).hasPiece() == false) {
                     return true;
                 }
             }
-            if (brd.getSpace(dnleft) != null) {
-                if (brd.getSpace(dnleft).getPiece() == null) {
+            if (board.getSpace(dnleft) != null) {
+                if (board.getSpace(dnleft).hasPiece() == false) {
                     return true;
+                }
+            }
+
+            // Check if the piece can move to an adjacent square, backwards
+            if (pce.isKing()) {
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+            
+        }
+        else{
+            // Check if the piece can move to an adjacent square
+            if (board.getSpace(upright) != null) {
+                if (board.getSpace(upright).getPiece() == null) {
+                    return true;
+                }
+            }
+            if (board.getSpace(upleft) != null) {
+                if (board.getSpace(upleft).getPiece() == null) {
+                    return true;
+                }
+            }
+            // Check if the piece can move to an adjacent square, backwards
+            if (pce.isKing()) {
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
                 }
             }
         }
 
+        
         return false;
     }
     

@@ -65,6 +65,13 @@ define(function(require){
   };
 
   /**
+   * Help
+   */
+  StableTurnState.prototype.playerHelp = function playerHelp() {
+    this._controller.setState(PlayModeConstants.PLAYER_HELP);
+  };
+
+  /**
    * Submit the Turn to the server.
    */
   StableTurnState.prototype.submitTurn = function submitTurn() {
