@@ -66,6 +66,7 @@ define(function(require){
           
       }
       else {
+        this._controller.highlight(message.text.split(" "));
         this._controller.setState(PlayModeConstants.EMPTY_TURN);
       }
     }

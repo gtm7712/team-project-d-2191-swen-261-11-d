@@ -54,16 +54,15 @@ public class PostHelpRoute implements Route {
         Player currentPlayer = request.session().attribute("Player");
         Helper help = new Helper(currentPlayer);
         ArrayList<Space> moveablePieces = help.validPieces();
-    
+        String result = "";
         for(int i = 0; i < moveablePieces.size(); i++){
             Space s = moveablePieces.get(i);
             int row = s.getRow();
             int col = s.getCellIdx();
-            String result = "row: " + row + " Col" + col;
-            System.out.println(result);
+            result += row + "" + col + " ";
         }
 
-        return gson.toJson(new Message("Hi", Message.Type.INFO));   
+        return gson.toJson(new Message(result, Message.Type.INFO));   
 
     }
 }

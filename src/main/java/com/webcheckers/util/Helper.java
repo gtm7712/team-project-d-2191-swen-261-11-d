@@ -76,13 +76,12 @@ public class Helper {
      * @param cell
      * @return boolean
      */
-    private boolean checkPositions(int row, int cell) {
+    private boolean checkPositions(int row, int cell ) {
 
         // Corresponding position
         Position start = new Position(row, cell);
 
         MoveValidator mv = new MoveValidator(this.game);
-
         return mv.canMove(start);
 
     }

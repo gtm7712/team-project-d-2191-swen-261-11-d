@@ -199,10 +199,17 @@ define(function(require){
     /**
    * player help.
    * 
-   * This action gets highlights the pieces that can move 
+   * This action highlights the pieces that can move 
    */
   PlayController.prototype.playerHelp = function playerHelp() {
     this._delegateStateMessage('playerHelp', arguments);
+  };
+
+  /**
+   * help highlight all of the pieces that have valid moves
+   */
+  PlayController.prototype.highlight = function highlight(moves) {
+    return this._boardController.highlight(moves);
   };
 
   /**

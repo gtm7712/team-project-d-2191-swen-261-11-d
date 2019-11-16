@@ -102,6 +102,27 @@ define(function(require){
   //
 
   /**
+   * Highlights the spaces of the valid moves.
+   */
+  BoardController.prototype.highlight = function highlight(moves) {
+    moves = moves.slice(0,moves.length);
+    var position = new Position(parseInt(moves[0][0]), parseInt(moves[0][1]));
+    for(var i in moves){
+      console.log(i);
+      if(this.getPiece$(position) != null && !this.getPiece$(position)[0].draggable){
+        console.log('here');
+        var pos = new Position(parseInt(moves[i][0]), parseInt(moves[i][1]));
+      }
+      else{
+        console.log('not here');
+        var pos = new Position(7-parseInt(moves[i][0]), parseInt(moves[i][1]));
+      }
+      var $space = this.getSpace$(pos);
+      if ($space !== null) $space.removeClass(PENDING_CLASS).addClass(VALID_CLASS);
+    } 
+  }
+  
+  /**
    * Sets the Space at this position to the Pending state.
    */
   BoardController.prototype.setSpacePending = function setSpacePending(position) {
