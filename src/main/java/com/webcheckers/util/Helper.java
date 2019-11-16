@@ -80,8 +80,12 @@ public class Helper {
 
         // Corresponding position
         Position start = new Position(row, cell);
+        Space space = board.getSpace(start);
 
         MoveValidator mv = new MoveValidator(this.game);
+        if(mv.shouldMakeJump(playerColor)){
+            return mv.isCapturePossible(start, space.getPiece());
+        }
         return mv.canMove(start);
 
     }

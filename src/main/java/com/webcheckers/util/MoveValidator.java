@@ -277,7 +277,7 @@ public class MoveValidator {
      * @param piece Piece to check against
      * @return True if another capture is possible
      */
-    private boolean isCapturePossible(Position pos, Piece piece) {
+    public boolean isCapturePossible(Position pos, Piece piece) {
         return isCapturePossible(pos, piece, this.board);
     }
 
