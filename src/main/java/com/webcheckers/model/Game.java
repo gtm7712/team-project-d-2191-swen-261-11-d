@@ -32,7 +32,7 @@ public class Game {
         this.board = new Board();
         this.clonedBoard=board;
         this.gameOver = false;
-        this.clonedBoard=new Board(board.getBoard());
+        this.clonedBoard=board.getCopy();
         this.replay = new Replay();
     }
 
@@ -163,8 +163,9 @@ public class Game {
      */
     public void endTurn(){
         graveyard=new ArrayList<>();
+        //replay.updateReplay(clonedBoard);
+        //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
         board=clonedBoard;
-        replay.addTurn(turn);
         turn=new ArrayList<>();
         isComplete=false;
         wasKinged=false;

@@ -64,6 +64,9 @@ public class WebServer {
   public static final String SUBMITTURN_URL = "/submitTurn";
   public static final String BACKUP_URL = "/backupMove";
   public static final String SIGNOUT_URL = "/signout";
+  public static final String REPLAYL_URL = "/replayl";
+  public static final String REPLAYGAME_URL = "/replay/game";
+  public static final String REPLAYSTOP_URL = "/replay/stopWatching";
 
   //
   // Attributes
@@ -161,6 +164,9 @@ public class WebServer {
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
+    get(REPLAYL_URL, new GetReplayRoute(templateEngine));
+    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine));
+    get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
     //
     LOG.config("WebServer is initialized.");
   }

@@ -72,7 +72,6 @@ public class GetStartGameRoute implements Route {
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
-
       // check to see if player is in game
       if(!currentPlayer.isInGame()) {
         game = new Game();
