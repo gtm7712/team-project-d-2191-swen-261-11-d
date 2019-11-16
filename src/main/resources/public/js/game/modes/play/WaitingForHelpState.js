@@ -61,7 +61,6 @@ define(function(require){
     //
   
     function handleResponse(message) {
-      this._controller.displayMessage(message);
       if (message.type === 'ERROR') {
           
       }
@@ -69,6 +68,8 @@ define(function(require){
         this._controller.highlight(message.text.split(" "));
         this._controller.setState(PlayModeConstants.EMPTY_TURN);
       }
+      message.text = "The spaces of the moveable pieces are highlighted!"
+      this._controller.displayMessage(message);
     }
   
     // export class constructor

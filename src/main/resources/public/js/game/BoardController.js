@@ -108,13 +108,10 @@ define(function(require){
     moves = moves.slice(0,moves.length);
     var position = new Position(parseInt(moves[0][0]), parseInt(moves[0][1]));
     for(var i in moves){
-      console.log(i);
       if(this.getPiece$(position) != null && !this.getPiece$(position)[0].draggable){
-        console.log('here');
         var pos = new Position(parseInt(moves[i][0]), parseInt(moves[i][1]));
       }
       else{
-        console.log('not here');
         var pos = new Position(7-parseInt(moves[i][0]), parseInt(moves[i][1]));
       }
       var $space = this.getSpace$(pos);
