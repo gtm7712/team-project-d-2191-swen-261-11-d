@@ -79,6 +79,8 @@ public class PostValidateMoveRoute implements Route {
             case KING:
                 game.makeMove(madeMove);
                 game.kingPiece(madeMove.getEnd());
+                request.session().attribute("jumped", false);
+                game.setComplete();
 //                vm.put("board", board);
                 break;
             case FAIL:
