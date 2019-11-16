@@ -61,7 +61,6 @@ public class PostHelpRoute implements Route {
             int col = s.getCellIdx();
             result += row + "" + col + " ";
         }
-
         return gson.toJson(new Message(result, Message.Type.INFO));   
 
     }
