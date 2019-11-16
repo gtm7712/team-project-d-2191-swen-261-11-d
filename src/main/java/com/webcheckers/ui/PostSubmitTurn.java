@@ -62,10 +62,8 @@ public class PostSubmitTurn implements Route {
         else {
             currentColor = Piece.Color.WHITE;
         }
-        if(request.session().attribute("jumped") != null){
-            boolean jumped = request.session().attribute("jumped");
-            
-            if(validate.shouldMakeJump(currentColor) && jumped){
+        if(game.hasJumped()){
+            if(validate.shouldMakeJump(currentColor) && game.hasJumped()){
                 return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
             }
         }

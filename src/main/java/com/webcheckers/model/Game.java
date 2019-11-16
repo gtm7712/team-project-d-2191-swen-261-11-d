@@ -439,7 +439,9 @@ public class Game {
         }
         return true;
     }
-
+    public  boolean hasJumped(){
+        return turn.size()>1;
+    }
     /**
      * return the loser of the game
      * @return the loser of the game
