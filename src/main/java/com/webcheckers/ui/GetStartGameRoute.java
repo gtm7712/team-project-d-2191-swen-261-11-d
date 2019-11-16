@@ -69,37 +69,11 @@ public class GetStartGameRoute implements Route {
       Map<String, Object> vm = new HashMap<>();
 
       Player currentPlayer = request.session().attribute("Player");
-        if (currentPlayer == null) { currentPlayer = new Player("User Not Logged In."); }
       String otherPlayer = request.queryParams("otherPlayer");
       Player opponent = lobby.getPlayer(otherPlayer);
 
-      // TODO -----------------------------------
-      boolean replay = false;
-      if (replay) {
-        Game rpyGame = new Game();
-
-        currentPlayer.setOpponent(null); // TODO
-        opponent.setOpponent(null); // TODO?
-
-        if (currentPlayer.getName() != "User Not Logged In.") {
-          lobby.getPlayer(currentPlayer.name).inGame(true);
-        }
-
-        rpyGame.setRedPlayer(null); // TODO
-        rpyGame.setWhitePlayer(null); // TODO
-        currentPlayer.setGame(rpyGame);
-        opponent.setGame(rpyGame);
-
-        vm.put("title", "Replay");
-        vm.put("viewMode", "REPLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer" , null); // TODO: GET RED PLAYER
-        vm.put("whitePlayer", null); // TODO: Get WHITE PLAYER
-        vm.put("board", null); // TODO: GET BOARD
-      }
-      // TODO ------------------------------------
       // check to see if player is in game
-      else if(!currentPlayer.isInGame()) {
+      if(!currentPlayer.isInGame()) {
         game = new Game();
         if(opponent.isInGame()){
             vm.put("title", "Welcome!");
