@@ -99,6 +99,7 @@ public class Space {
         }
         if (hasPiece()) {
             if (other.getPiece().getColor() != getPiece().getColor()) { return false; }
+            if (other.getPiece().isKing() != getPiece().isKing()) { return false; }
         }
         if (other.isValid != isValid) return false;
 
@@ -145,5 +146,16 @@ public class Space {
         if(piece.isKing()){
             piece.unKing();
         }
+    }
+
+    public Space getCopy() {
+        Space copy = new Space(row, cellIdx, isValid);
+        if(hasPiece()) {
+            copy.setPiece(new Piece(getPiece().getColor()));
+            if(hasKing()) {
+                copy.kingPiece();
+            }
+        }
+        return copy;
     }
 }
