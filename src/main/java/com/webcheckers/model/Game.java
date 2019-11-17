@@ -13,15 +13,16 @@ public class Game {
     private Board board;
     private Player redPlayer;
     private Player whitePlayer;
-    private ArrayList<Move>turn= new ArrayList<>();
+    //private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Board clonedBoard;
     private Player winner;
     private boolean gameOver;
-
+    private HeldGame heldGame;
     private boolean isComplete=false;
-    private boolean wasKinged=false;
-    private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
+    private Turn turn1;
+    //private boolean wasKinged=false;
+    //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
     private Replay replay;
 
@@ -34,6 +35,7 @@ public class Game {
         this.gameOver = false;
         this.clonedBoard=board.getCopy();
         this.replay = new Replay();
+        this.turn1= new Turn();
     }
 
     /**
@@ -86,6 +88,16 @@ public class Game {
     }
 
     /**
+     * sets the held game
+     * @param heldGame new held game
+     */
+    public void setHeldGame(HeldGame heldGame){
+        this.heldGame=heldGame;
+    }
+    public HeldGame getHeldGame(){
+        return heldGame;
+    }
+    /**
      * 
      * @return The board oriented for the Red player 
      */
@@ -116,11 +128,12 @@ public class Game {
     public void makeMove(Move madeMove){
 
         if(madeMove.getEnd().getRow()==-1 && madeMove.getEnd().getCell()==-1) {
-            graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
-            turn.add(0, madeMove);
+            turn1.graveyardAdd(board.getSpace(madeMove.getStart()).getPiece());
+            //graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
+            turn1.add(0, madeMove);
             board.getSpace(madeMove.getStart()).removePiece();
         }else {
-            turn.add(madeMove);
+            turn1.add(madeMove);
             clonedBoard.makeMove(madeMove);
         }
     }
@@ -134,27 +147,27 @@ public class Game {
     public String revertTurn(){
         isComplete=false;
 //        this.clonedBoard=new Board(board.getBoard());
-        int i=turn.size()-1;
-        Move move=turn.get(i);
-        if(wasKinged) {
+        int i=turn1.size()-1;
+        Move move=turn1.get(i);
+        if(turn1.wasKinged()) {
             if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
                 clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                wasKinged=false;
+                turn1.setWasKinged(false);
             } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
                 clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                wasKinged=false;
+                turn1.setWasKinged(false);
             }
         }
         clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
-            if(turn.get(0).getEnd().getCell()==-1 && turn.get(0).getEnd().getRow()==-1){
-                clonedBoard.getSpace(turn.get(0).getStart()).setPiece(graveyard.get(graveyard.size()-1));
-                graveyard.remove(graveyard.size()-1);
-                turn.remove(0);
+            if(turn1.get(0).getEnd().getCell()==-1 && turn1.get(0).getEnd().getRow()==-1){
+                clonedBoard.getSpace(turn1.get(0).getStart()).setPiece(turn1.graveyardGet(turn1.graveyardSize()-1));
+                turn1.graveyardRemove(turn1.graveyardSize()-1);
+                turn1.remove(0);
                         i--;
             }
 
 
-        turn.remove(i);
+        turn1.remove(i);
         return null;
     }
         
@@ -162,13 +175,12 @@ public class Game {
      * handles when End Turn button is clicked.
      */
     public void endTurn(){
-        graveyard=new ArrayList<>();
+        heldGame.add(turn1);
+        turn1 = new Turn();
         //replay.updateReplay(clonedBoard);
         //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
         board=clonedBoard;
-        turn=new ArrayList<>();
         isComplete=false;
-        wasKinged=false;
         if(theirTurn.equals(redPlayer))
             theirTurn=whitePlayer;
         else
@@ -197,6 +209,7 @@ public class Game {
      */
     public void setWinner(Player a){
         winner = a;
+        heldGame.setWinner(a);
     }
 
     /**
@@ -293,7 +306,7 @@ public class Game {
      */
     public void kingPiece(Position p){
         board.getSpace(p).kingPiece();
-        wasKinged=true;
+        turn1.setWasKinged(true);
     }
 
     /**
@@ -441,7 +454,7 @@ public class Game {
         return true;
     }
     public  boolean hasJumped(){
-        return turn.size()>1;
+        return turn1.size()>1;
     }
     /**
      * return the loser of the game
