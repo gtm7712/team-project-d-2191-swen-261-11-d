@@ -68,6 +68,7 @@ public class WebServer {
   public static final String REPLAYL_URL = "/replayl";
   public static final String REPLAYGAME_URL = "/replay/game";
   public static final String REPLAYSTOP_URL = "/replay/stopWatching";
+  public static final String TESTREPLAYSTART ="/replay";
 
   //
   // Attributes
@@ -170,6 +171,7 @@ public class WebServer {
     get(REPLAYL_URL, new GetReplayRoute(templateEngine, gameList));
     get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
+    get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, gameList));
     //
     LOG.config("WebServer is initialized.");
   }
