@@ -6,7 +6,9 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.HeldGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.ModelAndView;
@@ -35,6 +37,7 @@ public class GetStartGameRoute implements Route {
     private final PlayerLobby lobby;
     private final Gson gson;
     private Game game;
+    private ReplayList gameList;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
@@ -42,11 +45,12 @@ public class GetStartGameRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson) {
+    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson, final ReplayList gameList) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
       this.lobby = lobby;
       this.gson = gson;
       game = new Game();
+      this.gameList=gameList;
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -84,13 +88,13 @@ public class GetStartGameRoute implements Route {
 
         currentPlayer.setOpponent(opponent);
         opponent.setOpponent(currentPlayer);
-
+        int gameIndex=gameList.createGame(currentPlayer, opponent);
         lobby.getPlayer(currentPlayer.name).inGame(true);
         lobby.getPlayer(otherPlayer).inGame(true);
 
         game.setRedPlayer(currentPlayer);
         game.setWhitePlayer(opponent);
-
+        game.setHeldGame(gameList.get(gameIndex));
         currentPlayer.setGame(game);
         opponent.setGame(game);
 
@@ -105,7 +109,7 @@ public class GetStartGameRoute implements Route {
       vm.put("whitePlayer", game.getWhitePlayer());
 
       vm.put("board", currentPlayer.getPlayerBoard());
-      
+      vm.put("gameID", gameList.indexOf(game.getHeldGame()));
       final Map<String, Object> modeOptions = new HashMap<>(2);
       modeOptions.put("isGameOver", true);
       if(game.noMorePieces()){    

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.ReplayList;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -22,16 +23,16 @@ public class GetReplayRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
 
   private final TemplateEngine templateEngine;
-
+  private final ReplayList gamesList;
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /signin} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetReplayRoute(final TemplateEngine templateEngine) {
+  public GetReplayRoute(final TemplateEngine templateEngine, ReplayList gamesList) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-    //
+    this.gamesList=gamesList;
     LOG.config("GetReplayRoute is initialized.");
   }
 
@@ -52,8 +53,8 @@ public class GetReplayRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Load a Replay");
-
+    vm.put("allGames", gamesList.getList());
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "replayl.ftl"));
+    return templateEngine.render(new ModelAndView(vm , "replaytest.ftl"));
   }
 }
