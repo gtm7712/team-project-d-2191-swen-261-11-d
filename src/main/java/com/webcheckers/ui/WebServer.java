@@ -167,7 +167,7 @@ public class WebServer {
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
-    get(REPLAYL_URL, new GetReplayRoute(templateEngine));
+    get(REPLAYL_URL, new GetReplayRoute(templateEngine, gameList));
     get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
     //

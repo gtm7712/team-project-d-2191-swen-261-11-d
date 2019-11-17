@@ -59,4 +59,7 @@ public class HeldGame {
     public void add(Turn turn){
         game.add(turn);
     }
+    public String toString(){
+        return redPlayer.name + " versus " + whitePlayer.name;
+    }
 }
