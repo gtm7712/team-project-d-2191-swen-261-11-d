@@ -275,4 +275,11 @@ public class Board implements Iterable<Row> {
         }
         return toReturn;
     }
+
+    /**
+     * @return The list of rows
+     */
+    public ArrayList<Row> getPreset() {
+        return this.board;
+    }
 }
