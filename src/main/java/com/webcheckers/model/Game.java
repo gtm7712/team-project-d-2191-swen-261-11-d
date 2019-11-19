@@ -51,7 +51,7 @@ public class Game {
         this.board = new Board();
         this.clonedBoard=board;
         this.gameOver = false;
-        this.clonedBoard=board.getCopy();
+        this.clonedBoard=new Board(board.getBoard());
         this.replay = new Replay();
         this.turn1= new Turn();
 
@@ -183,7 +183,7 @@ public class Game {
 
     public String revertTurn(){
         isComplete=false;
-//        this.clonedBoard=new Board(board.getBoard());
+        this.clonedBoard=new Board(board.getBoard());
         int i=turn1.size()-1;
         Move move=turn1.get(i);
         if(turn1.wasKinged()) {

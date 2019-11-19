@@ -28,13 +28,16 @@ public class Board implements Iterable<Row> {
      * @param preset double array of spaces with pieces
      */
     public Board(ArrayList<Row> preset) {
-        board = new ArrayList<>(8);
+        this.board=preset;
+        /*board = new ArrayList<>(8);
         for(int i = 0; i < BOARD_SIZE; i++) {
             board.add(new Row(i));
             for(int j = 0; j < BOARD_SIZE; j++) {
                 board.get(i).add(preset.get(i).get(j).getCopy());
             }
         }
+
+         */
     }
 
     /**
