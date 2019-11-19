@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class GetStartReplayRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(GetStartReplayRoute.class.getName());
     TemplateEngine templateEngine;
     PlayerLobby lobby;
     Gson gson;

@@ -20,8 +20,8 @@ public class ReplayList {
         replayStringMap.put(gameID, replayString);
     }
 
-    public Set<Integer> getGames() {
-        return replayStringMap.keySet();
+    public Map<Integer, String> getGames() {
+        return replayStringMap;
     }
 
     public String getReplayString(int gameID) {

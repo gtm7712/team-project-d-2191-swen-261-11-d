@@ -19,4 +19,7 @@ public class GameList {
         return games.get(gameID);
     }
 
+    public Map<Integer, Game> getGames() {
+        return games;
+    }
 }

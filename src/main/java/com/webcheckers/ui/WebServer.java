@@ -69,6 +69,8 @@ public class WebServer {
   public static final String REPLAYL_URL = "/replayl";
   public static final String REPLAYGAME_URL = "/replay/game";
   public static final String REPLAYSTOP_URL = "/replay/stopWatching";
+  public static final String REPLAYNEXT_URL = "/replay/nextTurn";
+  public static final String REPLAYBACK_URL = "/replay/previousTurn";
   public static final String TESTREPLAYSTART ="/replay";
 
   //
@@ -162,9 +164,9 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, lobby, gameList, replays));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
-    get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby));
+    get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby, gameList, replays));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
     get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson, gameList, replays));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
@@ -176,6 +178,8 @@ public class WebServer {
     //get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
     get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
+    get(REPLAYNEXT_URL, new GetReplayNextRoute(gson, gameList));
+    get(REPLAYBACK_URL, new GetReplayBackRoute(gson, gameList));
     
     
     //get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
