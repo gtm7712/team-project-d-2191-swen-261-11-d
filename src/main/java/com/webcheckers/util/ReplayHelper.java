@@ -248,6 +248,26 @@ public class ReplayHelper {
         return result;
     }
 
+    /**
+     * Static method to get the Red player's name
+     * @param replay Replay string to extract from
+     * @return the Red player's name
+     */
+    public static String getRedName(String replay) {
+        String[] msplits = replay.split(MOVE_DELIM);
+        return msplits[0];
+    }
+
+    /**
+     * Static method to get the White player's name
+     * @param replay Replay string to extract from
+     * @return the White player's name
+     */
+    public static String getWhiteName(String replay) {
+        String[] msplits = replay.split(MOVE_DELIM);
+        return msplits[1];
+    }
+
     /** @return the replay */
     public String getReplay() { return replayOut.substring(0, replayOut.length() - 1); }
     /** @return True if you can go back in the board list */
