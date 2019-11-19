@@ -3,6 +3,7 @@ package com.webcheckers.model;
 import com.webcheckers.model.Piece.Color;
 import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
+import com.webcheckers.util.ReplayHelper;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,10 @@ public class Game {
     private HeldGame heldGame;
     private boolean isComplete=false;
     private Turn turn1;
+
+    private ReplayHelper replayHelper;
+    private String replayString; // Set when the game ends
+
     //private boolean wasKinged=false;
     //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
@@ -28,6 +33,7 @@ public class Game {
 
     /**
      * Create a new Game
+     * Note: The ReplayHelper is initialized with bogus data
      */
     public Game() {
         this.board = new Board();
@@ -36,6 +42,22 @@ public class Game {
         this.clonedBoard=board.getCopy();
         this.replay = new Replay();
         this.turn1= new Turn();
+        this.replayHelper = new ReplayHelper(
+            "Mitsuha", "Samantha", board
+        );
+    }
+
+    public Game(Player redPlayer, Player whitePlayer) {
+        this.board = new Board();
+        this.clonedBoard=board;
+        this.gameOver = false;
+        this.clonedBoard=board.getCopy();
+        this.replay = new Replay();
+        this.turn1= new Turn();
+
+        this.replayHelper = new ReplayHelper(
+            redPlayer.getName(), whitePlayer.getName(), board
+        );
     }
 
     /**
@@ -175,16 +197,18 @@ public class Game {
      * handles when End Turn button is clicked.
      */
     public void endTurn(){
-        heldGame.add(turn1);
+        // heldGame.add(turn1);
         turn1 = new Turn();
         //replay.updateReplay(clonedBoard);
         //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
         board=clonedBoard;
         isComplete=false;
         if(theirTurn.equals(redPlayer))
-            theirTurn=whitePlayer;
+        theirTurn=whitePlayer;
         else
-            theirTurn=redPlayer;
+        theirTurn=redPlayer;
+        
+        replayHelper.record(board);
     }
 
     /**
@@ -210,6 +234,8 @@ public class Game {
     public void setWinner(Player a){
         winner = a;
         heldGame.setWinner(a);
+
+        replayString = replayHelper.getReplay();
     }
 
     /**
@@ -267,6 +293,14 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get this game's ReplayHelper instance
+     * @return the ReplayHelper
+     */
+    public ReplayHelper getReplayHelper() {
+        return this.replayHelper;
     }
 
     /**
@@ -465,5 +499,14 @@ public class Game {
             return whitePlayer;
         else
             return redPlayer;
+    }
+
+    /**
+     * Get the Replay String.
+     * Note: The replay string will be *null* until the game ends.
+     * @return the replay string
+     */
+    public String getReplayString() {
+        return replayString;
     }
 }

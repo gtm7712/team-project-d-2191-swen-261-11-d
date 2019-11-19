@@ -37,10 +37,21 @@ public class ReplayHelperTest {
         rpl2.loadReplay(replay);
 
         // scrub to the 2nd move
-        rpl2.next();
-        rpl2.next();
-        Board board2 = rpl2.next();
-        System.out.println(board2.getSpace(0, 3).isCongruent(board.getSpace(0, 3)));
+        Board boardBegin = rpl2.next();
+        System.out.println("Start: \n" + boardBegin.toString());
+        System.out.println();
+        Board move1 = rpl2.next();
+        System.out.println("1st move: \n" + move1.toString());
+        System.out.println();
+        Board move2 = rpl2.next();
+        System.out.println("2nd move: \n" + move2.toString());
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Previous: \n" + rpl2.previous().toString());
+
+        System.out.println(move2.getSpace(0, 3).isCongruent(board.getSpace(0, 3)));
 
     }
 

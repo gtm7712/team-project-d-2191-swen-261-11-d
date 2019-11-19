@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
 
 import com.webcheckers.appl.ReplayList;
@@ -77,7 +78,9 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
   private final PlayerLobby lobby;
-  private final ReplayList gameList;
+  private final GameList gameList;
+
+  private final ReplayList replayList_old;
 
   //
   // Constructor
@@ -94,15 +97,17 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby, final ReplayList gameList) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby, final GameList gameList) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
-    this.lobby=lobby;
-    this.gameList=gameList;
+    this.lobby = lobby;
+    this.gameList = gameList;
+
+    this.replayList_old = null;
   }
 
   //
@@ -168,10 +173,12 @@ public class WebServer {
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
-    get(REPLAYL_URL, new GetReplayRoute(templateEngine, gameList));
-    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine));
+    get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
+    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
-    get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, gameList));
+    
+    
+    get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
     //
     LOG.config("WebServer is initialized.");
   }
