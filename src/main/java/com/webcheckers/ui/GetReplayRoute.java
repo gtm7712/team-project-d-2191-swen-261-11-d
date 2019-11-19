@@ -53,7 +53,7 @@ public class GetReplayRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Load a Replay");
-    vm.put("allGames", gamesList.getList());
+    vm.put("allGames", gamesList.getGames());
     // render the View
     return templateEngine.render(new ModelAndView(vm , "replaytest.ftl"));
   }
