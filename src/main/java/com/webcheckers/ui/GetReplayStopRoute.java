@@ -63,13 +63,10 @@ public class GetReplayStopRoute implements Route{
 
     Player currentPlayer = request.session().attribute("Player");
 
-
-    if(currentPlayer != null){
-      vm.put("currentUser", currentPlayer);
-      request.session().attribute("Player",currentPlayer);
-      currentPlayer = lobby.getPlayer(currentPlayer.name);
-      request.session().attribute("Player",currentPlayer);
-    }
+    vm.put("currentUser", currentPlayer);
+    request.session().attribute("Player",currentPlayer);
+    currentPlayer = lobby.getPlayer(currentPlayer.name);
+    request.session().attribute("Player",currentPlayer);
 
     vm.put("title", "Welcome!");
     vm.put("allUsers",lobby.getUsernames());
