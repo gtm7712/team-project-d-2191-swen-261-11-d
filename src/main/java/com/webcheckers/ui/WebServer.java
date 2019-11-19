@@ -80,7 +80,7 @@ public class WebServer {
   private final PlayerLobby lobby;
   private final GameList gameList;
 
-  private final ReplayList replayList_old;
+  private final ReplayList replays;
 
   //
   // Constructor
@@ -97,7 +97,7 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby, final GameList gameList) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby, final GameList gameList, final ReplayList replays) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -107,7 +107,7 @@ public class WebServer {
     this.lobby = lobby;
     this.gameList = gameList;
 
-    this.replayList_old = null;
+    this.replays = replays;
   }
 
   //
@@ -166,19 +166,19 @@ public class WebServer {
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
-    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson, gameList));
+    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson, gameList, replays));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
     post(CHECKTURN_URL, new PostCheckTurn(gson));
     post(RESIGNGAME_URL, new PostResignGame(gson));
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
-    get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
+    //get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
     get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
     
     
-    get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
+    //get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
     //
     LOG.config("WebServer is initialized.");
   }

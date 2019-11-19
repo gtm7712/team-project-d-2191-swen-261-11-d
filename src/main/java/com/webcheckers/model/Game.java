@@ -22,7 +22,7 @@ public class Game {
     private HeldGame heldGame;
     private boolean isComplete=false;
     private Turn turn1;
-
+    private int gameID;
     private ReplayHelper replayHelper;
     private String replayString; // Set when the game ends
 
@@ -60,6 +60,21 @@ public class Game {
         );
     }
 
+    /**
+     *
+     * @return the games id
+     */
+    public int getID(){
+        return gameID;
+    }
+
+    /**
+     * sets the game id
+     * @param id
+     */
+    public void setID(int id){
+        this.gameID=id;
+    }
     /**
      *
      * @return if movevalidator has returned complete or not

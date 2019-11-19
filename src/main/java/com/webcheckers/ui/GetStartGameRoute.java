@@ -41,6 +41,7 @@ public class GetStartGameRoute implements Route {
     private final Gson gson;
     private Game game;
     private GameList gameList;
+    private ReplayList replays;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /game} HTTP requests.
@@ -48,11 +49,12 @@ public class GetStartGameRoute implements Route {
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson, final GameList gameList) {
+    public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson, final GameList gameList, final ReplayList replays) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
       this.lobby = lobby;
       this.gson = gson;
       this.gameList = gameList;
+      this.replays=replays;
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
@@ -83,6 +85,7 @@ public class GetStartGameRoute implements Route {
       if(!currentPlayer.isInGame()) {
         game = new Game(currentPlayer, opponent);
         gameID = gameList.addGame(game);
+        game.setID(gameID);
         
         if(opponent.isInGame()){
             vm.put("title", "Welcome!");
@@ -117,13 +120,16 @@ public class GetStartGameRoute implements Route {
       vm.put("gameID", gameID); // gameList.indexOf(game.getHeldGame()));
       final Map<String, Object> modeOptions = new HashMap<>(2);
       modeOptions.put("isGameOver", true);
-      if(game.noMorePieces()){    
+      if(game.noMorePieces()){
+          replays.addGame(game.getID(),game.getReplayString());
           modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
       }
       else if (game.hasNoMoves()) {
+          replays.addGame(game.getID(),game.getReplayString());
           modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
       }else{
           game.setWinner(currentPlayer.getOpponent());
+          replays.addGame(game.getID(),game.getReplayString());
           modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
       }
       vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
