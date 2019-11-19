@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -31,6 +32,7 @@ public class GetHomeRoute implements Route {
   private final PlayerLobby lobby;
   private final TemplateEngine templateEngine;
   private final GameList gameList;
+  private final ReplayList replays;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -38,12 +40,13 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby lobby, GameList gameList) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby lobby, GameList gameList, ReplayList replays) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
     LOG.config("GetHomeRoute is initialized.");
     this.lobby = lobby;
     this.gameList = gameList;
+    this.replays = replays;
   }
 
   /**
@@ -89,10 +92,9 @@ public class GetHomeRoute implements Route {
 
     vm.put("title", "Welcome!");
     vm.put("allUsers",lobby.getUsernames());
-    vm.put("gameList", gameList.getGames());
-    System.out.println(gameList.getGames());
-    if(gameList.getGames().size()> 0){
-      System.out.println(gameList.getGame(0).getGameStatus());
+    
+    if(replays.getGames().size() > 0){
+      vm.put("gameList", replays.getGames());
     }
 
     // display a user message in the Home page

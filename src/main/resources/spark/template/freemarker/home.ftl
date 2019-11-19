@@ -20,6 +20,8 @@
     </#if>
     <!-- Provide a message to the user, if supplied. -->
       <#if currentUser??>
+          <h2>Players to Challenge</h2>
+          </br>
           <#list allUsers?keys as name>
               <#if name != currentUser && !allUsers[name].isInGame()>
                   <a href = "/game?otherPlayer=${name}"> ${name} </a>
@@ -30,12 +32,10 @@
           <#include "message.ftl" />
       </#if>
       <#if gameList??>
+          <h2>Games to watch</h2>
+          </br>
           <#list gameList?keys as game>
-              ${game}
-              <#if gameList.get(game).getGameStatus()>
-                  <a href = "/replay/game?gameID=${game}"> ${game} </a>
-                  </br>
-              </#if>
+              <a href = "/replay/game?gameID=${game}"> ${game} </a>
           </#list>
       </#if>
 
