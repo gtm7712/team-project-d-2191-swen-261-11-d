@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.ReplayList;
+import com.webcheckers.model.Game;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -15,6 +17,7 @@ import spark.Route;
 import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
+import com.webcheckers.util.ReplayHelper;
 
 /**
  * The UI Controller to GET the Next Replay page.
@@ -24,7 +27,7 @@ import com.webcheckers.util.Message;
 public class GetReplayBackRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetReplayBackRoute.class.getName());
 
-  private final GameList gamesList;
+  private final GameList gameList;
   private final Gson gson;
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /Replay/next} HTTP requests.
@@ -32,8 +35,8 @@ public class GetReplayBackRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetReplayBackRoute(final Gson gson, final GameList gamesList) {
-    this.gamesList=gamesList;
+  public GetReplayBackRoute(final Gson gson, final GameList gameList) {
+    this.gameList = gameList;
     this.gson = gson;
     LOG.config("GetReplayBackRoute is initialized.");
   }
@@ -52,7 +55,11 @@ public class GetReplayBackRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     
-      
+    Integer gameID = Integer.parseInt(request.queryParams("gameID"));
+    Game game = gameList.getGame(gameID);
+    ReplayHelper rply = game.getReplayHelper();
+    game.setBoard(rply.previous());
+
     return gson.toJson(new Message("True", Message.Type.INFO));
     
   }

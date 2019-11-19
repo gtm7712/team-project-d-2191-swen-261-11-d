@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -26,15 +27,17 @@ public class GetReplayStopRoute implements Route{
   
     private final PlayerLobby lobby;
     private final TemplateEngine templateEngine;
+    private final ReplayList replays;
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST /signin} HTTP requests.
      *
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetReplayStopRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
+    public GetReplayStopRoute(final TemplateEngine templateEngine, PlayerLobby lobby, ReplayList replays) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.lobby = lobby;
+        this.replays = replays;
         //
 
         LOG.config("GetReplayStopRoute is initialized.");
@@ -66,24 +69,14 @@ public class GetReplayStopRoute implements Route{
       request.session().attribute("Player",currentPlayer);
       currentPlayer = lobby.getPlayer(currentPlayer.name);
       request.session().attribute("Player",currentPlayer);
-      if(currentPlayer.isInGame()){
-        // Inject game information into template
-
-        Game currentGame = currentPlayer.getGame();
-        
-        vm.put("title", "Let's Play");
-        vm.put("board", currentPlayer.getFlippedBoard());
-        vm.put("viewMode", "PLAY");
-        vm.put("currentUser", currentPlayer);
-        vm.put("redPlayer", currentGame.getRedPlayer());
-        vm.put("whitePlayer", currentGame.getWhitePlayer());
-        vm.put("activeColor", Piece.Color.RED);
-        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
-      }
     }
 
     vm.put("title", "Welcome!");
     vm.put("allUsers",lobby.getUsernames());
+
+    if(replays.getGames().size() > 0){
+      vm.put("gameList", replays.getGames());
+    }
 
     // display a user message in the Home page
     String plural = " is ";

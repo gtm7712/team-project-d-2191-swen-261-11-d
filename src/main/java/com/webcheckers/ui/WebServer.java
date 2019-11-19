@@ -176,10 +176,10 @@ public class WebServer {
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
     //get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
-    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson));
-    get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby));
-    get(REPLAYNEXT_URL, new GetReplayNextRoute(gson, gameList));
-    get(REPLAYBACK_URL, new GetReplayBackRoute(gson, gameList));
+    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson, gameList));
+    get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby, replays));
+    post(REPLAYNEXT_URL, new GetReplayNextRoute(gson, gameList));
+    post(REPLAYBACK_URL, new GetReplayBackRoute(gson, gameList));
     
     
     //get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));

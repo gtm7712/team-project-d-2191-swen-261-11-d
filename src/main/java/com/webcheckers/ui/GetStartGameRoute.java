@@ -157,15 +157,16 @@ public class GetStartGameRoute implements Route {
     vm.put("redPlayer", game.getRedPlayer());
     vm.put("whitePlayer", game.getWhitePlayer());
     
-    vm.put("board", currentPlayer.getPlayerBoard());
 
     Player playerTurn = game.whoseTurn();
 
     if(playerTurn == game.getRedPlayer()) {
+      vm.put("board", game.getBoardRed());
       vm.put("activeColor", Piece.Color.RED);
       
     }
     else {
+      vm.put("board", game.getBoardWhite());
       vm.put("activeColor", Piece.Color.WHITE);
     }
 

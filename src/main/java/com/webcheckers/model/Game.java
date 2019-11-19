@@ -523,4 +523,12 @@ public class Game {
     public String getReplayString() {
         return replayString;
     }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public void setReplay(ReplayHelper helper){
+        this.replayHelper = helper;
+    }
 }

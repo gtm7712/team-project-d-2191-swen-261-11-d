@@ -12,6 +12,7 @@ import spark.Route;
 import spark.TemplateEngine;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameList;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
@@ -29,6 +30,7 @@ public class GetReplayGameRoute implements Route {
 
   private final TemplateEngine templateEngine;
   private final Gson gson;
+  private final GameList gameList;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /signin} HTTP requests.
@@ -36,9 +38,10 @@ public class GetReplayGameRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetReplayGameRoute(final TemplateEngine templateEngine, Gson gson) {
+  public GetReplayGameRoute(final TemplateEngine templateEngine, Gson gson, GameList gameList) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     this.gson = Objects.requireNonNull(gson, "gson is required");
+    this.gameList = gameList;
     //
     LOG.config("GetReplayGameRoute is initialized.");
   }
@@ -58,26 +61,23 @@ public class GetReplayGameRoute implements Route {
   public Object handle(Request request, Response response) {
     LOG.finer("GetReplayGameRoute is invoked.");
     //
+    Player currentPlayer = request.session().attribute("Player");
     Map<String, Object> vm = new HashMap<>();
 
     Map<String, Object> modeOptions = new HashMap<>();
 
-    Player currentPlayer = new Player("You.");
-    Player opponent = new Player("Opponent.");
 
-    Game rpyGame = new Game();
+    Integer gameID = Integer.parseInt(request.queryParams("gameID"));
+    Game game = gameList.getGame(gameID);
+
+    Player redPlayer = game.getRedPlayer();
+    Player whitePlayer = game.getWhitePlayer();
 
     // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
     ReplayHelper rpyHelper = new ReplayHelper();
+    game.setReplay(rpyHelper);
+
     rpyHelper.loadReplay("John;Mary;+w01:-10;-01:+R03");
-
-    currentPlayer.setOpponent(opponent); // TODO
-    opponent.setOpponent(currentPlayer); // TODO?
-
-    rpyGame.setRedPlayer(currentPlayer); // TODO
-    rpyGame.setWhitePlayer(opponent); // TODO
-    currentPlayer.setGame(rpyGame);
-    opponent.setGame(rpyGame);
 
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());
@@ -88,8 +88,8 @@ public class GetReplayGameRoute implements Route {
     vm.put("activeColor", Piece.Color.RED);
     vm.put("viewMode", "REPLAY");
     vm.put("currentUser", currentPlayer);
-    vm.put("redPlayer" , currentPlayer); // TODO: GET RED PLAYER
-    vm.put("whitePlayer", opponent); // TODO: Get WHITE PLAYER
+    vm.put("redPlayer" , redPlayer); // TODO: GET RED PLAYER
+    vm.put("whitePlayer", whitePlayer); // TODO: Get WHITE PLAYER
     vm.put("board", new Board()); // TODO: GET BOARD
 
     // render the View
