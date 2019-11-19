@@ -233,7 +233,6 @@ public class Game {
      */
     public void setWinner(Player a){
         winner = a;
-        heldGame.setWinner(a);
 
         replayString = replayHelper.getReplay();
     }

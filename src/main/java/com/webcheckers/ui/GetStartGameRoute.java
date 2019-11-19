@@ -82,7 +82,6 @@ public class GetStartGameRoute implements Route {
       // check to see if player is in game
       if(!currentPlayer.isInGame()) {
         game = new Game(currentPlayer, opponent);
-        gameID = gameList.addGame(game);
         
         if(opponent.isInGame()){
             vm.put("title", "Welcome!");
@@ -90,6 +89,7 @@ public class GetStartGameRoute implements Route {
             vm.put("error", "Player is already in a game!");
             return templateEngine.render(new ModelAndView(vm , "home.ftl"));
         }
+        gameID = gameList.addGame(game);
 
         currentPlayer.setOpponent(opponent);
         opponent.setOpponent(currentPlayer);

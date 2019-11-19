@@ -29,6 +29,15 @@
       <#else>
           <#include "message.ftl" />
       </#if>
+      <#if gameList??>
+          <#list gameList?keys as game>
+              ${game}
+              <#if gameList.get(game).getGameStatus()>
+                  <a href = "/replay/game?gameID=${game}"> ${game} </a>
+                  </br>
+              </#if>
+          </#list>
+      </#if>
 
     <!-- TODO: future content on the Home:
             to start games,
