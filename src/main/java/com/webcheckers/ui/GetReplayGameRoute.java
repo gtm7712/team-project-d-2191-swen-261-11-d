@@ -75,7 +75,7 @@ public class GetReplayGameRoute implements Route {
     
     // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
     ReplayHelper rpyHelper = game.getReplayHelper();
-    game.setBoard(new Board());
+    game.setBoard(rpyHelper.next());
     // game.setReplay(rpyHelper);
     // System.out.println(rpyHelper.getReplay());
 

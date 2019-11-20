@@ -158,6 +158,14 @@ public class ReplayHelper {
     }
 
     /**
+     * Get the board at the index.
+     */
+    public Board getAtIndex(int i) {
+        this.index = i;
+        return boards.get(i);
+    }
+
+    /**
      * Record the player's names
      * @param red Red player's name
      * @param white White player's name
@@ -278,5 +286,7 @@ public class ReplayHelper {
     public String getWhite() { return whitePlayer; }
     /** @return the name of the Red player */
     public String getRed() { return redPlayer; }
+    /** @return the current index. */
+    public int getIndex() { return index; }
 
 }
