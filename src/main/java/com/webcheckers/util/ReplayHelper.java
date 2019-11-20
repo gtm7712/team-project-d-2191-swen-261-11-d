@@ -279,9 +279,9 @@ public class ReplayHelper {
     /** @return the replay */
     public String getReplay() { return replayOut.substring(0, replayOut.length() - 1); }
     /** @return True if you can go back in the board list */
-    public boolean canGoBack() { return index > -1; }
+    public boolean canGoBack() { return index > 0; }
     /** @return True if you can go forward in the board list */
-    public boolean canGoForward() { return index < boards.size(); }
+    public boolean canGoForward() { return index < boards.size() - 1; }
     /** @return the name of the White player */
     public String getWhite() { return whitePlayer; }
     /** @return the name of the Red player */
