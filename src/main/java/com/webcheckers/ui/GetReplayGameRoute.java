@@ -69,14 +69,15 @@ public class GetReplayGameRoute implements Route {
 
     Integer gameID = Integer.parseInt(request.queryParams("gameID"));
     Game game = gameList.getGame(gameID);
-
+    
     Player redPlayer = game.getRedPlayer();
     Player whitePlayer = game.getWhitePlayer();
-
+    
     // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
     ReplayHelper rpyHelper = game.getReplayHelper();
-    game.setReplay(rpyHelper);
-    System.out.println(rpyHelper.getReplay());
+    game.setBoard(new Board());
+    // game.setReplay(rpyHelper);
+    // System.out.println(rpyHelper.getReplay());
 
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());
@@ -89,7 +90,7 @@ public class GetReplayGameRoute implements Route {
     vm.put("currentUser", currentPlayer);
     vm.put("redPlayer" , redPlayer); // TODO: GET RED PLAYER
     vm.put("whitePlayer", whitePlayer); // TODO: Get WHITE PLAYER
-    vm.put("board", new Board()); // TODO: GET BOARD
+    vm.put("board", game.getBoardRed()); // TODO: GET BOARD
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));

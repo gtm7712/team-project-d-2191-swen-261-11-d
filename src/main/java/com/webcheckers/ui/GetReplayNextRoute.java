@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
+import com.webcheckers.model.Player;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -54,13 +56,13 @@ public class GetReplayNextRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    
+    LOG.finer("GetReplayGameRoute is invoked.");
+
     Integer gameID = Integer.parseInt(request.queryParams("gameID"));
     Game game = gameList.getGame(gameID);
-    System.out.println(game.getBoardRed());
+    // System.out.println(game.getBoardRed());
     ReplayHelper rply = game.getReplayHelper();
     game.setBoard(rply.next());
-    
     return gson.toJson(new Message("True", Message.Type.INFO));
     
   }
