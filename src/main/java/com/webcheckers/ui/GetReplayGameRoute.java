@@ -74,10 +74,9 @@ public class GetReplayGameRoute implements Route {
     Player whitePlayer = game.getWhitePlayer();
 
     // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
-    ReplayHelper rpyHelper = new ReplayHelper();
+    ReplayHelper rpyHelper = game.getReplayHelper();
     game.setReplay(rpyHelper);
-
-    rpyHelper.loadReplay("John;Mary;+w01:-10;-01:+R03");
+    System.out.println(rpyHelper.getReplay());
 
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());

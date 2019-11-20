@@ -57,6 +57,7 @@ public class GetReplayNextRoute implements Route {
     
     Integer gameID = Integer.parseInt(request.queryParams("gameID"));
     Game game = gameList.getGame(gameID);
+    System.out.println(game.getBoardRed());
     ReplayHelper rply = game.getReplayHelper();
     game.setBoard(rply.next());
     
