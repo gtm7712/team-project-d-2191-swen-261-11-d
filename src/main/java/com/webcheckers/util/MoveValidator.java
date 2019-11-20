@@ -74,6 +74,91 @@ public class MoveValidator {
             return new ValidationResult(TurnResult.CONTINUE, didJump);
         }
     }
+
+    /**
+     * Determines if a piece can move.
+     * This method is designed to be independent of the rest of the Validator.
+     * 
+     * No distinguishing between red and white board should be needed,
+     * just pass in the appropriate board (red or white).
+     * @param pos Position to check from
+     * @param brd Board to check on
+     * @return True if the piece can move
+     */
+    public boolean canMove(Position pos) {
+        Piece pce = board.getSpace(pos).getPiece();
+        if (pce == null) return false;
+
+        // Check if the piece can make a jump
+        if (isCapturePossible(pos, pce, board)) return true;
+        
+        int r = pos.getRow();
+        int c = pos.getCell();
+
+        // red goes down, white goes up (from red perspective)      
+        Position upright = new Position(r + 1, c + 1);
+        Position upleft = new Position(r +1, c - 1);
+        Position dnright = new Position(r - 1, c + 1);
+        Position dnleft = new Position(r - 1, c - 1);
+
+        if(pce.getColor() == Color.RED){
+            if (board.getSpace(dnright) != null) {
+                if (board.getSpace(dnright).hasPiece() == false) {
+                    return true;
+                }
+            }
+            if (board.getSpace(dnleft) != null) {
+                if (board.getSpace(dnleft).hasPiece() == false) {
+                    return true;
+                }
+            }
+
+            // Check if the piece can move to an adjacent square, backwards
+            if (pce.isKing()) {
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+            
+        }
+        else{
+            // Check if the piece can move to an adjacent square
+            if (board.getSpace(upright) != null) {
+                if (board.getSpace(upright).getPiece() == null) {
+                    return true;
+                }
+            }
+            if (board.getSpace(upleft) != null) {
+                if (board.getSpace(upleft).getPiece() == null) {
+                    return true;
+                }
+            }
+            // Check if the piece can move to an adjacent square, backwards
+            if (pce.isKing()) {
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+                if (board.getSpace(upright) != null) {
+                    if (board.getSpace(upright).getPiece() == null) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        
+        return false;
+    }
     
     /**
      * Check if a jump was made
@@ -192,25 +277,36 @@ public class MoveValidator {
      * @param piece Piece to check against
      * @return True if another capture is possible
      */
-    private boolean isCapturePossible(Position pos, Piece piece) {
+    public boolean isCapturePossible(Position pos, Piece piece) {
+        return isCapturePossible(pos, piece, this.board);
+    }
+
+    /**
+     * Check if another capture is possible
+     * 
+     * @param pos Position to check from
+     * @param piece Piece to check against
+     * @return True if another capture is possible
+     */
+    private boolean isCapturePossible(Position pos, Piece piece, Board brd) {
         Color   c    = piece.getColor();
         boolean king = piece.isKing();
         if(c == Color.WHITE) {
-            Space upRight = board.getSpace(new Position(
+            Space upRight = brd.getSpace(new Position(
             pos.getRow() + 1, pos.getCell() - 1));
-            Space upRightRight = board.getSpace(new Position(
+            Space upRightRight = brd.getSpace(new Position(
                 pos.getRow() + 2, pos.getCell() - 2));
-            Space upLeft = board.getSpace(new Position(
+            Space upLeft = brd.getSpace(new Position(
                 pos.getRow() + 1, pos.getCell() + 1));
-            Space upLeftLeft = board.getSpace(new Position(
+            Space upLeftLeft = brd.getSpace(new Position(
                 pos.getRow() + 2, pos.getCell() + 2));
-            Space dnRight = board.getSpace(new Position(
+            Space dnRight = brd.getSpace(new Position(
                 pos.getRow() - 1, pos.getCell() - 1));
-            Space dnRightRight = board.getSpace(new Position(
+            Space dnRightRight = brd.getSpace(new Position(
                 pos.getRow() - 2, pos.getCell() - 2));
-            Space dnLeft = board.getSpace(new Position(
+            Space dnLeft = brd.getSpace(new Position(
                 pos.getRow() - 1, pos.getCell() + 1));
-            Space dnLeftLeft = board.getSpace(new Position(
+            Space dnLeftLeft = brd.getSpace(new Position(
                 pos.getRow() - 2, pos.getCell() + 2));
 
             if (upRight != null && upRightRight != null)
@@ -229,21 +325,21 @@ public class MoveValidator {
             }
             return false;
         }
-        Space upRight = board.getSpace(new Position(
+        Space upRight = brd.getSpace(new Position(
             pos.getRow() - 1, pos.getCell() + 1));
-        Space upRightRight = board.getSpace(new Position(
+        Space upRightRight = brd.getSpace(new Position(
             pos.getRow() - 2, pos.getCell() + 2));
-        Space upLeft = board.getSpace(new Position(
+        Space upLeft = brd.getSpace(new Position(
             pos.getRow() - 1, pos.getCell() - 1));
-        Space upLeftLeft = board.getSpace(new Position(
+        Space upLeftLeft = brd.getSpace(new Position(
             pos.getRow() - 2, pos.getCell() - 2));
-        Space dnRight = board.getSpace(new Position(
+        Space dnRight = brd.getSpace(new Position(
             pos.getRow() + 1, pos.getCell() + 1));
-        Space dnRightRight = board.getSpace(new Position(
+        Space dnRightRight = brd.getSpace(new Position(
             pos.getRow() + 2, pos.getCell() + 2));
-        Space dnLeft = board.getSpace(new Position(
+        Space dnLeft = brd.getSpace(new Position(
             pos.getRow() + 1, pos.getCell() - 1));
-        Space dnLeftLeft = board.getSpace(new Position(
+        Space dnLeftLeft = brd.getSpace(new Position(
             pos.getRow() + 2, pos.getCell() - 2));
 
         if (upRight != null && upRightRight != null)

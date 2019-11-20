@@ -308,7 +308,7 @@ public class Game {
     /**
      * @return The board represented in String format
      */
-/*    public String toString() {
+    public String toString() {
         String toReturn = "";
         //ArrayList<Row> boardArray = board.getBoard();
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
@@ -334,7 +334,7 @@ public class Game {
         }
         return toReturn;
     }
-    */
+    
     
     /**
      * Sets a piece to king

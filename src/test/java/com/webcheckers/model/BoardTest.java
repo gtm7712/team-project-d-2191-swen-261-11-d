@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
  * Unit test suite for {@link Board} component
  * 
  * @author Giovanni Melchionne
+ * @author Kyle Collins
  */
 @Tag ("model-tier")
 public class BoardTest {
@@ -83,5 +85,19 @@ public class BoardTest {
         assertTrue(b.flipped().equals(board),
             "Flipped flipped board should equal unflipped board");
     }
+
+    /**
+     * Test getSpace null
+     */
+    public void getSpaceNullTest() {
+
+        Board b = new Board();
+        
+        assertNull(b.getSpace(100,100),
+            "Space should be null");
+
+    }
+
+
 
 }

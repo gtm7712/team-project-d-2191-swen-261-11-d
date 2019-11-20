@@ -72,6 +72,7 @@ public class WebServer {
   public static final String REPLAYNEXT_URL = "/replay/nextTurn";
   public static final String REPLAYBACK_URL = "/replay/previousTurn";
   public static final String TESTREPLAYSTART ="/replay";
+  public static final String HELP_URL = "/playerHelp";
 
   //
   // Attributes
@@ -183,6 +184,7 @@ public class WebServer {
     
     
     //get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
+    post(HELP_URL, new PostHelpRoute(gson));
     //
     LOG.config("WebServer is initialized.");
   }

@@ -42,6 +42,7 @@ define(function(require){
     // setup the View for Game Over state
     this._controller.hideButton(PlayModeConstants.BACKUP_BUTTON_ID);
     this._controller.hideButton(PlayModeConstants.SUBMIT_BUTTON_ID);
+    this._controller.hideButton(PlayModeConstants.HELP_BUTTON_ID);
     this._controller.hideButton(PlayModeConstants.RESIGN_BUTTON_ID);
   };
 
