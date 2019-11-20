@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
@@ -28,16 +29,18 @@ public class GetReplayStopRoute implements Route{
     private final PlayerLobby lobby;
     private final TemplateEngine templateEngine;
     private final ReplayList replays;
+    private final GameList gameList;
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST /signin} HTTP requests.
      *
      * @param templateEngine
      *   the HTML template rendering engine
      */
-    public GetReplayStopRoute(final TemplateEngine templateEngine, PlayerLobby lobby, ReplayList replays) {
+    public GetReplayStopRoute(final TemplateEngine templateEngine, PlayerLobby lobby, ReplayList replays, GameList gameList) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.lobby = lobby;
         this.replays = replays;
+        this.gameList = gameList;
         //
 
         LOG.config("GetReplayStopRoute is initialized.");
@@ -62,6 +65,11 @@ public class GetReplayStopRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
 
     Player currentPlayer = request.session().attribute("Player");
+
+    // Reset the index
+    Integer gameID = Integer.parseInt(request.queryParams("gameID"));
+    Game game = gameList.getGame(gameID);
+    game.getReplayHelper().getAtIndex(0);
 
     vm.put("currentUser", currentPlayer);
     request.session().attribute("Player",currentPlayer);
