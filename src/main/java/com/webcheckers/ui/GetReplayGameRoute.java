@@ -87,19 +87,19 @@ public class GetReplayGameRoute implements Route {
       if (rpyHelper.getResult() != null) {
         switch(rpyHelper.getResult()) {
           case RED_RESIGN:
-          vm.put("message", rpyHelper.getRed() + " resigned!");
+          vm.put("message", Message.info(rpyHelper.getRed() + " resigned!"));
           case WHITE_RESIGN:
-          vm.put("message", rpyHelper.getWhite() + " resigned!");
+          vm.put("message", Message.info(rpyHelper.getWhite() + " resigned!"));
           case RED_WIN:
-          vm.put("message", rpyHelper.getRed() + " won!");
+          vm.put("message", Message.info(rpyHelper.getRed() + " won!"));
           case WHITE_WIN:
-          vm.put("message", rpyHelper.getWhite() + " won!");
+          vm.put("message", Message.info(rpyHelper.getWhite() + " won!"));
         }
       } else {
-        vm.put("message", "Who will win?");
+        vm.put("message", Message.info("Who will win?"));
       }
     } else {
-      vm.put("message", "Who will win?");
+      vm.put("message", Message.info("Who will win?"));
     }
 
     vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
