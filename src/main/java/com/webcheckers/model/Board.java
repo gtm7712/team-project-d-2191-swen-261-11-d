@@ -278,7 +278,6 @@ public class Board implements Iterable<Row> {
         }
         return toReturn;
     }
-<<<<<<< HEAD
 
     /**
      * @return The list of rows
@@ -286,6 +285,4 @@ public class Board implements Iterable<Row> {
     public ArrayList<Row> getPreset() {
         return this.board;
     }
-=======
->>>>>>> helper
 }
