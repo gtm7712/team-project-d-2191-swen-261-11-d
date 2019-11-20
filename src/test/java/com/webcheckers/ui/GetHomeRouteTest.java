@@ -50,7 +50,7 @@ public class GetHomeRouteTest{
         response = mock(Response.class);
         lobby = new PlayerLobby();
         
-        CuT = new GetHomeRoute(engine, lobby);
+        CuT = new GetHomeRoute(engine, lobby, null, null);
     }
 
     /**

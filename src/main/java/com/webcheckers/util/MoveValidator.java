@@ -23,7 +23,7 @@ public class MoveValidator {
      */
     public MoveValidator(Game game) {
         this.game=game;
-        this.board = game.getClonedBoard();
+        this.board = game.getBoardRed();
     }
 
     /**

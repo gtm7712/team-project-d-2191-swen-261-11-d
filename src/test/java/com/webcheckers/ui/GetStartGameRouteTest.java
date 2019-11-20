@@ -72,7 +72,7 @@ public class GetStartGameRouteTest{
         player.setOpponent(opponent);
         opponent.setOpponent(player);
 
-        CuT = new GetStartGameRoute(engine, lobby, gson, new GameList()); 
+        CuT = new GetStartGameRoute(engine, lobby, gson, new GameList(), null);
         CuT.getGame().setGameOver(true);
         CuT.getGame().setRedPlayer(player);
         CuT.getGame().setWhitePlayer(opponent);

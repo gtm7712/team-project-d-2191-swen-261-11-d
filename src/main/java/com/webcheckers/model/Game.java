@@ -16,7 +16,6 @@ public class Game {
     private Player whitePlayer;
     //private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
-    private Board clonedBoard;
     private Player winner;
     private boolean gameOver;
     private HeldGame heldGame;
@@ -37,9 +36,7 @@ public class Game {
      */
     public Game() {
         this.board = new Board();
-        this.clonedBoard=board;
         this.gameOver = false;
-        this.clonedBoard=board.getCopy();
         this.replay = new Replay();
         this.turn1= new Turn();
         this.replayHelper = new ReplayHelper(
@@ -49,9 +46,7 @@ public class Game {
 
     public Game(Player redPlayer, Player whitePlayer) {
         this.board = new Board();
-        this.clonedBoard=board;
         this.gameOver = false;
-        this.clonedBoard=new Board(board.getBoard());
         this.replay = new Replay();
         this.turn1= new Turn();
 
@@ -143,14 +138,6 @@ public class Game {
     }
 
     /**
-     * get clone board that updates with validated moves
-     * @return the cloned board
-     */
-    public Board getClonedBoard(){
-        return clonedBoard;
-    }
-
-    /**
      * 
      * @return The board oriented for the White player
      */
@@ -171,7 +158,7 @@ public class Game {
             board.getSpace(madeMove.getStart()).removePiece();
         }else {
             turn1.add(madeMove);
-            clonedBoard.makeMove(madeMove);
+            board.makeMove(madeMove);
         }
     }
 
@@ -183,21 +170,21 @@ public class Game {
 
     public String revertTurn(){
         isComplete=false;
-        this.clonedBoard=new Board(board.getBoard());
+        // this.clonedBoard=new Board(board.getBoard());
         int i=turn1.size()-1;
         Move move=turn1.get(i);
         if(turn1.wasKinged()) {
             if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
-                clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                board.getSpace(move.getEnd()).unKingPiece();
                 turn1.setWasKinged(false);
             } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
-                clonedBoard.getSpace(move.getEnd()).unKingPiece();
+                board.getSpace(move.getEnd()).unKingPiece();
                 turn1.setWasKinged(false);
             }
         }
-        clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
+        board.makeMove(new Move(move.getEnd(), move.getStart()));
             if(turn1.get(0).getEnd().getCell()==-1 && turn1.get(0).getEnd().getRow()==-1){
-                clonedBoard.getSpace(turn1.get(0).getStart()).setPiece(turn1.graveyardGet(turn1.graveyardSize()-1));
+                board.getSpace(turn1.get(0).getStart()).setPiece(turn1.graveyardGet(turn1.graveyardSize()-1));
                 turn1.graveyardRemove(turn1.graveyardSize()-1);
                 turn1.remove(0);
                         i--;
@@ -216,7 +203,7 @@ public class Game {
         turn1 = new Turn();
         //replay.updateReplay(clonedBoard);
         //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
-        board=clonedBoard;
+        // board=clonedBoard;
         isComplete=false;
         if(theirTurn.equals(redPlayer))
         theirTurn=whitePlayer;
@@ -250,6 +237,7 @@ public class Game {
         winner = a;
 
         replayString = replayHelper.getReplay();
+        replayHelper.loadReplay(replayString);
     }
 
     /**

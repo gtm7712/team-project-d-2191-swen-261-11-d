@@ -39,7 +39,7 @@ public class PostValidateMoveRoute implements Route {
 
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
-        Board board = game.getClonedBoard();
+        Board board = game.getBoardRed();
         MoveValidator validate = new MoveValidator(game);
 
         String move = request.queryParams("actionData");
