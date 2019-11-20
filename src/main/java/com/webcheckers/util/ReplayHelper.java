@@ -24,11 +24,13 @@ public class ReplayHelper {
     private static final String ADDITION = "+";
     private static final String REMOVAL = "-";
 
-    private static final String RESIGN = "z";
+    private static final String RESIGN = "y";
+    private static final String WINNER = "z";
 
     private String redPlayer;
     private String whitePlayer;
 
+    private GameResult gameResult;
     private List<Board> boards;
     private String replayOut;
     private String curMove;
@@ -97,6 +99,14 @@ public class ReplayHelper {
     }
 
     /**
+     * Record a player's win
+     * @param c Color of the player that resigned
+     */
+    public void recordWin(Color c) {
+        replayOut += WINNER + ((c == Color.RED) ? "R" : "W") + MOVE_DELIM;
+    }
+
+    /**
      * Load a replay
      * @param rpy Replay string
      */
@@ -132,8 +142,25 @@ public class ReplayHelper {
                     int row = Integer.parseInt(tokens[1]);
                     int col = Integer.parseInt(tokens[2]);
                     newboard.getSpace(row, col).removePiece();
+                } else if (move.startsWith(RESIGN)) {
+                    switch(tokens[1]){
+                        case "R":
+                            this.gameResult = GameResult.RED_RESIGN;
+                            break;
+                        case "W":
+                            this.gameResult = GameResult.WHITE_RESIGN;
+                            break;
+                    }
+                } else if (move.startsWith(WINNER)) {
+                    switch(tokens[1]){
+                        case "R":
+                            this.gameResult = GameResult.RED_WIN;
+                            break;
+                        case "W":
+                            this.gameResult = GameResult.WHITE_WIN;
+                            break;
+                    }
                 }
-                // TODO: Resign (& winning?)
             }
             boards.add(newboard);
         }
@@ -288,5 +315,12 @@ public class ReplayHelper {
     public String getRed() { return redPlayer; }
     /** @return the current index. */
     public int getIndex() { return index; }
+
+    /** @return the result of the game */
+    public GameResult getResult() { return gameResult; }
+
+    public enum GameResult {
+        RED_WIN, WHITE_WIN, RED_RESIGN, WHITE_RESIGN
+    };
 
 }
