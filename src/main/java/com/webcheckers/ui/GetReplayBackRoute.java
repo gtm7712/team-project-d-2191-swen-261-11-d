@@ -58,8 +58,7 @@ public class GetReplayBackRoute implements Route {
     Integer gameID = Integer.parseInt(request.queryParams("gameID"));
     Game game = gameList.getGame(gameID);
     ReplayHelper rply = game.getReplayHelper();
-    game.setBoard(rply.previous());
-
+    rply.previous();
     return gson.toJson(new Message("True", Message.Type.INFO));
     
   }

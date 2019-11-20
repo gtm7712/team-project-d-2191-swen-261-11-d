@@ -75,7 +75,9 @@ public class GetReplayGameRoute implements Route {
     
     // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
     ReplayHelper rpyHelper = game.getReplayHelper();
-    game.setBoard(rpyHelper.next());
+    game.setBoard(new Board());
+    int index = rpyHelper.getIndex();
+    System.out.println(index);
     // game.setReplay(rpyHelper);
     // System.out.println(rpyHelper.getReplay());
 
@@ -85,12 +87,21 @@ public class GetReplayGameRoute implements Route {
     vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
 
     vm.put("title", "Replay");
-    vm.put("activeColor", Piece.Color.RED);
     vm.put("viewMode", "REPLAY");
     vm.put("currentUser", currentPlayer);
     vm.put("redPlayer" , redPlayer); // TODO: GET RED PLAYER
     vm.put("whitePlayer", whitePlayer); // TODO: Get WHITE PLAYER
-    vm.put("board", game.getBoardRed()); // TODO: GET BOARD
+    vm.put("board", rpyHelper.getAtIndex(index)); // TODO: GET BOARD
+
+    Player playerTurn = game.whoseTurn();
+
+    if(playerTurn == game.getRedPlayer()) {
+      vm.put("activeColor", Piece.Color.RED);
+      
+    }
+    else {
+      vm.put("activeColor", Piece.Color.WHITE);
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "game.ftl"));

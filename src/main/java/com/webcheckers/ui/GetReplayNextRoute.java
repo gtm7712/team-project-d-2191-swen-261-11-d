@@ -62,7 +62,7 @@ public class GetReplayNextRoute implements Route {
     Game game = gameList.getGame(gameID);
     // System.out.println(game.getBoardRed());
     ReplayHelper rply = game.getReplayHelper();
-    game.setBoard(rply.next());
+    rply.next();
     return gson.toJson(new Message("True", Message.Type.INFO));
     
   }

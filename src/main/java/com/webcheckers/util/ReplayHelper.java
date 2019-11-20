@@ -47,7 +47,7 @@ public class ReplayHelper {
         boards = new ArrayList<Board>();
         this.replayOut = "";
         this.curMove = "";
-        this.index = -1;
+        this.index = 0;
         recordPlayers(red, white);
     }
 
