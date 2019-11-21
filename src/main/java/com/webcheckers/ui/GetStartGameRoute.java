@@ -57,6 +57,7 @@ public class GetStartGameRoute implements Route {
       this.gson = gson;
       this.gameList = gameList;
       this.replays=replays;
+      game = new Game();
       //
       LOG.config("GetStartGameRoute is initialized.");
     }
