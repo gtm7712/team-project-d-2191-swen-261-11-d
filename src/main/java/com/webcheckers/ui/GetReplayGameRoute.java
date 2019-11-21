@@ -26,7 +26,7 @@ import com.webcheckers.util.ReplayHelper;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class GetReplayGameRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
+  private static final Logger LOG = Logger.getLogger(GetReplayGameRoute.class.getName());
 
   private final TemplateEngine templateEngine;
   private final Gson gson;
