@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -50,7 +52,7 @@ public class GetHomeRouteTest{
         response = mock(Response.class);
         lobby = new PlayerLobby();
         
-        CuT = new GetHomeRoute(engine, lobby, null, null);
+        CuT = new GetHomeRoute(engine, lobby, new GameList(), new ReplayList());
     }
 
     /**

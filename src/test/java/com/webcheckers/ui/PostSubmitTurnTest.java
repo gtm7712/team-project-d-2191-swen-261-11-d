@@ -125,14 +125,16 @@ public class PostSubmitTurnTest {
         when(session.attribute("Player")).thenReturn(player);
         when(session.attribute("jumped")).thenReturn(true);
 
-        game.getBoardRed().getSpace(0, 3).setPiece(null);
         Move m = new Move(new Position(5,4), new Position(4,3));
         game.makeMove(m);
         game.endTurn();
         Move m2 = new Move(new Position(2,5), new Position(3,4));
         game.makeMove(m2);
         game.endTurn(); 
-
+        Move m3 = new Move(new Position(5,2), new Position(4,1));
+        Move m4 = new Move(new Position(5,6), new Position(4,7));
+        game.makeMove(m3);
+        game.makeMove(m4);
         Object json = CuT.handle(request, response);
 
         assertEquals(json, gson.toJson(new Message("You can still jump!", Message.Type.ERROR)));
