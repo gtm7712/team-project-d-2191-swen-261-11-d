@@ -26,7 +26,7 @@ import com.webcheckers.util.ReplayHelper;
  * @author Giovanni Melchionne
  */
 public class GetReplayGameRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
+  private static final Logger LOG = Logger.getLogger(GetReplayGameRoute.class.getName());
 
   private final TemplateEngine templateEngine;
   private final Gson gson;
@@ -108,9 +108,9 @@ public class GetReplayGameRoute implements Route {
     vm.put("title", "Replay");
     vm.put("viewMode", "REPLAY");
     vm.put("currentUser", currentPlayer);
-    vm.put("redPlayer" , redPlayer); // TODO: GET RED PLAYER
-    vm.put("whitePlayer", whitePlayer); // TODO: Get WHITE PLAYER
-    vm.put("board", rpyHelper.getAtIndex(index)); // TODO: GET BOARD
+    vm.put("redPlayer" , redPlayer);
+    vm.put("whitePlayer", whitePlayer);
+    vm.put("board", rpyHelper.getAtIndex(index));
 
 
     if(index % 2 == 0) {
