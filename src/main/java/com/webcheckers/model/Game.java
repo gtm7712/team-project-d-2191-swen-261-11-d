@@ -489,8 +489,16 @@ public class Game {
         }
         return true;
     }
-    public  boolean hasJumped(){
-        return turn1.size()>1;
+
+    /**
+     * returns the last move if it has jumped, null if it hasnt
+     * @return
+     */
+    public  Move hasJumped(){
+        if(turn1.size()>1){
+            return turn1.get(turn1.size()-1);
+        }
+        return null;
     }
     /**
      * return the loser of the game

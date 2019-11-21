@@ -62,9 +62,12 @@ public class PostSubmitTurn implements Route {
         else {
             currentColor = Piece.Color.WHITE;
         }
-        if(game.hasJumped()){
-            if(validate.shouldMakeJump(currentColor) && game.hasJumped()){
-                return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
+        if(game.hasJumped()!=null){
+            if(validate.shouldMakeJump(currentColor) && game.hasJumped()!=null){
+                Position lastJump=game.hasJumped().getEnd();
+                if(validate.isCapturePossible(lastJump,game.getBoardRed().getSpace(lastJump).getPiece())) {
+                    return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
+                }
             }
         }
         // End the current player's turn
