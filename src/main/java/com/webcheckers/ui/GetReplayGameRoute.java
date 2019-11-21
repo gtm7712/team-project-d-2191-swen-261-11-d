@@ -112,9 +112,9 @@ public class GetReplayGameRoute implements Route {
     vm.put("title", "Replay");
     vm.put("viewMode", "REPLAY");
     vm.put("currentUser", currentPlayer);
-    vm.put("redPlayer" , redPlayer); // TODO: GET RED PLAYER
-    vm.put("whitePlayer", whitePlayer); // TODO: Get WHITE PLAYER
-    vm.put("board", rpyHelper.getAtIndex(index)); // TODO: GET BOARD
+    vm.put("redPlayer" , redPlayer);
+    vm.put("whitePlayer", whitePlayer);
+    vm.put("board", rpyHelper.getAtIndex(index));
 
 
     if(index % 2 == 0) {
