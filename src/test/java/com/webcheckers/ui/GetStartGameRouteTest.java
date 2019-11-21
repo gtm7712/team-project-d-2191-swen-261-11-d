@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -72,7 +73,7 @@ public class GetStartGameRouteTest{
         player.setOpponent(opponent);
         opponent.setOpponent(player);
 
-        CuT = new GetStartGameRoute(engine, lobby, gson, new GameList(), null);
+        CuT = new GetStartGameRoute(engine, lobby, gson, new GameList(), new ReplayList());
         CuT.getGame().setGameOver(true);
         CuT.getGame().setRedPlayer(player);
         CuT.getGame().setWhitePlayer(opponent);

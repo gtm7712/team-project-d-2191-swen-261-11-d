@@ -130,7 +130,7 @@ public class ReplayHelper {
             
             for (String move : csplits) {
                 String[] tokens = move.split("(?!^)");
-
+                System.out.println(move);
                 if (move.startsWith(ADDITION)) {
                     // tokens[0] is the type
                     Piece piece = getPieceFromId(tokens[1]);
