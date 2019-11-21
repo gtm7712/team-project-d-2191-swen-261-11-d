@@ -176,14 +176,10 @@ public class WebServer {
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
-    //get(REPLAYL_URL, new GetReplayRoute(templateEngine, replayList_old));
     get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson, gameList));
     get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby, replays, gameList));
     post(REPLAYNEXT_URL, new GetReplayNextRoute(gson, gameList));
     post(REPLAYBACK_URL, new GetReplayBackRoute(gson, gameList));
-    
-    
-    //get(TESTREPLAYSTART, new GetStartReplayRoute(templateEngine,lobby,gson, replayList_old));
     post(HELP_URL, new PostHelpRoute(gson));
     //
     LOG.config("WebServer is initialized.");
