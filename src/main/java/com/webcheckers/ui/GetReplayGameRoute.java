@@ -21,9 +21,9 @@ import com.webcheckers.util.Message;
 import com.webcheckers.util.ReplayHelper;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the Replay.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Giovanni Melchionne
  */
 public class GetReplayGameRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
@@ -78,15 +78,11 @@ public class GetReplayGameRoute implements Route {
     game.setBoard(new Board());
     int index = rpyHelper.getIndex();
     // game.setReplay(rpyHelper);
-    // System.out.println(rpyHelper.getReplay());
+//     System.out.println(rpyHelper.getReplay());
 
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());
 
-    System.out.println(rpyHelper.getReplay());
-    System.out.println(rpyHelper.canGoForward());
-    System.out.println(rpyHelper.getIndex());
-    System.out.println(rpyHelper.getBoards());
 
     if (!rpyHelper.canGoForward()) {
       if (rpyHelper.getResult() != null) {

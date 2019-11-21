@@ -41,9 +41,9 @@ public class ReplayHelperTest {
         
         Board move1 = rpl2.next();
         
-        Board move2 = rpl2.next();
+        // Board move2 = rpl2.next();
         
-        System.out.println(move2.getSpace(0, 3).isCongruent(board.getSpace(0, 3)));
+        // System.out.println(move2.getSpace(0, 3).isCongruent(board.getSpace(0, 3)));
 
         // System.out.println("Start: \n" + boardBegin.toString());
         // System.out.println();

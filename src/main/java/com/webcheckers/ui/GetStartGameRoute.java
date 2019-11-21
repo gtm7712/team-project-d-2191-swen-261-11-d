@@ -35,8 +35,6 @@ import org.eclipse.jetty.util.security.Credential;
  */
 public class GetStartGameRoute implements Route {
 
-    private enum view { PLAY_MODE, SPECTATOR_MODE, REPLAY_MODE;}
-
     private static final Logger LOG = Logger.getLogger(GetStartGameRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final PlayerLobby lobby;
