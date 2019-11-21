@@ -13,6 +13,8 @@ import com.webcheckers.model.Game;
 import com.webcheckers.model.HeldGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Piece.Color;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -121,13 +123,31 @@ public class GetStartGameRoute implements Route {
       modeOptions.put("isGameOver", true);
       if(game.noMorePieces()){
           replays.addGame(game.getID(),game.getReplayString());
+          if(game.getWinner() == game.getRedPlayer()){
+            game.getReplayHelper().recordWin(Color.RED);
+          }
+          else{
+            game.getReplayHelper().recordWin(Color.WHITE);
+          }
           modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
       }
       else if (game.hasNoMoves()) {
+          if(game.getWinner() == game.getRedPlayer()){
+            game.getReplayHelper().recordWin(Color.RED);
+          }
+          else{
+            game.getReplayHelper().recordWin(Color.WHITE);
+          }
           replays.addGame(game.getID(),game.getReplayString());
           modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
       }else{
-          game.setWinner(currentPlayer.getOpponent());
+          game.setWinner(currentPlayer);
+          if(game.getWinner() == game.getRedPlayer()){
+            game.getReplayHelper().recordResign(Color.RED);
+          }
+          else{
+            game.getReplayHelper().recordResign(Color.WHITE);
+          }
           replays.addGame(game.getID(),game.getReplayString());
           modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
       }

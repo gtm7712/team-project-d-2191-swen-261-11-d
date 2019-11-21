@@ -83,6 +83,11 @@ public class GetReplayGameRoute implements Route {
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());
 
+    System.out.println(rpyHelper.getReplay());
+    System.out.println(rpyHelper.canGoForward());
+    System.out.println(rpyHelper.getIndex());
+    System.out.println(rpyHelper.getBoards());
+
     if (!rpyHelper.canGoForward()) {
       if (rpyHelper.getResult() != null) {
         switch(rpyHelper.getResult()) {

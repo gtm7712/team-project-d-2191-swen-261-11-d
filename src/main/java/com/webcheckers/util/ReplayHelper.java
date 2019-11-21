@@ -315,6 +315,8 @@ public class ReplayHelper {
     public String getRed() { return redPlayer; }
     /** @return the current index. */
     public int getIndex() { return index; }
+    /** @return the number of boards stored. */
+    public int getBoards() { return boards.size(); }
 
     /** @return the result of the game */
     public GameResult getResult() { return gameResult; }
