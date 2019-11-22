@@ -27,6 +27,8 @@ public class ReplayHelper {
     private static final String RESIGN = "y";
     private static final String WINNER = "z";
 
+    private boolean winRecorded = false;
+
     private String redPlayer;
     private String whitePlayer;
 
@@ -95,7 +97,9 @@ public class ReplayHelper {
      * @param c Color of the player that resigned
      */
     public void recordResign(Color c) {
-        replayOut += RESIGN + ((c == Color.RED) ? "R" : "W") + MOVE_DELIM;
+        if (!winRecorded)
+            replayOut += RESIGN + ((c == Color.RED) ? "R" : "W") + MOVE_DELIM;
+        winRecorded = true;
     }
 
     /**
@@ -103,7 +107,9 @@ public class ReplayHelper {
      * @param c Color of the player that resigned
      */
     public void recordWin(Color c) {
-        replayOut += WINNER + ((c == Color.RED) ? "R" : "W") + MOVE_DELIM;
+        if (!winRecorded)
+            replayOut += WINNER + ((c == Color.RED) ? "R" : "W") + MOVE_DELIM;
+        winRecorded = true;
     }
 
     /**
