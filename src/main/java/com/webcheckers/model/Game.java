@@ -221,8 +221,8 @@ public class Game {
     public void setWinner(Player a){
         winner = a;
 
-        replayString = replayHelper.getReplay();
-        replayHelper.loadReplay(replayString);
+        // replayString = replayHelper.getReplay();
+        // replayHelper.loadReplay(replayString);
     }
 
     /**
@@ -497,11 +497,22 @@ public class Game {
         return replayString;
     }
 
+    /**
+     * Set the board
+     * @param board Board to set 
+     */
     public void setBoard(Board board){
         this.board = board;
     }
 
-    public void setReplay(ReplayHelper helper){
-        this.replayHelper = helper;
+    /**
+     * Get the replay string from the ReplayHelper
+     */
+    public void extractReplayString() {
+        this.replayString = replayHelper.getReplay();
     }
+
+    // public void setReplay(ReplayHelper helper){
+    //     this.replayHelper = helper;
+    // }
 }

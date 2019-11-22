@@ -111,6 +111,7 @@ public class ReplayHelper {
      * @param rpy Replay string
      */
     public void loadReplay(String rpy) {
+        System.out.println("Loading Replay " + rpy);
         List<String> moves = new ArrayList<String>();
         String[] msplits = rpy.split(MOVE_DELIM);
         redPlayer = msplits[0];
@@ -129,8 +130,8 @@ public class ReplayHelper {
             String[] csplits = moves.get(i).split(CHNG_DELIM);            
             
             for (String move : csplits) {
+                System.out.println("Evaluating " + move);
                 String[] tokens = move.split("(?!^)");
-                System.out.println(move);
                 if (move.startsWith(ADDITION)) {
                     // tokens[0] is the type
                     Piece piece = getPieceFromId(tokens[1]);
@@ -164,6 +165,7 @@ public class ReplayHelper {
             }
             boards.add(newboard);
         }
+        System.out.println("Number of replay boards: " + boards.size());
     }
 
     /**
@@ -232,9 +234,10 @@ public class ReplayHelper {
      * Release all changes for the current move to the replay string
      */
     private void releaseChanges() {
+        System.out.println("Logging " + curMove);
         if (curMove.length() > 0)
-            curMove = curMove.substring(0, curMove.length() - 1); // Remove CHNG_DELIM
-
+        curMove = curMove.substring(0, curMove.length() - 1); // Remove CHNG_DELIM
+        
         curMove = curMove + MOVE_DELIM;
         replayOut += curMove;
         curMove = "";

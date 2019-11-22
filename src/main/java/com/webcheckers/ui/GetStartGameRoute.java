@@ -120,13 +120,16 @@ public class GetStartGameRoute implements Route {
       final Map<String, Object> modeOptions = new HashMap<>(2);
       modeOptions.put("isGameOver", true);
       if(game.noMorePieces()){
-          replays.addGame(game.getID(),game.getReplayString());
-          if(game.getWinner() == game.getRedPlayer()){
-            game.getReplayHelper().recordWin(Color.RED);
-          }
-          else{
-            game.getReplayHelper().recordWin(Color.WHITE);
-          }
+        if(game.getWinner() == game.getRedPlayer()){
+          game.getReplayHelper().recordWin(Color.RED);
+        }
+        else{
+          game.getReplayHelper().recordWin(Color.WHITE);
+        }
+        
+          game.extractReplayString();
+          replays.addGame(game.getID(), game.getReplayString());
+          game.getReplayHelper().loadReplay(game.getReplayString());
           modeOptions.put("gameOverMessage", game.getWinner().getName() + " has captured all the pieces!");
       }
       else if (game.hasNoMoves()) {
@@ -136,7 +139,10 @@ public class GetStartGameRoute implements Route {
           else{
             game.getReplayHelper().recordWin(Color.WHITE);
           }
+
+          game.extractReplayString();
           replays.addGame(game.getID(),game.getReplayString());
+          game.getReplayHelper().loadReplay(game.getReplayString());
           modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
       }else{
           game.setWinner(currentPlayer);
@@ -146,7 +152,10 @@ public class GetStartGameRoute implements Route {
           else{
             game.getReplayHelper().recordResign(Color.WHITE);
           }
+
+          game.extractReplayString();
           replays.addGame(game.getID(),game.getReplayString());
+          game.getReplayHelper().loadReplay(game.getReplayString());
           modeOptions.put("gameOverMessage", currentPlayer.getOpponent().getName() + " resigned!");
       }
       vm.put("modeOptionsAsJSON", gson.toJson(modeOptions));
