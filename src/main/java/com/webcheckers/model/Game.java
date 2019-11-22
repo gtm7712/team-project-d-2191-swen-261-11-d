@@ -18,7 +18,6 @@ public class Game {
     private Player theirTurn;     //says who's turn it is
     private Player winner;
     private boolean gameOver;
-    private HeldGame heldGame;
     private boolean isComplete=false;
     private Turn turn1;
     private int gameID;
@@ -28,8 +27,6 @@ public class Game {
     //private boolean wasKinged=false;
     //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
-    private Replay replay;
-
     /**
      * Create a new Game
      * Note: The ReplayHelper is initialized with bogus data
@@ -37,7 +34,6 @@ public class Game {
     public Game() {
         this.board = new Board();
         this.gameOver = false;
-        this.replay = new Replay();
         this.turn1= new Turn();
         this.replayHelper = new ReplayHelper(
             "Mitsuha", "Samantha", board
@@ -47,7 +43,6 @@ public class Game {
     public Game(Player redPlayer, Player whitePlayer) {
         this.board = new Board();
         this.gameOver = false;
-        this.replay = new Replay();
         this.turn1= new Turn();
 
         this.replayHelper = new ReplayHelper(
@@ -119,16 +114,6 @@ public class Game {
         this.whitePlayer.setBoard(getBoardWhite());
     }
 
-    /**
-     * sets the held game
-     * @param heldGame new held game
-     */
-    public void setHeldGame(HeldGame heldGame){
-        this.heldGame=heldGame;
-    }
-    public HeldGame getHeldGame(){
-        return heldGame;
-    }
     /**
      * 
      * @return The board oriented for the Red player 
@@ -254,14 +239,6 @@ public class Game {
      */
     public boolean getGameStatus(){
         return gameOver;
-    }
-
-    /**
-     * Gets replay for game
-     * @return Replay object for game
-     */
-    public Replay getReplay() {
-        return replay;
     }
 
     /**

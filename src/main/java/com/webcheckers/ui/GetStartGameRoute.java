@@ -10,7 +10,6 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.HeldGame;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Piece.Color;
