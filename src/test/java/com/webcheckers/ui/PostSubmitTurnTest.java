@@ -47,6 +47,9 @@ public class PostSubmitTurnTest {
     private static final String PLAYER_1="Player1";
     private static final String PLAYER_2="Player2";
 
+    /**
+     * setup the test
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -76,7 +79,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn test
+     * submitTurn test for red
      */
     @Test
     public void submitTurnRed(){
@@ -103,7 +106,7 @@ public class PostSubmitTurnTest {
     }
     
     /**
-     * submitTurn white test
+     * submitTurn for red test
      */
     @Test
     public void submitTurnRedSingle(){
@@ -117,7 +120,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn white test
+     * submitTurn when you can still jump
      */
     @Test
     public void submitTurnStillJump(){
@@ -137,10 +140,6 @@ public class PostSubmitTurnTest {
         Move m4 = new Move(new Position(3,4), new Position(-1,-1));
         game.makeMove(m3);
         game.makeMove(m4);
-        // Move m3 = new Move(new Position(5,2), new Position(4,1));
-        // Move m4 = new Move(new Position(5,6), new Position(4,7));
-        // game.makeMove(m3);
-        // game.makeMove(m4);
         Object json = CuT.handle(request, response);
 
         assertEquals(json, gson.toJson(new Message("You can still jump!", Message.Type.ERROR)));
@@ -150,7 +149,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn white test
+     * submitTurn for a single jump
      */
     @Test
     public void submitTurnSingleJumpCheck(){
@@ -171,7 +170,7 @@ public class PostSubmitTurnTest {
     }
     
     /**
-     * submitTurn white test
+     * submit turn when there are no more pieces
      */
     @Test
     public void noPieces(){

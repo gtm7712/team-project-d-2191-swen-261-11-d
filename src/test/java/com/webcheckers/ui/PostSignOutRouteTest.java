@@ -36,6 +36,9 @@ public class PostSignOutRouteTest {
     private PlayerLobby lobby;
     private Player testPlayer;
 
+    /**
+     * setup for PostSignOutRoute
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -80,7 +83,7 @@ public class PostSignOutRouteTest {
 
 
     /**
-     * Test for signout
+     * Test for signout with multiple users
      * Checks if the lobby is not null at first and when the request is handled, check if the lobby is empty
      * Checks the correct VM variables
      * Checks if the correct view is loaded

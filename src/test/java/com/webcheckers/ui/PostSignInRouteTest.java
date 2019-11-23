@@ -35,6 +35,10 @@ public class PostSignInRouteTest {
     private PlayerLobby lobby;
     private static final String NUMBERS="123";
     private static final String NAME="Bob";
+
+    /**
+     * setup for a signinroute test
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -46,6 +50,10 @@ public class PostSignInRouteTest {
 
         CuT = new PostSignInRoute(engine, lobby);
     }
+    
+    /**
+     * checks if you can signin with numbers only
+     */
     @Test
     public void SignInNumbers(){
         when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn(NUMBERS);
@@ -62,6 +70,10 @@ public class PostSignInRouteTest {
         testHelper.assertViewName("signin.ftl");
         when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("bob");
     }
+
+    /**
+     * test for valid signin
+     */
     @Test
     public void SignInValid(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -77,6 +89,10 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_GOOD);
         testHelper.assertViewName("signin.ftl");
     }
+    
+    /**
+     * test for signin when using a name that already exists
+     */
     @Test
     public void NameInUse(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();

@@ -40,6 +40,10 @@ public class PostCheckTurnTest {
     private Game game;
     private PlayerLobby lobby;
     private Player opponent;
+
+    /**
+     * setup for the checkturn test
+     */
     @BeforeEach
     public void setup() {
         lobby = new PlayerLobby();
@@ -65,18 +69,30 @@ public class PostCheckTurnTest {
         
         CuT = new PostCheckTurn(gson);
     }
+    
+    /**
+     * check turn test for red player
+     */
     @Test
     public void checkTurnRed(){
         when(session.attribute("Player")).thenReturn(player);
         Object json =CuT.handle(request, response);
         assertEquals(json,gson.toJson(new Message("true", Message.Type.INFO)));
     }
+
+    /**
+     * checkturn test for white player
+     */
     @Test
     public void checkTurnWhite(){
         when(session.attribute("Player")).thenReturn(opponent);
         Object json =CuT.handle(request, response);
         assertEquals(json,gson.toJson(new Message("false", Message.Type.INFO)));
     }
+    
+    /**
+     * check for ending a game for a white player
+     */
     @Test
     public void checkEndGameWhite(){
         game.setGameOver(true);
