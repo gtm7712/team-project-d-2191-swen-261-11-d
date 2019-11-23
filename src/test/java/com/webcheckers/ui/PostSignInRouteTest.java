@@ -64,8 +64,6 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
-        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
-        //testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "123");
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.INVALID_USERNAME);
         testHelper.assertViewName("signin.ftl");
         when(request.queryParams(eq(PostSignInRoute.USERNAME))).thenReturn("bob");
@@ -84,8 +82,6 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title","Sign In!");
-        //testHelper.assertViewModelAttribute("message", Message.info("Please select a username."));
-        //testHelper.assertViewModelAttribute(PostSignInRoute.USERNAME, "Bob");
         testHelper.assertViewModelAttribute("logIN", PostSignInRoute.USERNAME_GOOD);
         testHelper.assertViewName("signin.ftl");
     }

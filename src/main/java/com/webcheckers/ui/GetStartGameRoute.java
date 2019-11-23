@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.ReplayList;
-import com.webcheckers.model.Board;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
@@ -21,11 +20,6 @@ import spark.Route;
 import spark.TemplateEngine;
 
 import com.google.gson.Gson;
-
-import com.webcheckers.util.Message;
-import com.webcheckers.util.ReplayHelper;
-
-import org.eclipse.jetty.util.security.Credential;
 
 /**
  * The UI Controller for start game.
