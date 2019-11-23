@@ -140,7 +140,8 @@ public class GetStartGameRoute implements Route {
           modeOptions.put("gameOverMessage", game.getLoser().getName() + " has no available moves!");
       }else{
           game.setWinner(currentPlayer);
-          if(game.getWinner() == game.getRedPlayer()){
+
+          if(game.getWinner() == game.getWhitePlayer()){
             game.getReplayHelper().recordResign(Color.RED);
           }
           else{

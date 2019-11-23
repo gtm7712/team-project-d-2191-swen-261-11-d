@@ -88,13 +88,17 @@ public class GetReplayGameRoute implements Route {
       if (rpyHelper.getResult() != null) {
         switch(rpyHelper.getResult()) {
           case RED_RESIGN:
-          vm.put("message", Message.info(rpyHelper.getRed() + " resigned!"));
+            vm.put("message", Message.info(rpyHelper.getRed() + " resigned!"));
+            break;
           case WHITE_RESIGN:
-          vm.put("message", Message.info(rpyHelper.getWhite() + " resigned!"));
+            vm.put("message", Message.info(rpyHelper.getWhite() + " resigned!"));
+            break;
           case RED_WIN:
-          vm.put("message", Message.info(rpyHelper.getRed() + " won!"));
+            vm.put("message", Message.info(rpyHelper.getRed() + " won!"));
+            break;
           case WHITE_WIN:
-          vm.put("message", Message.info(rpyHelper.getWhite() + " won!"));
+            vm.put("message", Message.info(rpyHelper.getWhite() + " won!"));
+            break;
         }
       } else {
         vm.put("message", Message.info("Who will win?"));
