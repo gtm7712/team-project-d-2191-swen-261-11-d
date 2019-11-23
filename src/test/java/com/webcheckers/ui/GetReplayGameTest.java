@@ -42,6 +42,9 @@ public class GetReplayGameTest{
     private ReplayHelper replay;
     private Game game;
 
+    /**
+     * setup for replaygame test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);

@@ -44,6 +44,9 @@ public class GetReplayStopTest{
     private PlayerLobby lobby;
     private ReplayList replays;
 
+    /**
+     * setup for the replay stop test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);
@@ -71,7 +74,7 @@ public class GetReplayStopTest{
     }
 
     /**
-     * Test for replay route
+     * Test for replay stop route
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */

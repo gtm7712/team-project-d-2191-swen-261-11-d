@@ -44,6 +44,9 @@ public class GetReplayBackTest{
     private ReplayHelper replay;
     private Game game;
 
+    /**
+     * setup for the replay back test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);
@@ -70,7 +73,7 @@ public class GetReplayBackTest{
     }
 
     /**
-     * Test for replay next route
+     * Test for replay back route
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */

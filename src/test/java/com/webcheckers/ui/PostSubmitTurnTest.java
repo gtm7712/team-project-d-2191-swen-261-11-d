@@ -40,6 +40,9 @@ public class PostSubmitTurnTest {
     private static final String PLAYER_1="Player1";
     private static final String PLAYER_2="Player2";
 
+    /**
+     * setup the test
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -69,7 +72,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn test
+     * submitTurn test for red
      */
     @Test
     public void submitTurnRed(){
@@ -96,7 +99,7 @@ public class PostSubmitTurnTest {
     }
     
     /**
-     * submitTurn white test
+     * submitTurn for red test
      */
     @Test
     public void submitTurnRedSingle(){
@@ -110,7 +113,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn white test
+     * submitTurn when you can still jump
      */
     @Test
     public void submitTurnStillJump(){
@@ -139,7 +142,7 @@ public class PostSubmitTurnTest {
     }
 
     /**
-     * submitTurn white test
+     * submitTurn for a single jump
      */
     @Test
     public void submitTurnSingleJumpCheck(){
@@ -160,7 +163,7 @@ public class PostSubmitTurnTest {
     }
     
     /**
-     * submitTurn white test
+     * submit turn when there are no more pieces
      */
     @Test
     public void noPieces(){
