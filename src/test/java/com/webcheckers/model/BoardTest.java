@@ -89,12 +89,24 @@ public class BoardTest {
     /**
      * Test getSpace null
      */
+    @Test
     public void getSpaceNullTest() {
 
         Board b = new Board();
         
         assertNull(b.getSpace(100,100),
             "Space should be null");
+
+    }
+
+    /**
+     * Test getSpace null
+     */
+    @Test
+    public void toStringTest() {
+
+        Board b = new Board();
+        System.out.println(b);
 
     }
 

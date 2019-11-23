@@ -289,4 +289,5 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
         assertEquals(mv.validateMove(m2).getTurnResult(), TurnResult.FAIL);
     }
+
 }

@@ -512,7 +512,7 @@ public class Game {
         this.replayString = replayHelper.getReplay();
     }
 
-    // public void setReplay(ReplayHelper helper){
-    //     this.replayHelper = helper;
-    // }
+    public void setReplay(ReplayHelper helper){
+        this.replayHelper = helper;
+    }
 }

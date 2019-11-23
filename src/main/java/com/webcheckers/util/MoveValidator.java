@@ -143,13 +143,13 @@ public class MoveValidator {
             }
             // Check if the piece can move to an adjacent square, backwards
             if (pce.isKing()) {
-                if (board.getSpace(upright) != null) {
-                    if (board.getSpace(upright).getPiece() == null) {
+                if (board.getSpace(dnright) != null) {
+                    if (board.getSpace(dnright).getPiece() == null) {
                         return true;
                     }
                 }
-                if (board.getSpace(upright) != null) {
-                    if (board.getSpace(upright).getPiece() == null) {
+                if (board.getSpace(dnleft) != null) {
+                    if (board.getSpace(dnleft).getPiece() == null) {
                         return true;
                     }
                 }

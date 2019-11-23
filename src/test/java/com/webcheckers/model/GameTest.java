@@ -187,6 +187,17 @@ public class GameTest {
         assertEquals(null, move);
     }
 
+    /**
+     * Test game toString
+     */
+    @Test
+    public void gameToString() {
+
+        Game game = new Game();
+        
+        System.out.println(game);
+
+    }
     
     
 }
