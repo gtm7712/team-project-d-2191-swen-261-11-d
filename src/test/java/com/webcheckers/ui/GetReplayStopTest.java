@@ -5,13 +5,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
-import com.webcheckers.util.Message;
 import com.webcheckers.util.ReplayHelper;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +36,6 @@ public class GetReplayStopTest{
     private Response response;
     private Session session;
     private TemplateEngine engine;
-    private Gson gson;
     private GameList gameList;
     private Player player1;
     private Player player2;
@@ -58,7 +55,6 @@ public class GetReplayStopTest{
         engine = mock(TemplateEngine.class);
         response = mock(Response.class);
 
-        gson = new Gson();
         gameList = new GameList();
         player1 = new Player("player1");
         player2 = new Player("player2");

@@ -3,7 +3,6 @@ package com.webcheckers.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.webcheckers.util.MoveValidator;
 
 public class Board implements Iterable<Row> {
     public final static int BOARD_SIZE = 8;
@@ -36,54 +35,7 @@ public class Board implements Iterable<Row> {
                 board.get(i).add(preset.get(i).get(j).getCopy());
             }
         }
-
-         
-    }
-
-    /**
-     * initiates the board from a string representation
-     * @param repr String representation of board
-     */
-    // public Board(String repr) {
-    //     board=new ArrayList<>(8);
-    //     for(int i = 0; i < BOARD_SIZE; i++) {
-    //         board.add(new Row(i));
-    //         for(int j = 0; j < BOARD_SIZE; j++) {
-    //             board.get(i).add(new Space(i, j, (i%2!=0) == (j%2==0)));
-    //         }
-    //     }
-    //     int row = 0;
-    //     int col = 0;
-    //     for(char ch : repr.toCharArray()) {
-    //         switch(ch) {
-    //             case '|':
-    //                 row++;
-    //                 col = 0;
-    //                 break;
-    //             case 'r':
-    //                 board.get(row).get(col).setPiece(new Piece(Piece.Color.RED));
-    //                 col++;
-    //                 break;
-    //             case 'R':
-    //                 getSpace(row, col).setPiece(new Piece(Piece.Color.RED));
-    //                 getSpace(row, col).kingPiece();
-    //                 col++;
-    //                 break;
-    //             case 'w':
-    //                 board.get(row).get(col).setPiece(new Piece(Piece.Color.WHITE));
-    //                 col++;
-    //                 break;
-    //             case 'W':
-    //                 getSpace(row, col).setPiece(new Piece(Piece.Color.WHITE));
-    //                 getSpace(row, col).kingPiece();
-    //                 col++;
-    //                 break;
-    //             case '-':
-    //                 col++;
-    //                 break;
-    //         }
-    //     }
-    // }
+    }         
 
     /**
      * @board is set to the  default boardstate
@@ -205,42 +157,6 @@ public class Board implements Iterable<Row> {
     public Iterator<Row> iterator() {
         return board.iterator();
     }
-
-    /**
-     *
-     * @return Simple string encoding of board
-     */
-    // public String replayEncode() {
-    //     String toReturn = "";
-    //     for(int i = 0; i < BOARD_SIZE; i++) {
-    //         for(int j = 0; j < BOARD_SIZE; j++) {
-    //             Space sp = getSpace(i, j);
-    //             if(sp.hasPiece()) {
-    //                 if(sp.hasKing()) {
-    //                     if(sp.isPieceRed()) {
-    //                         toReturn += "R";
-    //                     }
-    //                     else {
-    //                         toReturn += "W";
-    //                     }
-    //                 }
-    //                 else {
-    //                     if(sp.isPieceRed()) {
-    //                         toReturn += "r";
-    //                     }
-    //                     else {
-    //                         toReturn += "w";
-    //                     }
-    //                 }
-    //             }
-    //             else {
-    //                 toReturn += "-";
-    //             }
-    //         }
-    //         toReturn += "|";
-    //     }
-    //     return toReturn;
-    // }
 
    public String toString() {
         String toReturn = "";

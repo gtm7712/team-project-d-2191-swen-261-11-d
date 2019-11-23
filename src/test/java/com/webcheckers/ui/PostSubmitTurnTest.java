@@ -1,17 +1,13 @@
 package com.webcheckers.ui;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Board;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Move;
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Piece.Color;
@@ -21,11 +17,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Session;
-import spark.TemplateEngine;
 
 /**
  * Unit test suite for {@link PostSubmitTurn} component
@@ -41,7 +35,6 @@ public class PostSubmitTurnTest {
     private Gson gson;
     private Player player;
     private Player opponent;
-    private Board board;
     private Game game;
     private PlayerLobby lobby;
     private static final String PLAYER_1="Player1";

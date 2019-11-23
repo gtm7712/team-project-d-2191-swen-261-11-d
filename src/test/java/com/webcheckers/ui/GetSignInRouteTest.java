@@ -4,9 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.util.Message;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -31,9 +28,7 @@ public class GetSignInRouteTest{
     private Response response;
     private Session session;
     private TemplateEngine engine;
-
-    private PlayerLobby lobby;
-
+  
     /**
      * setup for the getsignin route test
      */
@@ -44,7 +39,6 @@ public class GetSignInRouteTest{
         when(request.session()).thenReturn(session);
         engine = mock(TemplateEngine.class);
         response = mock(Response.class);
-        lobby = new PlayerLobby();
         
         CuT = new GetSigninRoute(engine);
     }

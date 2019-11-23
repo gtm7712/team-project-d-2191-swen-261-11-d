@@ -11,7 +11,6 @@ import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
 import com.webcheckers.model.Space;
-import com.webcheckers.model.Piece.Color;
 
 import org.junit.jupiter.api.Test;
 

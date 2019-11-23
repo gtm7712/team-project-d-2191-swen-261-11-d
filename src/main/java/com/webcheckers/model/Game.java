@@ -1,11 +1,8 @@
 package com.webcheckers.model;
 
 import com.webcheckers.model.Piece.Color;
-import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
 import com.webcheckers.util.ReplayHelper;
-
-import java.util.ArrayList;
 
 /**
  * The Game
@@ -14,7 +11,6 @@ public class Game {
     private Board board;
     private Player redPlayer;
     private Player whitePlayer;
-    //private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Player winner;
     private boolean gameOver;
@@ -23,9 +19,6 @@ public class Game {
     private int gameID;
     private ReplayHelper replayHelper;
     private String replayString; // Set when the game ends
-
-    //private boolean wasKinged=false;
-    //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
     /**
      * Create a new Game
@@ -159,7 +152,7 @@ public class Game {
         int i=turn1.size()-1;
         Move move=turn1.get(i);
         if(turn1.wasKinged()) {
-            if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
+            if (move.getEnd().getRow() == Board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
                 board.getSpace(move.getEnd()).unKingPiece();
                 turn1.setWasKinged(false);
             } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
