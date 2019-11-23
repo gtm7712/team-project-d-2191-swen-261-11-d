@@ -1,8 +1,5 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.webcheckers.model.*;
 import spark.Request;
 import spark.Response;

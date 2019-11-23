@@ -152,7 +152,7 @@ public class Game {
         int i=turn1.size()-1;
         Move move=turn1.get(i);
         if(turn1.wasKinged()) {
-            if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
+            if (move.getEnd().getRow() == Board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
                 board.getSpace(move.getEnd()).unKingPiece();
                 turn1.setWasKinged(false);
             } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {

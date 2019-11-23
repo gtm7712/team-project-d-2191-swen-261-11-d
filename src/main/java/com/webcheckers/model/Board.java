@@ -35,8 +35,7 @@ public class Board implements Iterable<Row> {
                 board.get(i).add(preset.get(i).get(j).getCopy());
             }
         }
-
-         
+    }         
 
     /**
      * @board is set to the  default boardstate
@@ -157,6 +156,7 @@ public class Board implements Iterable<Row> {
     @Override
     public Iterator<Row> iterator() {
         return board.iterator();
+    }
 
    public String toString() {
         String toReturn = "";

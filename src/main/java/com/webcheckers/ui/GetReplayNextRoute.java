@@ -6,10 +6,9 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.model.Game;
 
-import spark.ModelAndView;
+import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.TemplateEngine;
 
 import com.webcheckers.util.Message;
 import com.webcheckers.util.ReplayHelper;
