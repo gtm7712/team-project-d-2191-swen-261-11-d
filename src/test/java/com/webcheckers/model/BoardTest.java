@@ -61,6 +61,9 @@ public class BoardTest {
             "A board shouldn't equal a non-board object");
     }
 
+    /**
+     * Test the boards iterator
+     */
     @Test
     public void iter() {
         assertNotNull(board.iterator(),

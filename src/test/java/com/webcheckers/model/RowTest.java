@@ -5,11 +5,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+/**
+ * The unit testing suite for {@link Row}
+ * 
+ */
 public class RowTest {
     private Board board;
     private Row row1;
     private Row row2;
 
+    /**
+     * Creates a board and assigns row attributes
+     */
     @BeforeEach
     public void setup(){
         board=new Board();
@@ -29,6 +36,9 @@ public class RowTest {
         assertFalse(row2.add(board.getSpace(0,0)));
     }
     
+    /**
+     * Test setter for row
+     */
     @Test
     public void set(){
         Space held=board.getSpace(0,2);
@@ -38,6 +48,9 @@ public class RowTest {
         assertNull(row1.set(9,board.getSpace(4,4)));
     }
 
+    /**
+     * Test getter for row
+     */
     @Test 
     public void get(){
         row2.add(new Space(0,0,true));
@@ -47,11 +60,17 @@ public class RowTest {
         assertNull(row1.get(-1));
     }
 
+    /**
+     * Test the get index method on row
+     */
     @Test
     public void getIndex(){
         assertTrue(board.getBoard().indexOf(row1)==row1.getIndex());
     }
 
+    /**
+     * Test for the row equals
+     */
     @Test
     public void equals(){
         assertTrue(row1.equals(row1));
@@ -60,6 +79,9 @@ public class RowTest {
         assertFalse(row1.equals("hello"));
     }
 
+    /**
+     * Test for interator method on row
+     */
     @Test
      public void iterable(){
         assertNotNull(row1.iterator());

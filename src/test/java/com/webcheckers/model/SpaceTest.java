@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * The unit testing suite for {@link Space}
+ * 
+ */
 public class SpaceTest {
     private Space valid_space;
     private Space invalid_space;
@@ -12,6 +16,9 @@ public class SpaceTest {
     private Piece red_piece;
     private Piece white_piece;
 
+    /**
+     * Creates a valid, invalid space, red piece and white piece
+     */
     @BeforeEach
     public void setup() {
         valid_space = new Space(1, 2, true);
@@ -20,6 +27,9 @@ public class SpaceTest {
         white_piece = new Piece(Piece.Color.WHITE);
     }
 
+    /**
+     * Test for getter and setter for piece
+     */
     @Test
     public void getSetPieceTests() {
         assertTrue(valid_space.getPiece() == null);
@@ -29,6 +39,9 @@ public class SpaceTest {
         assertTrue(invalid_space.getPiece() == null);
     }
 
+    /**
+     * Test remove and has piece
+     */
     @Test
     public void removeAndHasPieceTest() {
         valid_space.setPiece(red_piece);
@@ -37,6 +50,9 @@ public class SpaceTest {
         assertTrue(!valid_space.hasPiece());
     }
 
+    /**
+     * Test if the piece is red
+     */
     @Test
     public void isRedPieceTest() {
         assertTrue(!valid_space.isPieceRed());
@@ -46,6 +62,9 @@ public class SpaceTest {
         assertTrue(!invalid_space.isPieceRed());
     }
 
+    /**
+     * Test for checking if space and piece are valid
+     */
     @Test
     public void vailidtyTests() {
         assertTrue(valid_space.isValid());
@@ -57,12 +76,18 @@ public class SpaceTest {
         assertTrue(valid_space.isSpaceValid());
     }
 
+    /**
+     * Test for get row and cellIdx
+     */
     @Test
     public void getRowCellTests() {
         assertTrue(valid_space.getRow() == 1);
         assertTrue(valid_space.getCellIdx() == 2);
     }
 
+    /**
+     * Test for checking the equality of spaces
+     */
     @Test
     public void equalityTests() {
         Space other_valid = new Space(1, 2, true);
