@@ -1,11 +1,8 @@
 package com.webcheckers.model;
 
 import com.webcheckers.model.Piece.Color;
-import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
 import com.webcheckers.util.ReplayHelper;
-
-import java.util.ArrayList;
 
 /**
  * The Game
@@ -14,7 +11,6 @@ public class Game {
     private Board board;
     private Player redPlayer;
     private Player whitePlayer;
-    //private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
     private Player winner;
     private boolean gameOver;
@@ -23,9 +19,6 @@ public class Game {
     private int gameID;
     private ReplayHelper replayHelper;
     private String replayString; // Set when the game ends
-
-    //private boolean wasKinged=false;
-    //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
     /**
      * Create a new Game
