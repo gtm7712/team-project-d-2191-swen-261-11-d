@@ -1,31 +1,20 @@
 package com.webcheckers.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.Logger;
-
 import com.webcheckers.model.*;
+import com.webcheckers.util.Message;
 import com.webcheckers.util.MoveValidator;
 import com.webcheckers.util.ValidationResult;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.TemplateEngine;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.JsonAdapter;
-import com.webcheckers.util.Helper;
-import com.webcheckers.util.Message;
 
 /**
  * ui controller for validating moves
  */
 public class PostValidateMoveRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
     /**
@@ -41,7 +30,6 @@ public class PostValidateMoveRoute implements Route {
 
         Player currentPlayer = request.session().attribute("Player");
         Game game = currentPlayer.getGame();
-        Board board = game.getBoardRed();
         MoveValidator validate = new MoveValidator(game);
 
         String move = request.queryParams("actionData");
@@ -69,26 +57,21 @@ public class PostValidateMoveRoute implements Route {
             case COMPLETE:
                 game.makeMove(madeMove);
                 request.session().attribute("jumped", false);
-//                vm.put("board", board);
                 game.setComplete();
                 break;
             case CONTINUE:
                 game.makeMove(madeMove);
-//                vm.put("board", board);
                 break;
             case KING:
                 game.makeMove(madeMove);
                 game.kingPiece(madeMove.getEnd());
                 request.session().attribute("jumped", false);
                 game.setComplete();
-//                vm.put("board", board);
                 break;
             case FAIL:
-//                vm.put("board", board);
                 return gson.toJson(new Message(validate.msg, Message.Type.ERROR));
         }
         if (result.wasJump()) {
-            //game.makeMove(madeMove);
             game.makeMove(new Move(validate.getMidpoint(madeMove), new Position(-1, -1)));
         }
         return gson.toJson(new Message("Nice Move!", Message.Type.INFO));

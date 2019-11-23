@@ -1,19 +1,11 @@
 package com.webcheckers.ui;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.Logger;
 
 import com.webcheckers.model.*;
-import com.webcheckers.util.MoveValidator;
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.TemplateEngine;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.JsonAdapter;
 
 import com.webcheckers.util.Message;
 
@@ -21,7 +13,6 @@ import com.webcheckers.util.Message;
  * ui controller for checkturn
  */
 public class PostCheckTurn implements Route {
-    private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
     private final Gson gson;
 
     /**
@@ -57,7 +48,5 @@ public class PostCheckTurn implements Route {
         else{
             return gson.toJson(new Message("false", Message.Type.INFO));   
         }
-    
-        //return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

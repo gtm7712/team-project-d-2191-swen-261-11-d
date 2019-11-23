@@ -1,19 +1,12 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
-import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Player;
 
 import spark.ModelAndView;
-import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
