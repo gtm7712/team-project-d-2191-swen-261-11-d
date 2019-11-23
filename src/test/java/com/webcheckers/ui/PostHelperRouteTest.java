@@ -46,6 +46,9 @@ public class PostHelperRouteTest {
     private static final String PLAYER_1="Player1";
     private static final String PLAYER_2="Player2";
 
+    /**
+     * setup for the helperRoute test
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);

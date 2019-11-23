@@ -34,6 +34,9 @@ public class GetSignInRouteTest{
 
     private PlayerLobby lobby;
 
+    /**
+     * setup for the getsignin route test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);

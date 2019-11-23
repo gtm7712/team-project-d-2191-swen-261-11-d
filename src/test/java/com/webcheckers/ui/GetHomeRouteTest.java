@@ -43,6 +43,9 @@ public class GetHomeRouteTest{
 
     private PlayerLobby lobby;
 
+    /**
+     * setup for the home route test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);
@@ -78,7 +81,7 @@ public class GetHomeRouteTest{
     }
 
     /**
-     * Test for home route
+     * Test for home route if a user is logged in
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */
@@ -113,7 +116,7 @@ public class GetHomeRouteTest{
     }
     
     /**
-     * Test for home route
+     * Test for home route for if someone is not in a game
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */

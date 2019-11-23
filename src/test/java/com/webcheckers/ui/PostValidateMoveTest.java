@@ -47,6 +47,9 @@ public class PostValidateMoveTest {
     private static final String PLAYER_1="Player1";
     private static final String PLAYER_2="Player2";
 
+    /**
+     * setup for a postvalidatemovetest
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -76,7 +79,7 @@ public class PostValidateMoveTest {
     }
 
     /**
-     * validateMove test
+     * validateMove test for red
      */
     @Test
     public void validMoveRed(){
@@ -89,7 +92,7 @@ public class PostValidateMoveTest {
     }
     
     /**
-     * validateMove test
+     * validateMove test for white
      */
     @Test
     public void validMoveWhite(){
@@ -137,7 +140,7 @@ public class PostValidateMoveTest {
     }
 
     /**
-     * validateMove jump move test
+     * validateMove bad move
      */
     @Test
     public void badMove(){
@@ -193,7 +196,7 @@ public class PostValidateMoveTest {
     }
 
     /**
-     * validateMove continue move test
+     * validateMove king move test
      */
     @Test
     public void kingMove(){

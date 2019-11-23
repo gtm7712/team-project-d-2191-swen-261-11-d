@@ -51,6 +51,9 @@ public class GetStartGameRouteTest{
     private Game game;
     private Gson gson;
 
+    /**
+     * setup for the startgameroute test
+     */
     @BeforeEach
     public void setup(){
         request = mock(Request.class);
