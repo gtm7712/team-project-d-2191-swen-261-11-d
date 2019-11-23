@@ -38,7 +38,7 @@ public class MoveValidatorTest {
         game.setWhitePlayer(player2);
         // game.__test_set_white_turn();
 
-        board = game.getClonedBoard();
+        board = game.getBoardRed();
         mv = new MoveValidator(game);
     }
 
@@ -289,4 +289,5 @@ public class MoveValidatorTest {
         assertEquals(mv.validateMove(m).getTurnResult(), TurnResult.FAIL);
         assertEquals(mv.validateMove(m2).getTurnResult(), TurnResult.FAIL);
     }
+
 }

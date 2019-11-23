@@ -3,6 +3,7 @@ package com.webcheckers.model;
 import com.webcheckers.model.Piece.Color;
 import com.webcheckers.ui.PostValidateMoveRoute;
 import com.webcheckers.util.MoveValidator;
+import com.webcheckers.util.ReplayHelper;
 
 import java.util.ArrayList;
 
@@ -13,26 +14,57 @@ public class Game {
     private Board board;
     private Player redPlayer;
     private Player whitePlayer;
-    private ArrayList<Move>turn= new ArrayList<>();
+    //private ArrayList<Move>turn= new ArrayList<>();
     private Player theirTurn;     //says who's turn it is
-    private Board clonedBoard;
     private Player winner;
     private boolean gameOver;
-
     private boolean isComplete=false;
-    private boolean wasKinged=false;
-    private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
+    private Turn turn1;
+    private int gameID;
+    private ReplayHelper replayHelper;
+    private String replayString; // Set when the game ends
+
+    //private boolean wasKinged=false;
+    //private ArrayList<Piece>graveyard=new ArrayList<>();  //pieces removed this turn
 
     /**
      * Create a new Game
+     * Note: The ReplayHelper is initialized with bogus data
      */
     public Game() {
         this.board = new Board();
-        this.clonedBoard=board;
         this.gameOver = false;
-        this.clonedBoard=new Board(board.getBoard());
+        this.turn1= new Turn();
+        this.replayHelper = new ReplayHelper(
+            "Mitsuha", "Samantha", board
+        );
     }
 
+    public Game(Player redPlayer, Player whitePlayer) {
+        this.board = new Board();
+        this.gameOver = false;
+        this.turn1= new Turn();
+
+        this.replayHelper = new ReplayHelper(
+            redPlayer.getName(), whitePlayer.getName(), board
+        );
+    }
+
+    /**
+     *
+     * @return the games id
+     */
+    public int getID(){
+        return gameID;
+    }
+
+    /**
+     * sets the game id
+     * @param id
+     */
+    public void setID(int id){
+        this.gameID=id;
+    }
     /**
      *
      * @return if movevalidator has returned complete or not
@@ -91,14 +123,6 @@ public class Game {
     }
 
     /**
-     * get clone board that updates with validated moves
-     * @return the cloned board
-     */
-    public Board getClonedBoard(){
-        return clonedBoard;
-    }
-
-    /**
      * 
      * @return The board oriented for the White player
      */
@@ -113,12 +137,13 @@ public class Game {
     public void makeMove(Move madeMove){
 
         if(madeMove.getEnd().getRow()==-1 && madeMove.getEnd().getCell()==-1) {
-            graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
-            turn.add(0, madeMove);
+            turn1.graveyardAdd(board.getSpace(madeMove.getStart()).getPiece());
+            //graveyard.add(board.getSpace(madeMove.getStart()).getPiece());
+            turn1.add(0, madeMove);
             board.getSpace(madeMove.getStart()).removePiece();
         }else {
-            turn.add(madeMove);
-            clonedBoard.makeMove(madeMove);
+            turn1.add(madeMove);
+            board.makeMove(madeMove);
         }
     }
 
@@ -130,28 +155,28 @@ public class Game {
 
     public String revertTurn(){
         isComplete=false;
-//        this.clonedBoard=new Board(board.getBoard());
-        int i=turn.size()-1;
-        Move move=turn.get(i);
-        if(wasKinged) {
+        // this.clonedBoard=new Board(board.getBoard());
+        int i=turn1.size()-1;
+        Move move=turn1.get(i);
+        if(turn1.wasKinged()) {
             if (move.getEnd().getRow() == board.BOARD_SIZE - 1 && theirTurn.equals(whitePlayer)) {
-                clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                wasKinged=false;
+                board.getSpace(move.getEnd()).unKingPiece();
+                turn1.setWasKinged(false);
             } else if (move.getEnd().getRow() == 0 && theirTurn.equals(redPlayer)) {
-                clonedBoard.getSpace(move.getEnd()).unKingPiece();
-                wasKinged=false;
+                board.getSpace(move.getEnd()).unKingPiece();
+                turn1.setWasKinged(false);
             }
         }
-        clonedBoard.makeMove(new Move(move.getEnd(), move.getStart()));
-            if(turn.get(0).getEnd().getCell()==-1 && turn.get(0).getEnd().getRow()==-1){
-                clonedBoard.getSpace(turn.get(0).getStart()).setPiece(graveyard.get(graveyard.size()-1));
-                graveyard.remove(graveyard.size()-1);
-                turn.remove(0);
+        board.makeMove(new Move(move.getEnd(), move.getStart()));
+            if(turn1.get(0).getEnd().getCell()==-1 && turn1.get(0).getEnd().getRow()==-1){
+                board.getSpace(turn1.get(0).getStart()).setPiece(turn1.graveyardGet(turn1.graveyardSize()-1));
+                turn1.graveyardRemove(turn1.graveyardSize()-1);
+                turn1.remove(0);
                         i--;
             }
 
 
-        turn.remove(i);
+        turn1.remove(i);
         return null;
     }
         
@@ -159,15 +184,18 @@ public class Game {
      * handles when End Turn button is clicked.
      */
     public void endTurn(){
-        graveyard=new ArrayList<>();
-        board=clonedBoard;
-        turn=new ArrayList<>();
+        // heldGame.add(turn1);
+        turn1 = new Turn();
+        //replay.updateReplay(clonedBoard);
+        //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
+        // board=clonedBoard;
         isComplete=false;
-        wasKinged=false;
         if(theirTurn.equals(redPlayer))
-            theirTurn=whitePlayer;
+        theirTurn=whitePlayer;
         else
-            theirTurn=redPlayer;
+        theirTurn=redPlayer;
+        
+        replayHelper.record(board);
     }
 
     /**
@@ -192,6 +220,9 @@ public class Game {
      */
     public void setWinner(Player a){
         winner = a;
+
+        // replayString = replayHelper.getReplay();
+        // replayHelper.loadReplay(replayString);
     }
 
     /**
@@ -244,9 +275,17 @@ public class Game {
     }
 
     /**
+     * Get this game's ReplayHelper instance
+     * @return the ReplayHelper
+     */
+    public ReplayHelper getReplayHelper() {
+        return this.replayHelper;
+    }
+
+    /**
      * @return The board represented in String format
      */
-/*    public String toString() {
+    public String toString() {
         String toReturn = "";
         //ArrayList<Row> boardArray = board.getBoard();
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
@@ -272,7 +311,7 @@ public class Game {
         }
         return toReturn;
     }
-    */
+    
     
     /**
      * Sets a piece to king
@@ -280,7 +319,7 @@ public class Game {
      */
     public void kingPiece(Position p){
         board.getSpace(p).kingPiece();
-        wasKinged=true;
+        turn1.setWasKinged(true);
     }
 
     /**
@@ -429,6 +468,16 @@ public class Game {
     }
 
     /**
+     * returns the last move if it has jumped, null if it hasnt
+     * @return
+     */
+    public  Move hasJumped(){
+        if(turn1.size()>1){
+            return turn1.get(turn1.size()-1);
+        }
+        return null;
+    }
+    /**
      * return the loser of the game
      * @return the loser of the game
      */
@@ -437,5 +486,33 @@ public class Game {
             return whitePlayer;
         else
             return redPlayer;
+    }
+
+    /**
+     * Get the Replay String.
+     * Note: The replay string will be *null* until the game ends.
+     * @return the replay string
+     */
+    public String getReplayString() {
+        return replayString;
+    }
+
+    /**
+     * Set the board
+     * @param board Board to set 
+     */
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    /**
+     * Get the replay string from the ReplayHelper
+     */
+    public void extractReplayString() {
+        this.replayString = replayHelper.getReplay();
+    }
+
+    public void setReplay(ReplayHelper helper){
+        this.replayHelper = helper;
     }
 }

@@ -1,17 +1,17 @@
 package com.webcheckers.ui;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.appl.ReplayList;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
+import com.webcheckers.util.ReplayHelper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -24,24 +24,25 @@ import spark.Session;
 import spark.TemplateEngine;
 
 /**
- * Unit test suite for {@link GetHomeRoute} component
+ * Unit test suite for {@link GetReplayGame} component
  * 
  * @author Brandon Chen
  */
 @Tag("UI-tier")
-public class GetHomeRouteTest{
+public class GetReplayGameTest{
 
-    private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-
-    private GetHomeRoute CuT;
+    private GetReplayGameRoute CuT;
 
     private Request request;
     private Response response;
     private Session session;
     private TemplateEngine engine;
-    private Player player;
-
-    private PlayerLobby lobby;
+    private Gson gson;
+    private GameList gameList;
+    private Player player1;
+    private Player player2;
+    private ReplayHelper replay;
+    private Game game;
 
     @BeforeEach
     public void setup(){
@@ -50,94 +51,100 @@ public class GetHomeRouteTest{
         when(request.session()).thenReturn(session);
         engine = mock(TemplateEngine.class);
         response = mock(Response.class);
-        lobby = new PlayerLobby();
-        
-        CuT = new GetHomeRoute(engine, lobby, new GameList(), new ReplayList());
+
+        gson = new Gson();
+        gameList = new GameList();
+        player1 = new Player("player1");
+        player2 = new Player("player2");
+        replay = new ReplayHelper();
+        game = new Game();
+
+        game.setRedPlayer(player1);
+        game.setWhitePlayer(player2);
+        replay.loadReplay("b;a;+r43:-54;-23:+w32;+r34:-43;-25:-34:+w43;yR");
+        game.setReplay(replay);
+        gameList.addGame(game);
+
+        CuT = new GetReplayGameRoute(engine, gson, gameList);
     }
 
     /**
-     * Test for home route
+     * Test for replay route
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */
     @Test
-    public void firstTime(){
+    public void replay(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        when(session.attribute("Player")).thenReturn(null);
+        when(request.queryParams(eq("gameID"))).thenReturn("0");
+        when(session.attribute("Player")).thenReturn(player1);
 
         CuT.handle(request, response);
 
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
 
-        testHelper.assertViewModelAttribute("title","Welcome!");
-        testHelper.assertViewModelAttribute("allUsers",lobby.getUsernames());
-    
-        testHelper.assertViewName("home.ftl");
-    }
+        testHelper.assertViewModelAttribute("title","Replay");
+        testHelper.assertViewModelAttribute("viewMode","REPLAY");
 
-    /**
-     * Test for home route
-     * Checks if the correct view is rendered
-     * Checks if the correct variables are in the vm.
-     */
-    @Test
-    public void userLoggedIn(){
-        lobby.addUsername("player1");
-        player = lobby.getPlayer("player1");
-        lobby.addUsername("player2");
-        Player player2 = lobby.getPlayer("player2");
-        Game game = new Game();
-        player.setGame(game);
-        player.inGame(true);
-
-        final TemplateEngineTester testHelper = new TemplateEngineTester();
-        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        when(session.attribute("Player")).thenReturn(player);
-
-        CuT.handle(request, response);
-
-        testHelper.assertViewModelExists();
-        testHelper.assertViewModelIsaMap();
-
-        testHelper.assertViewModelAttribute("title", "Let's Play");
-        testHelper.assertViewModelAttribute("allUsers", null);
-        testHelper.assertViewModelAttribute("currentUser", player);
-        testHelper.assertViewModelAttribute("board", player.getFlippedBoard());
-        testHelper.assertViewModelAttribute("redPlayer", null);
-        testHelper.assertViewModelAttribute("whitePlayer", null);
-        testHelper.assertViewModelAttribute("activeColor", Piece.Color.RED);
-    
         testHelper.assertViewName("game.ftl");
     }
     
     /**
-     * Test for home route
+     * Test for no more forward
      * Checks if the correct view is rendered
      * Checks if the correct variables are in the vm.
      */
     @Test
-    public void notInGame(){
-        lobby.addUsername("player1");
-        player = lobby.getPlayer("player1");
+    public void noForwards(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        when(session.attribute("Player")).thenReturn(player);
-        Game game = new Game();
-        player.setGame(game);
-        player.inGame(false);
-
+        when(request.queryParams(eq("gameID"))).thenReturn("0");
+        when(session.attribute("Player")).thenReturn(player1);
+        replay.next();
+        replay.next();
+        replay.next();
+        replay.next();
+        replay.next();
         CuT.handle(request, response);
 
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
 
-        testHelper.assertViewModelAttribute("title","Welcome!");
-        testHelper.assertViewModelAttribute("allUsers",lobby.getUsernames());
-    
-        testHelper.assertViewName("home.ftl");
-        assertTrue(lobby.countPlayers() == 1);
+        testHelper.assertViewModelAttribute("title","Replay");
+        testHelper.assertViewModelAttribute("viewMode","REPLAY");
+
+        testHelper.assertViewName("game.ftl");
     }
+
+    /**
+     * Test for no more forward red resign
+     * Checks if the correct view is rendered
+     * Checks if the correct variables are in the vm.
+     */
+    @Test
+    public void noForwardsRed(){
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(request.queryParams(eq("gameID"))).thenReturn("0");
+        when(session.attribute("Player")).thenReturn(player1);
+
+        replay.next();
+        replay.next();
+        replay.next();
+        replay.next();
+        replay.next();
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewModelAttribute("title","Replay");
+        testHelper.assertViewModelAttribute("viewMode","REPLAY");
+
+        testHelper.assertViewName("game.ftl");
+    }
+
 
 }

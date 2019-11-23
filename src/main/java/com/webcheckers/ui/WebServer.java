@@ -8,8 +8,10 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameList;
 import com.webcheckers.appl.PlayerLobby;
 
+import com.webcheckers.appl.ReplayList;
 import spark.TemplateEngine;
 
 
@@ -64,6 +66,13 @@ public class WebServer {
   public static final String SUBMITTURN_URL = "/submitTurn";
   public static final String BACKUP_URL = "/backupMove";
   public static final String SIGNOUT_URL = "/signout";
+  public static final String REPLAYL_URL = "/replayl";
+  public static final String REPLAYGAME_URL = "/replay/game";
+  public static final String REPLAYSTOP_URL = "/replay/stopWatching";
+  public static final String REPLAYNEXT_URL = "/replay/nextTurn";
+  public static final String REPLAYBACK_URL = "/replay/previousTurn";
+  public static final String TESTREPLAYSTART ="/replay";
+  public static final String HELP_URL = "/playerHelp";
 
   //
   // Attributes
@@ -72,6 +81,9 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
   private final PlayerLobby lobby;
+  private final GameList gameList;
+
+  private final ReplayList replays;
 
   //
   // Constructor
@@ -88,14 +100,17 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby lobby, final GameList gameList, final ReplayList replays) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
-    this.lobby=lobby;
+    this.lobby = lobby;
+    this.gameList = gameList;
+
+    this.replays = replays;
   }
 
   //
@@ -150,17 +165,22 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, lobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, lobby, gameList, replays));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
-    get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby));
+    get(SIGNOUT_URL, new GetHomeRoute(templateEngine, lobby, gameList, replays));
     post(HOME_URL, new PostSignInRoute(templateEngine, lobby));
-    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson));
+    get(GAME_URL, new GetStartGameRoute(templateEngine, lobby, gson, gameList, replays));
     post(VALIDATEMOVE_URL, new PostValidateMoveRoute(gson));
     post(CHECKTURN_URL, new PostCheckTurn(gson));
     post(RESIGNGAME_URL, new PostResignGame(gson));
     post(SUBMITTURN_URL, new PostSubmitTurn(gson));
     post(BACKUP_URL, new PostBackupRoute(gson));
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, lobby));
+    get(REPLAYGAME_URL, new GetReplayGameRoute(templateEngine, gson, gameList));
+    get(REPLAYSTOP_URL, new GetReplayStopRoute(templateEngine, lobby, replays, gameList));
+    post(REPLAYNEXT_URL, new GetReplayNextRoute(gson, gameList));
+    post(REPLAYBACK_URL, new GetReplayBackRoute(gson, gameList));
+    post(HELP_URL, new PostHelpRoute(gson));
     //
     LOG.config("WebServer is initialized.");
   }

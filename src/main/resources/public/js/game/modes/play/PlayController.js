@@ -24,6 +24,7 @@ define(function(require){
   const StableTurnState = require('./StableTurnState');
   const WaitingForTurnValidationState = require('./WaitingForTurnValidationState');
   const WaitingForBackupValidationState = require('./WaitingForBackupValidationState');
+  const WaitingForHelpState = require('./WaitingForHelpState');
   // "Waiting for My Turn" composite states
   const WaitingForMyTurnState = require('./WaitingForMyTurnState');
   const CheckingMyTurnState = require('./CheckingMyTurnState');
@@ -69,6 +70,9 @@ define(function(require){
         new WaitingForTurnValidationState(this));
     this.addStateDefinition(PlayModeConstants.WAITING_FOR_BACKUP_VALIDATION,
         new WaitingForBackupValidationState(this));
+    // Player Help
+    this.addStateDefinition(PlayModeConstants.PLAYER_HELP,
+        new WaitingForHelpState(this));
     // "Waiting for My Turn" composite states
     this.addStateDefinition(PlayModeConstants.WAITING_TO_CHECK_MY_TURN,
         new WaitingForMyTurnState(this));
@@ -89,6 +93,8 @@ define(function(require){
         PlayModeConstants.RESIGN_BUTTON_TOOLTIP, this.resignGame);
     this.addButton(PlayModeConstants.EXIT_BUTTON_ID, 'Exit', true,
         PlayModeConstants.EXIT_BUTTON_TOOLTIP, this.exitGame);
+    this.addButton(PlayModeConstants.HELP_BUTTON_ID, 'Help', false,
+        PlayModeConstants.HELP_BUTTON_TOOLTIP, this.playerHelp);
 
     // Public (internal) methods
 
@@ -188,6 +194,22 @@ define(function(require){
         this.displayMessage(message);
       }
     }
+  };
+
+    /**
+   * player help.
+   * 
+   * This action highlights the pieces that can move 
+   */
+  PlayController.prototype.playerHelp = function playerHelp() {
+    this._delegateStateMessage('playerHelp', arguments);
+  };
+
+  /**
+   * help highlight all of the pieces that have valid moves
+   */
+  PlayController.prototype.highlight = function highlight(moves) {
+    return this._boardController.highlight(moves);
   };
 
   /**
