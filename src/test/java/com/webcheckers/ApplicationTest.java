@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 public class ApplicationTest {
 
+    /**
+     * Tests the main function of the application
+     */
     @Test
     public void demoMode() {
         Application.main(null);
