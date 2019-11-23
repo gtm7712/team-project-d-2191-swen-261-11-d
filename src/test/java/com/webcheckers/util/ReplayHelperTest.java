@@ -1,15 +1,23 @@
 package com.webcheckers.util;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Piece.Color;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing suite for the Replay Helper
+ */
 public class ReplayHelperTest {
 
+    /**
+     * Test the replay helper
+     */
     @Test
-    public void the_test() {
+    public void replayTest() {
         Board board = new Board();
         board.getSpace(1, 0).setPiece(new Piece(Color.RED));
         board.getSpace(0, 1).setPiece(null);
@@ -36,24 +44,11 @@ public class ReplayHelperTest {
         ReplayHelper rpl2 = new ReplayHelper();
         rpl2.loadReplay(replay);
 
-        // scrub to the 2nd move
-        Board boardBegin = rpl2.next();
+        // scrub to the 2nd move       
+        rpl2.next();
         
-        Board move1 = rpl2.next();
-        
-        // Board move2 = rpl2.next();
-        
-        // System.out.println(move2.getSpace(0, 3).isCongruent(board.getSpace(0, 3)));
-
-        // System.out.println("Start: \n" + boardBegin.toString());
-        // System.out.println();
-        // System.out.println("1st move: \n" + move1.toString());
-        // System.out.println();
-        // System.out.println();
-        // System.out.println();
-
-        // System.out.println("Previous: \n" + rpl2.previous().toString());
-        // System.out.println("2nd move: \n" + move2.toString());
+        Board move2 = rpl2.next();
+        assertTrue(move2.getSpace(0, 3).equals(board.getSpace(0, 3)));
         
     }
 
