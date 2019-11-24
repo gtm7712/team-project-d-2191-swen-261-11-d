@@ -33,6 +33,13 @@ public class Game {
         );
     }
 
+    /**
+     * Constructor that takes in a red and white player
+     * @param redPlayer
+     *  the red player
+     * @param whitePlayer
+     *  the white player
+     */
     public Game(Player redPlayer, Player whitePlayer) {
         this.board = new Board();
         this.gameOver = false;
@@ -58,6 +65,7 @@ public class Game {
     public void setID(int id){
         this.gameID=id;
     }
+
     /**
      *
      * @return if movevalidator has returned complete or not
@@ -72,6 +80,7 @@ public class Game {
     public void setComplete(){
         isComplete=true;
     }
+
     /**
      * 
      * @return The white player
@@ -177,11 +186,8 @@ public class Game {
      * handles when End Turn button is clicked.
      */
     public void endTurn(){
-        // heldGame.add(turn1);
+        
         turn1 = new Turn();
-        //replay.updateReplay(clonedBoard);
-        //System.out.println("Replay:\n" + replay.getEncoding() + "\n");
-        // board=clonedBoard;
         isComplete=false;
         if(theirTurn.equals(redPlayer))
         theirTurn=whitePlayer;
@@ -213,9 +219,6 @@ public class Game {
      */
     public void setWinner(Player a){
         winner = a;
-
-        // replayString = replayHelper.getReplay();
-        // replayHelper.loadReplay(replayString);
     }
 
     /**
@@ -280,7 +283,7 @@ public class Game {
      */
     public String toString() {
         String toReturn = "";
-        //ArrayList<Row> boardArray = board.getBoard();
+        
         for(int i = 0; i < Board.BOARD_SIZE; i++) {
             for(int j = 0; j < Board.BOARD_SIZE; j++) {
                 if(board.getSpace(i, j).isSpaceValid()) {
@@ -505,6 +508,10 @@ public class Game {
         this.replayString = replayHelper.getReplay();
     }
 
+    /**
+     * set the replay for a game
+     * @param helper
+     */
     public void setReplay(ReplayHelper helper){
         this.replayHelper = helper;
     }

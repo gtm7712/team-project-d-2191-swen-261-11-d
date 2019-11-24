@@ -5,6 +5,9 @@ package com.webcheckers.model;
  */
 public class Move {
 
+    /**
+     * the different types of moves
+     */
     enum MoveType {
         NORMAL,
         RESIGN_RED,

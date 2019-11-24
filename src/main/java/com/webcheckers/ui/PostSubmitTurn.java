@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.webcheckers.util.Message;
 
 /**
- * ui controller for submitting turn
+ * ui controller for submitting a turn
  * 
  * @author Kyle Collins
  */

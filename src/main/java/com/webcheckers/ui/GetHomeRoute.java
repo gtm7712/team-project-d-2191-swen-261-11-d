@@ -22,7 +22,7 @@ import com.webcheckers.util.Message;
 /**
  * The UI Controller to GET the Home page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Brandon Chen
  */
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -39,6 +39,12 @@ public class GetHomeRoute implements Route {
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   * @param lobby
+   *  the player lobby
+   * @param gameList
+   *  the list of games
+   * @param replays
+   *  the list of replays
    */
   public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby lobby, GameList gameList, ReplayList replays) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");

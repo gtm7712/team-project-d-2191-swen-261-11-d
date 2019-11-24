@@ -7,7 +7,6 @@ public class Player {
     private Player opponent;
     private Game game;
     private Board board;
-    //todo
 
     /**
      * A Player is logged in
@@ -89,7 +88,6 @@ public class Player {
     public Board getPlayerBoard(){
         return this.board;
     }
-
 
     /**
      *

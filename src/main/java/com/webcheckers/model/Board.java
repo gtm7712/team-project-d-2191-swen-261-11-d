@@ -158,6 +158,9 @@ public class Board implements Iterable<Row> {
         return board.iterator();
     }
 
+    /**
+     * toString method for a board
+     */
    public String toString() {
         String toReturn = "";
         for(int i = 0; i < BOARD_SIZE; i++) {

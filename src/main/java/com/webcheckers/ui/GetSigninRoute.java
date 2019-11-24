@@ -14,9 +14,9 @@ import spark.TemplateEngine;
 import com.webcheckers.util.Message;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the Signin page.
  *
- * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Brandon Chen
  */
 public class GetSigninRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSigninRoute.class.getName());
@@ -48,7 +48,7 @@ public class GetSigninRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   the rendered HTML for the Sign-in page
    */
   @Override
   public Object handle(Request request, Response response) {

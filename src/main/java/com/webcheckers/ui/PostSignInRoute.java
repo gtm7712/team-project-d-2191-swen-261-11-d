@@ -37,6 +37,8 @@ public class PostSignInRoute implements Route{
      *
      * @param templateEngine
      *   the HTML template rendering engine
+     * @param lobby
+     *  the player lobby
      */
     public PostSignInRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");

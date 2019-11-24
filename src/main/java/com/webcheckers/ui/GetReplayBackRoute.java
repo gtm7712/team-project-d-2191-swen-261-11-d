@@ -24,10 +24,12 @@ public class GetReplayBackRoute implements Route {
   private final GameList gameList;
   private final Gson gson;
   /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /Replay/next} HTTP requests.
+   * Create the Spark Route (UI controller) to handle all {@code GET /Replay/previousTurn} HTTP requests.
    *
-   * @param templateEngine
-   *   the HTML template rendering engine
+   * @param gson
+   *   the gson used for ajax calls
+   * @param gameList
+   *  the list of games
    */
   public GetReplayBackRoute(final Gson gson, final GameList gameList) {
     this.gameList = gameList;
@@ -36,7 +38,7 @@ public class GetReplayBackRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers ReplayBack page.
+   * Send the correct ajax cal
    *
    * @param request
    *   the HTTP request
@@ -44,7 +46,7 @@ public class GetReplayBackRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   the ajax call
    */
   @Override
   public Object handle(Request request, Response response) {

@@ -148,6 +148,11 @@ public class Space {
         }
     }
 
+    /**
+     * Get a copy of a space
+     * @return
+     *  the space copy
+     */
     public Space getCopy() {
         Space copy = new Space(row, cellIdx, isValid);
         if(hasPiece()) {

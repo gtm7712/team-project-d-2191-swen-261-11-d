@@ -30,10 +30,16 @@ public class GetReplayStopRoute implements Route{
     private final ReplayList replays;
     private final GameList gameList;
     /**
-     * Create the Spark Route (UI controller) to handle all {@code POST /signin} HTTP requests.
+     * Create the Spark Route (UI controller) to handle all {@code GET /replay/stopWatching} HTTP requests.
      *
      * @param templateEngine
      *   the HTML template rendering engine
+     * @param lobby
+     *  the player lobby
+     * @param replays
+     *  the replay list
+     * @param gameList
+     *  the list of games
      */
     public GetReplayStopRoute(final TemplateEngine templateEngine, PlayerLobby lobby, ReplayList replays, GameList gameList) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -46,7 +52,7 @@ public class GetReplayStopRoute implements Route{
     }
 
     /**
-     * Render the WebCheckers Sign In page.
+     * Render the WebCheckers Home page.
      *
      * @param request
      *   the HTTP request
@@ -54,7 +60,7 @@ public class GetReplayStopRoute implements Route{
      *   the HTTP response
      *
      * @return
-     *   the rendered HTML for the Sign In page
+     *   the rendered HTML for the Home page
      */
     @Override
     public Object handle(Request request, Response response) {

@@ -33,10 +33,14 @@ public class GetReplayGameRoute implements Route {
   private final GameList gameList;
 
   /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /signin} HTTP requests.
+   * Create the Spark Route (UI controller) to handle all {@code GET /replay/game} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   * @param gson
+   *  the gson used for ajax calls
+   * @param gameList
+   *  the list of games
    */
   public GetReplayGameRoute(final TemplateEngine templateEngine, Gson gson, GameList gameList) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -47,7 +51,7 @@ public class GetReplayGameRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers Sign-in page.
+   * Render the WebCheckers replay page
    *
    * @param request
    *   the HTTP request
@@ -55,7 +59,7 @@ public class GetReplayGameRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   the rendered HTML for the replay page
    */
   @Override
   public Object handle(Request request, Response response) {
@@ -73,12 +77,10 @@ public class GetReplayGameRoute implements Route {
     Player redPlayer = game.getRedPlayer();
     Player whitePlayer = game.getWhitePlayer();
     
-    // ReplayHelper rpyHelper = rpyGame.getReplayHelper();
     ReplayHelper rpyHelper = game.getReplayHelper();
     game.setBoard(new Board());
     int index = rpyHelper.getIndex();
-    // game.setReplay(rpyHelper);
-//     System.out.println(rpyHelper.getReplay());
+    
 
     modeOptions.put("hasNext", rpyHelper.canGoForward());
     modeOptions.put("hasPrevious", rpyHelper.canGoBack());

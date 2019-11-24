@@ -73,7 +73,9 @@ public class Helper {
      * Check to see if a valid move exist in the spaces that surrounding 
      * the position of a given piece
      * @param row
+     *  the row of a piece
      * @param cell
+     *  the column of a piece
      * @return boolean
      */
     private boolean checkPositions(int row, int cell ) {

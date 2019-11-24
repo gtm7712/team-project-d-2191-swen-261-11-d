@@ -24,10 +24,12 @@ public class GetReplayNextRoute implements Route {
   private final GameList gameList;
   private final Gson gson;
   /**
-   * Create the Spark Route (UI controller) to handle all {@code GET /Replay/next} HTTP requests.
+   * Create the Spark Route (UI controller) to handle all {@code GET /Replay/nextTurn} HTTP requests.
    *
-   * @param templateEngine
-   *   the HTML template rendering engine
+   * @param gson
+   *  the gson used for ajax calls
+   * @param gamesList
+   *  the list of games
    */
   public GetReplayNextRoute(final Gson gson, final GameList gamesList) {
     this.gameList = gamesList;
@@ -36,7 +38,7 @@ public class GetReplayNextRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers ReplayNext page.
+   * Send an ajax with correct information
    *
    * @param request
    *   the HTTP request
@@ -44,15 +46,15 @@ public class GetReplayNextRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   an ajax call saying the next of the replay was successful
    */
   @Override
   public Object handle(Request request, Response response) {
-    LOG.finer("GetReplayGameRoute is invoked.");
+    LOG.finer("GetReplayNextRoute is invoked.");
 
     Integer gameID = Integer.parseInt(request.queryParams("gameID"));
     Game game = gameList.getGame(gameID);
-    // System.out.println(game.getBoardRed());
+    
     ReplayHelper rply = game.getReplayHelper();
     rply.next();
     return gson.toJson(new Message("true", Message.Type.INFO));

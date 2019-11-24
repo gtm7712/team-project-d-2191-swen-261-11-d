@@ -41,6 +41,14 @@ public class GetStartGameRoute implements Route {
      *
      * @param templateEngine
      *   the HTML template rendering engine
+     * @param lobby
+     *  the player lobby
+     * @param gson
+     *  the gson used for ajax calls
+     * @param gameList
+     *  the list of games
+     * @param replayList
+     *  the list of replays
      */
     public GetStartGameRoute(final TemplateEngine templateEngine, final PlayerLobby lobby, final Gson gson, final GameList gameList, final ReplayList replays) {
       this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
@@ -54,7 +62,7 @@ public class GetStartGameRoute implements Route {
     }
   
     /**
-     * Render the web checkers start game
+     * Render the web checkers game
      *
      * @param request
      *   the HTTP request
@@ -62,7 +70,7 @@ public class GetStartGameRoute implements Route {
      *   the HTTP response
      *
      * @return
-     *   the rendered HTML for the Home page
+     *   the rendered HTML for the game page
      */
     @Override
     public Object handle(Request request, Response response) {
@@ -89,13 +97,13 @@ public class GetStartGameRoute implements Route {
         
         currentPlayer.setOpponent(opponent);
         opponent.setOpponent(currentPlayer);
-        // int gameIndex=gameList.createGame(currentPlayer, opponent);
+        
         lobby.getPlayer(currentPlayer.name).inGame(true);
         lobby.getPlayer(otherPlayer).inGame(true);
 
         game.setRedPlayer(currentPlayer);
         game.setWhitePlayer(opponent);
-        // game.setHeldGame(gameList.get(gameIndex));
+        
         currentPlayer.setGame(game);
         opponent.setGame(game);
 
@@ -110,7 +118,7 @@ public class GetStartGameRoute implements Route {
       vm.put("whitePlayer", game.getWhitePlayer());
 
       vm.put("board", currentPlayer.getPlayerBoard());
-      vm.put("gameID", gameID); // gameList.indexOf(game.getHeldGame()));
+      vm.put("gameID", gameID);
       final Map<String, Object> modeOptions = new HashMap<>(2);
       modeOptions.put("isGameOver", true);
       if(game.noMorePieces()){

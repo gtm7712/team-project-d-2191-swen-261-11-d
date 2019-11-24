@@ -330,6 +330,9 @@ public class ReplayHelper {
     /** @return the result of the game */
     public GameResult getResult() { return gameResult; }
 
+    /**
+     * the different endings of a game
+     */
     public enum GameResult {
         RED_WIN, WHITE_WIN, RED_RESIGN, WHITE_RESIGN
     };
