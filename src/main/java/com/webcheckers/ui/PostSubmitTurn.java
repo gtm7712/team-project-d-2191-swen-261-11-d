@@ -50,7 +50,7 @@ public class PostSubmitTurn implements Route {
         if(game.hasJumped()!=null){
             if(validate.shouldMakeJump(currentColor) && game.hasJumped()!=null){
                 Position lastJump=game.hasJumped().getEnd();
-                if(validate.isCapturePossible(lastJump,game.getBoardRed().getSpace(lastJump).getPiece())) {
+                if(validate.isCapturePossible(lastJump,game.getBoardRed().getSpace(lastJump).getPiece())&&!game.isComplete()) {
                     return gson.toJson(new Message("You can still jump!", Message.Type.ERROR));
                 }
             }

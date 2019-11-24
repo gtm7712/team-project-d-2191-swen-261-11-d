@@ -95,11 +95,12 @@ public class GetHomeRoute implements Route {
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
       }
     }
-
+    
     vm.put("title", "Welcome!");
     vm.put("allUsers",lobby.getUsernames());
     
     if(replays.getGames().size() > 0){
+      vm.put("gameslist", gameList.getGamesString());
       vm.put("gameList", replays.getGames());
     }
 

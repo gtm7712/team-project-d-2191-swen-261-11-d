@@ -85,6 +85,7 @@ public class GetReplayStopRoute implements Route{
     vm.put("allUsers",lobby.getUsernames());
 
     if(replays.getGames().size() > 0){
+      vm.put("gameslist", gameList.getGamesString());
       vm.put("gameList", replays.getGames());
     }
 
