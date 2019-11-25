@@ -28,15 +28,15 @@
                   </br>
               </#if>
           </#list>
-      <#else>
-          <#include "message.ftl" />
-      </#if>
-      <#if gameList??>
+          <#if gameList??>
           <h2>Games to watch</h2>
           </br>
           <#list gameList?keys as game>
               <a href = "/replay/game?gameID=${game}"> #${game}: ${gameslist[game + ""].getReplayHelper().getRed()} vs ${gameslist[game + ""].getReplayHelper().getWhite()}</a><br>
           </#list>
+      </#if>
+      <#else>
+          <#include "message.ftl" />
       </#if>
 
     <!-- TODO: future content on the Home:
